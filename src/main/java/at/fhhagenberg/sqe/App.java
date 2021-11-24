@@ -1,11 +1,15 @@
 package at.fhhagenberg.sqe;
 
+import java.io.IOException;
+
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
 
 /**
  * JavaFX App
@@ -13,18 +17,10 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     @Override
-    public void start(Stage stage) {
-        var javaVersion = SystemInfo.javaVersion();
-        var javafxVersion = SystemInfo.javafxVersion();
-
-        var label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        var layout = new BorderPane(label);
-        var button = new Button("Click me!");
-        button.setOnAction(evt -> button.setText("Clicked!"));
-        layout.setBottom(button);
-
-        var scene = new Scene(layout, 640, 480);
-
+    public void start(Stage stage) throws IOException {
+    	Parent root = FXMLLoader.load(getClass().getResource("/elevator_control_center.fxml"));
+        var scene = new Scene(root, 640, 480);
+        stage.setTitle("Elevator Control Center");
         stage.setScene(scene);
         stage.show();
     }

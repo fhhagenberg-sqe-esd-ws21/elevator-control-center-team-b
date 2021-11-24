@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane style="-fx-padding: 15; -fx-spacing: 15;">
+    <top>
+    	<Label text="Elevator Control Center" style="-fx-font-size: 30"/>
+    </top>
+    
+    <center>
+    	<VBox spacing="25">
+    		<ListView maxHeight="80">
+    			<Label text="Elevator 1" />
+    			<Label text="Elevator 2" />
+    			<Label text="Elevator 3" />
+    			<Label text="Elevator 4" />
+    			<Label text="Elevator 5" />
+    		</ListView>
+    		<HBox spacing="15">
+    			<ToggleButton text="Automatic Mode"></ToggleButton>
+        
+		       	<HBox style="-fx-spacing: 10;">
+		       		<Label text="Go to level " style="-fx-font-size: 18"/>
+		       		<TextField></TextField>
+		       		<Button text="Go"></Button>
+		       	</HBox>
+    		</HBox>	
+    	</VBox>       
+    </center>
+    
+    <bottom>
+    	<GridPane style="-fx-hgap: 60; -fx-vgap: 20;">
+    		<HBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+				<Label text="Position: " style="-fx-font-size: 18"/>
+				<Label text="50ft" style="-fx-font-size: 18"/>
+			</HBox>
+			<HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+			    <Label text="Direction: " style="-fx-font-size: 18"/>
+			    <Label text="Down" style="-fx-font-size: 18"/>
+			</HBox>
+			<HBox GridPane.columnIndex="2" GridPane.rowIndex="0">
+			    <Label text="Payload: " style="-fx-font-size: 18"/>
+			    <Label text="736kg" style="-fx-font-size: 18"/>
+			</HBox>
+			<HBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+			    <Label text="Speed: " style="-fx-font-size: 18"/>
+			    <Label text="6km/h" style="-fx-font-size: 18"/>
+			</HBox>
+			<Label text="Doors closed" style="-fx-font-size: 18" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+			<HBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+			    <Label text="Target floor: " style="-fx-font-size: 18"/>
+			    <Label text="1" style="-fx-font-size: 18" />
+			</HBox>  
+    	</GridPane>
+    </bottom>
+</BorderPane>
