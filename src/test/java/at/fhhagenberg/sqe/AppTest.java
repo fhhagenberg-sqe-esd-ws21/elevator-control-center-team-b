@@ -1,5 +1,8 @@
 package at.fhhagenberg.sqe;
 
+import java.io.IOException;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxAssert;
@@ -16,9 +19,10 @@ public class AppTest {
      * Will be called with {@code @Before} semantics, i. e. before each test method.
      *
      * @param stage - Will be injected by the test runner.
+     * @throws IOException 
      */
     @Start
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         var app = new App();
         app.start(stage);
     }
@@ -28,12 +32,13 @@ public class AppTest {
      */
     @Test
     public void testButtonWithText(FxRobot robot) {
-        FxAssert.verifyThat(".button", LabeledMatchers.hasText("Click me!"));
+        FxAssert.verifyThat(".button", LabeledMatchers.hasText("Go"));
     }
 
     /**
      * @param robot - Will be injected by the test runner.
      */
+    @Disabled
     @Test
     public void testButtonClick(FxRobot robot) {
         // when:
