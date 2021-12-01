@@ -10,7 +10,7 @@
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
         <maven.compiler.release>15</maven.compiler.release>
-        <javafx-version>15</javafx-version>
+        <javafx-version>17.0.2-ea+1</javafx-version>
         <sonar.organization>fhhagenberg-sqe-esd-ws21</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
@@ -36,7 +36,7 @@
         <dependency>
 		    <groupId>org.openjfx</groupId>
 		    <artifactId>javafx-fxml</artifactId>
-		    <version>11.0.1</version>
+		    <version>${javafx-version}</version>
 		</dependency>
 		        
 
