@@ -21,14 +21,32 @@
     </top>
     
     <center>
+	<HBox spacing="15">
+		<ListView>
+			<Label text="Elevator 1" />
+			<Label text="Elevator 2" />
+			<Label text="Elevator 3" />
+			<Label text="Elevator 4" />
+			<Label text="Elevator 5" />
+		</ListView>
     	<VBox spacing="25">
-    		<ListView maxHeight="80">
-    			<Label text="Elevator 1" />
-    			<Label text="Elevator 2" />
-    			<Label text="Elevator 3" />
-    			<Label text="Elevator 4" />
-    			<Label text="Elevator 5" />
-    		</ListView>
+			<TableView GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-margin: 10px;">
+				<columns>
+					<TableColumn prefWidth="35.0" text="Pos">
+					</TableColumn>
+					<TableColumn prefWidth="241.0" text="Floor">
+					<cellValueFactory><PropertyValueFactory property="floor" />
+					</cellValueFactory>
+					</TableColumn>
+					<TableColumn prefWidth="236.0" text="Up / Down">
+					<cellValueFactory><PropertyValueFactory property="state" />
+					</cellValueFactory>
+					</TableColumn>
+					<TableColumn text="Stop planned">
+					
+					</TableColumn>
+				</columns> 
+			</TableView>
     		<HBox spacing="15">
     			<ToggleButton text="Automatic Mode" />
         
@@ -38,19 +56,9 @@
 		       		<Button text="Go" />
 		       	</HBox>
     		</HBox>	    		
-			<TableView accessibleHelp="asdf" maxHeight="80" GridPane.columnIndex="0" GridPane.rowIndex="0">
-				<columns>
-					<TableColumn prefWidth="241.0" text="Floor">
-						<cellValueFactory><PropertyValueFactory property="floor" />
-						</cellValueFactory>
-					</TableColumn>
-					<TableColumn prefWidth="236.0" text="State">
-						<cellValueFactory><PropertyValueFactory property="state" />
-						</cellValueFactory>
-					</TableColumn>
-				</columns> 
-    		</TableView>
-    	</VBox>       
+
+    	</VBox>
+	</HBox>   	       
     </center>
     
     <bottom>
