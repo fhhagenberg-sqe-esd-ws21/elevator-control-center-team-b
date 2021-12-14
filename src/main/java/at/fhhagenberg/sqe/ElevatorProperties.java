@@ -4,7 +4,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
 
 public class ElevatorProperties {
-    //private final SimpleIntegerProperty position = new SimpleIntegerProperty(0);
 
 
     private Circle position;
@@ -41,7 +40,6 @@ public class ElevatorProperties {
         {
             position.setFill(Color.RED);
         }
-        //position = fPosition;
      }
          
      public Integer getFloor() {

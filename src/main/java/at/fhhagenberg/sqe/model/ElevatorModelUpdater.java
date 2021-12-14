@@ -50,33 +50,63 @@ public class ElevatorModelUpdater implements ModelObserver {
 		}
 	}
 	
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ElevatorFloorUpdated(Elevator elevator) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ElevatorDoorStatusUpdated(Elevator elevator) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ElevatorDirectionUpdated(Elevator elevator) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ElevatorAccelerationUpdated(Elevator elevator) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ElevatorFloorsPressedUpdated(Elevator elevator) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ElevatorPositionUpdated(Elevator elevator) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ElevatorSpeedUpdated(Elevator elevator) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ElevatorWeightUpdated(Elevator elevator) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ElevatorCapacityUpdated(Elevator elevator) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ElevatorFloorsToServiceUpdated(Elevator elevator) {}
 
@@ -90,18 +120,33 @@ public class ElevatorModelUpdater implements ModelObserver {
 		}
 	}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void ErrorMessageUpdated(ElevatorModel model) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void DataIsStaleUpdated(ElevatorModel model) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void FloorButtonUpPressedUpdated(Floor floor) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void FloorButtonDownPressedUpdated(Floor floor) {}
 
+	/**
+	 * Unnecessary for the Model Updater
+	 */
 	@Override
 	public void FloorHeightUpdated(Floor floor) {}
 	

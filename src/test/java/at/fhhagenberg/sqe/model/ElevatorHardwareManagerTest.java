@@ -59,7 +59,7 @@ class ElevatorHardwareManagerTest {
 
         Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
 
-        assertEquals(Elevator.ElevatorDirection.Up, ehm.getCommittedDirection(0));
+        assertEquals(Elevator.ElevatorDirection.UP, ehm.getCommittedDirection(0));
         Mockito.verify(iElevatorMock, times(1)).getCommittedDirection(0);
     }
 }

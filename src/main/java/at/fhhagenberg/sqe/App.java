@@ -13,8 +13,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-    	//Parent root = FXMLLoader.load(getClass().getResource("/elevator_control_center.fxml"));
-    	var root = (new eccLayout()).getLayout();
+    	var root = (new EccLayout()).getLayout();
         var scene = new Scene(root, 640, 480);
         stage.setTitle("Elevator Control Center");
         stage.setScene(scene);

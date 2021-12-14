@@ -5,28 +5,28 @@ import java.util.ArrayList;
 public class Elevator {
 	/**
 	 * The status of the elevator doors
-	 * Open - The doors are currently open
-	 * Closed - The doors are currently closed
-	 * Opening - The door are transitioning from Closed to Open
-	 * Closing - The door are transitioning from Open to Closed
+	 * OPEN - The doors are currently open
+	 * CLOSED - The doors are currently closed
+	 * OPENING - The door are transitioning from Closed to Open
+	 * CLOSING - The door are transitioning from Open to Closed
 	 */
 	public enum ElevatorDoorStatus {
-		Open, 
-		Closed, 
-		Opening,
-		Closing
+		OPEN, 
+		CLOSED, 
+		OPENING,
+		CLOSING
 	}
 
 	/**
 	 * Direction of a single elevator
-	 * Up - The elevator is currently moving upwards
-	 * Down - The elevator is currently moving downwards
-	 * Uncommitted - The elevator is currently not moving
+	 * UP - The elevator is currently moving upwards
+	 * DOWN - The elevator is currently moving downwards
+	 * UNCOMMITTED - The elevator is currently not moving
 	 */
 	public enum ElevatorDirection {
-		Up, 
-		Down, 
-		Uncommitted
+		UP, 
+		DOWN, 
+		UNCOMMITTED
 	}
 	
 	private int elevatorNumber;

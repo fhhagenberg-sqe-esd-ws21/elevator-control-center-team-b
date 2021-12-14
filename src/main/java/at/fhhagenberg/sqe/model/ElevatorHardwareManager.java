@@ -11,7 +11,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 	
 	public ElevatorHardwareManager(IElevator hwInterface) throws IllegalArgumentException, HardwareConnectionException {
 		if (hwInterface == null) {
-			throw new IllegalArgumentException("Hardware interface must not be null");
+			throw new IllegalArgumentException(Messages.getString("ElevatorLocalizedStrings.0")); //$NON-NLS-1$
 		}
 		
 		this.hwInterface = hwInterface;
@@ -22,19 +22,19 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			numFloors = hwInterface.getFloorNum();
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.1"), exc); //$NON-NLS-1$
 		}
 	}
 
 	private void checkValidElevator(int elevatorNumber) throws IllegalArgumentException {
 		if (elevatorNumber >= numElevators || elevatorNumber < 0) {
-			throw new IllegalArgumentException("Invalid elevator number " + elevatorNumber);
+			throw new IllegalArgumentException(Messages.getString("ElevatorLocalizedStrings.2") + elevatorNumber); //$NON-NLS-1$
 		}
 	}
 	
 	private void checkValidFloor(int floor) throws IllegalArgumentException {
 		if (floor >= numFloors || floor < 0) { 
-			throw new IllegalArgumentException("Invalid floor number " + floor);
+			throw new IllegalArgumentException(Messages.getString("ElevatorLocalizedStrings.3") + floor); //$NON-NLS-1$
 		}
 	}
 	
@@ -58,16 +58,16 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			dir = hwInterface.getCommittedDirection(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.4"), exc); //$NON-NLS-1$
 		}
 		
 		switch (dir) {
-		case IElevator.ELEVATOR_DIRECTION_UP: return ElevatorDirection.Up;
-		case IElevator.ELEVATOR_DIRECTION_DOWN: return ElevatorDirection.Down;
-		case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED: return ElevatorDirection.Uncommitted;
+		case IElevator.ELEVATOR_DIRECTION_UP: return ElevatorDirection.UP;
+		case IElevator.ELEVATOR_DIRECTION_DOWN: return ElevatorDirection.DOWN;
+		case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED: return ElevatorDirection.UNCOMMITTED;
 		}
 		
-		throw new IllegalStateException("Illegal Elevator direction");
+		throw new IllegalStateException(Messages.getString("ElevatorLocalizedStrings.5")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorAccel(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.6"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -91,7 +91,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorButton(elevatorNumber, floor);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.7"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -104,17 +104,17 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			doorStatus = hwInterface.getElevatorDoorStatus(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.8"), exc); //$NON-NLS-1$
 		}
 		
 		switch (doorStatus) {
-		case IElevator.ELEVATOR_DOORS_OPEN: return ElevatorDoorStatus.Open;
-		case IElevator.ELEVATOR_DOORS_CLOSED: return ElevatorDoorStatus.Closed;
-		case IElevator.ELEVATOR_DOORS_OPENING: return ElevatorDoorStatus.Opening;
-		case IElevator.ELEVATOR_DOORS_CLOSING: return ElevatorDoorStatus.Closing;
+		case IElevator.ELEVATOR_DOORS_OPEN: return ElevatorDoorStatus.OPEN;
+		case IElevator.ELEVATOR_DOORS_CLOSED: return ElevatorDoorStatus.CLOSED;
+		case IElevator.ELEVATOR_DOORS_OPENING: return ElevatorDoorStatus.OPENING;
+		case IElevator.ELEVATOR_DOORS_CLOSING: return ElevatorDoorStatus.CLOSING;
 		}
 		
-		throw new IllegalStateException("Illegal Elevator door status");
+		throw new IllegalStateException(Messages.getString("ElevatorLocalizedStrings.9")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorFloor(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.10"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -142,7 +142,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorPosition(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.11"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -154,7 +154,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorSpeed(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.12"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -166,7 +166,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorWeight(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.13"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -178,7 +178,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorCapacity(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.14"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -190,7 +190,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getFloorButtonDown(floor);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.15"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -202,7 +202,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getFloorButtonUp(floor);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.16"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -212,7 +212,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getFloorHeight();
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.17"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -230,7 +230,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getServicesFloors(elevatorNumber, floor);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.18"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -242,7 +242,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getTarget(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.19"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -252,11 +252,11 @@ public class ElevatorHardwareManager implements IElevatorManager {
 		
 		int dir = 0;
 		switch (direction) {
-		case Up: dir = IElevator.ELEVATOR_DIRECTION_UP;
+		case UP: dir = IElevator.ELEVATOR_DIRECTION_UP;
 			break;
-		case Down: dir = IElevator.ELEVATOR_DIRECTION_DOWN;
+		case DOWN: dir = IElevator.ELEVATOR_DIRECTION_DOWN;
 			break;
-		case Uncommitted: dir = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
+		case UNCOMMITTED: dir = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
 			break;
 		}
 		
@@ -264,7 +264,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			hwInterface.setCommittedDirection(elevatorNumber, dir);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.20"), exc); //$NON-NLS-1$
 		}
 		
 	}
@@ -278,7 +278,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			hwInterface.setServicesFloors(elevatorNumber, floor, service);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.21"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -291,7 +291,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			hwInterface.setTarget(elevatorNumber, targetFloor);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.22"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -301,7 +301,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getClockTick();
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(Messages.getString("ElevatorLocalizedStrings.23"), exc); //$NON-NLS-1$
 		}
 	}
 	
