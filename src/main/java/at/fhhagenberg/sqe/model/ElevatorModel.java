@@ -6,10 +6,14 @@ public class ElevatorModel {
 	
 	private ArrayList<Elevator> elevators;
 	private ArrayList<Floor> floors;
+	private ArrayList<ModelObserver> observers;
+	private String errorMessage;
+	private boolean dataIsStale;
 	
 	public ElevatorModel() {
 		elevators = new ArrayList<Elevator>();
 		floors = new ArrayList<Floor>();
+		observers = new ArrayList<ModelObserver>();
 	}
 	
 	public int getNumElevators() {
@@ -33,4 +37,41 @@ public class ElevatorModel {
 		}
 		return floors.get(floor);
 	}
+	
+	public void setErrorMessage(String message) {
+		if (this.errorMessage.equals(message)) {
+			return;
+		}
+		
+		this.errorMessage = message;
+		observers.forEach((obs) -> obs.ErrorMessageUpdated(this));
+	}
+	
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+	
+	public boolean isDataIsStale() {
+		return dataIsStale;
+	}
+
+	public void setDataIsStale(boolean dataIsStale) {
+		if (this.dataIsStale == dataIsStale) {
+			return;
+		}
+		
+		this.dataIsStale = dataIsStale;
+		observers.forEach((obs) -> obs.DataIsStaleUpdated(this));
+	}
+	
+	public void addModelObserver(ModelObserver observer) {
+		observers.add(observer);
+		for (Elevator el : elevators) {
+			el.addModelObserver(observer);
+		}
+		for (Floor fl : floors) {
+			fl.addModelObserver(observer);
+		}
+	}
+
 }
