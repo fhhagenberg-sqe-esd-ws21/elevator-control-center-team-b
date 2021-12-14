@@ -1,10 +1,7 @@
 package at.fhhagenberg.sqe;
  
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 
 public class ElevatorProperties {
     //private final SimpleIntegerProperty position = new SimpleIntegerProperty(0);

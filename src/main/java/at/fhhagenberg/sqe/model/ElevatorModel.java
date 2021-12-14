@@ -39,7 +39,7 @@ public class ElevatorModel {
 	}
 	
 	public void setErrorMessage(String message) {
-		if (this.errorMessage.equals(message)) {
+		if (this.errorMessage != null && this.errorMessage.equals(message)) {
 			return;
 		}
 		

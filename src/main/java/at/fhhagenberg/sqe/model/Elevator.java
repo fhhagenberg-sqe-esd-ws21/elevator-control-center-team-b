@@ -43,11 +43,23 @@ public class Elevator {
 	private int targetFloor;
 	private ArrayList<ModelObserver> observers;
 	
-	public Elevator(int elevatorNumber) {
+	public Elevator(int elevatorNumber, int numFloors) throws IllegalArgumentException {
+		if (elevatorNumber < 0) {
+			throw new IllegalArgumentException("Invalid elevator number");
+		}
+		if (numFloors < 1) {
+			throw new IllegalArgumentException("Invalid number of floors");
+		}
+		
 		this.elevatorNumber = elevatorNumber;
-		this.floorsPressed = new ArrayList<Boolean>();
-		this.floorsToService = new ArrayList<Boolean>();
+		this.floorsPressed = new ArrayList<Boolean>(numFloors);
+		this.floorsToService = new ArrayList<Boolean>(numFloors);
 		this.observers = new ArrayList<ModelObserver>();
+		
+		for (int i = 0; i < numFloors; i++) {
+			floorsPressed.add(false);
+			floorsToService.add(false);
+		}
 	}
 
 	public int getFloor() {
@@ -119,9 +131,13 @@ public class Elevator {
 		return position;
 	}
 
-	public void setPosition(int position) {
+	public void setPosition(int position) throws IllegalArgumentException {
 		if (this.position == position) {
 			return;
+		}
+		
+		if (position < 0 || position >= getNumFloors()) {
+			throw new IllegalArgumentException("Invalid floor number");
 		}
 		
 		this.position = position;
@@ -184,9 +200,12 @@ public class Elevator {
 		return targetFloor;
 	}
 
-	public void setTargetFloor(int targetFloor) {
+	public void setTargetFloor(int targetFloor) throws IllegalArgumentException {
 		if (this.targetFloor == targetFloor) {
 			return;
+		}
+		if (targetFloor < 0 || targetFloor >= getNumFloors()) {
+			throw new IllegalArgumentException("Invalid floor number");
 		}
 		
 		this.targetFloor = targetFloor;
@@ -195,6 +214,10 @@ public class Elevator {
 
 	public int getElevatorNumber() {
 		return elevatorNumber;
+	}
+	
+	public int getNumFloors() {
+		return floorsPressed.size();
 	}
 	
 	public void addModelObserver(ModelObserver observer) {

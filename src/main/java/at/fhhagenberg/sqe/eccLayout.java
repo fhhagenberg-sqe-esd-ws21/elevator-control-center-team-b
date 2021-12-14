@@ -12,20 +12,15 @@ import javafx.event.EventHandler;
 
 import javafx.scene.shape.Circle;
 import javafx.util.Callback;
-import javafx.scene.paint.Color; 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.collections.FXCollections;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
-import at.fhhagenberg.sqe.ElevatorProperties;
 
 public class eccLayout {
     
@@ -47,7 +42,7 @@ public class eccLayout {
         TableColumn<ElevatorProperties, Integer> floor = new TableColumn<>("Floor");
         floor.setCellValueFactory(new PropertyValueFactory<ElevatorProperties, Integer>("floor"));
         
-        TableColumn<ElevatorProperties, Void> up = new TableColumn("Up");
+        TableColumn<ElevatorProperties, Void> up = new TableColumn<ElevatorProperties, Void>("Up");
 
         Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>> upButtonFactory = new Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>>() {
             @Override
@@ -82,7 +77,7 @@ public class eccLayout {
         up.setCellFactory(upButtonFactory);
         
         
-        TableColumn<ElevatorProperties, Void> down = new TableColumn("Down");
+        TableColumn<ElevatorProperties, Void> down = new TableColumn<ElevatorProperties, Void>("Down");
 
         Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>> downButtonFactory = new Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>>() {
             @Override
@@ -116,7 +111,7 @@ public class eccLayout {
         };
         down.setCellFactory(downButtonFactory);
         
-        TableColumn<ElevatorProperties, Void> stopPlanned = new TableColumn("Stop planned");
+        TableColumn<ElevatorProperties, Void> stopPlanned = new TableColumn<ElevatorProperties, Void>("Stop planned");
         Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>> stopButtonFactory = new Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>>() {
             @Override
             public TableCell<ElevatorProperties, Void> call(final TableColumn<ElevatorProperties, Void> param) {
@@ -149,11 +144,12 @@ public class eccLayout {
         };
         stopPlanned.setCellFactory(stopButtonFactory);
         
-        
-      
-        
-        
-        elevatorPropertiesTable.getColumns().addAll(status, floor, up, down, stopPlanned);
+        elevatorPropertiesTable.getColumns().add(status);
+        elevatorPropertiesTable.getColumns().add(floor);
+		elevatorPropertiesTable.getColumns().add(up);
+		elevatorPropertiesTable.getColumns().add(down);
+		elevatorPropertiesTable.getColumns().add(stopPlanned);
+        				
         ObservableList<ElevatorProperties> data = FXCollections.observableArrayList();
 
 		data.add(new ElevatorProperties(0, 0, "false", "false", "true"));

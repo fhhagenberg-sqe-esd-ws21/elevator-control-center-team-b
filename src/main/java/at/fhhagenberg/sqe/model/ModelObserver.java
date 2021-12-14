@@ -1,10 +1,5 @@
 package at.fhhagenberg.sqe.model;
 
-import java.util.ArrayList;
-
-import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
-import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
-
 public interface ModelObserver {
 	
 	public void ElevatorFloorUpdated(Elevator elevator);
