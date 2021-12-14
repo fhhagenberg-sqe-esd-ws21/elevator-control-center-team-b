@@ -17,8 +17,13 @@ public class ElevatorHardwareManager implements IElevatorManager {
 		this.hwInterface = hwInterface;
 		
 		// initialize local variables
-		numElevators = getElevatorNum();
-		numFloors = getFloorNum();
+		try {
+			numElevators = hwInterface.getElevatorNum();
+			numFloors = hwInterface.getFloorNum();
+		}
+		catch (java.rmi.RemoteException exc) {
+			throw new HardwareConnectionException("Hardware connection lost", exc);
+		}
 	}
 
 	private void checkValidElevator(int elevatorNumber) throws IllegalArgumentException {
@@ -125,13 +130,8 @@ public class ElevatorHardwareManager implements IElevatorManager {
 	}
 
 	@Override
-	public int getElevatorNum() throws HardwareConnectionException {
-		try {
-			return hwInterface.getElevatorNum();
-		}
-		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
-		}
+	public int getElevatorNum() {
+		return numElevators;
 	}
 
 	@Override
@@ -217,13 +217,8 @@ public class ElevatorHardwareManager implements IElevatorManager {
 	}
 
 	@Override
-	public int getFloorNum() throws HardwareConnectionException {
-		try {
-			return hwInterface.getFloorHeight();
-		}
-		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
-		}
+	public int getFloorNum() {
+		return numFloors;
 	}
 
 	@Override
