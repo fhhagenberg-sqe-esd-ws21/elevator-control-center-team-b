@@ -51,37 +51,37 @@ public class ElevatorModelUpdater implements ModelObserver {
 	}
 	
 	@Override
-	public void ElevatorFloorUpdated(Elevator elevator) {}
+	public void elevatorFloorUpdated(Elevator elevator) {}
 
 	@Override
-	public void ElevatorDoorStatusUpdated(Elevator elevator) {}
+	public void elevatorDoorStatusUpdated(Elevator elevator) {}
 
 	@Override
-	public void ElevatorDirectionUpdated(Elevator elevator) {}
+	public void elevatorDirectionUpdated(Elevator elevator) {}
 
 	@Override
-	public void ElevatorAccelerationUpdated(Elevator elevator) {}
+	public void elevatorAccelerationUpdated(Elevator elevator) {}
 
 	@Override
-	public void ElevatorFloorsPressedUpdated(Elevator elevator) {}
+	public void elevatorFloorsPressedUpdated(Elevator elevator) {}
 
 	@Override
-	public void ElevatorPositionUpdated(Elevator elevator) {}
+	public void elevatorPositionUpdated(Elevator elevator) {}
 
 	@Override
-	public void ElevatorSpeedUpdated(Elevator elevator) {}
+	public void elevatorSpeedUpdated(Elevator elevator) {}
 
 	@Override
-	public void ElevatorWeightUpdated(Elevator elevator) {}
+	public void elevatorWeightUpdated(Elevator elevator) {}
 
 	@Override
-	public void ElevatorCapacityUpdated(Elevator elevator) {}
+	public void elevatorCapacityUpdated(Elevator elevator) {}
 
 	@Override
-	public void ElevatorFloorsToServiceUpdated(Elevator elevator) {}
+	public void elevatorFloorsToServiceUpdated(Elevator elevator) {}
 
 	@Override
-	public void ElevatorTargetFloorUpdated(Elevator elevator) {
+	public void elevatorTargetFloorUpdated(Elevator elevator) {
 		try {
 			manager.setTarget(elevator.getElevatorNumber(), elevator.getTargetFloor());
 		}
@@ -91,18 +91,18 @@ public class ElevatorModelUpdater implements ModelObserver {
 	}
 
 	@Override
-	public void ErrorMessageUpdated(ElevatorModel model) {}
+	public void errorMessageUpdated(ElevatorModel model) {}
 
 	@Override
-	public void DataIsStaleUpdated(ElevatorModel model) {}
+	public void dataIsStaleUpdated(ElevatorModel model) {}
 
 	@Override
-	public void FloorButtonUpPressedUpdated(Floor floor) {}
+	public void floorButtonUpPressedUpdated(Floor floor) {}
 
 	@Override
-	public void FloorButtonDownPressedUpdated(Floor floor) {}
+	public void floorButtonDownPressedUpdated(Floor floor) {}
 
 	@Override
-	public void FloorHeightUpdated(Floor floor) {}
+	public void floorHeightUpdated(Floor floor) {}
 	
 }

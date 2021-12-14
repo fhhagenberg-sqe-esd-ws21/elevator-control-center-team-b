@@ -1,7 +1,6 @@
 package at.fhhagenberg.sqe.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
 
 @ExtendWith(MockitoExtension.class)
-public class ElevatorModelUpdaterTest {
+class ElevatorModelUpdaterTest {
 	
 	@Mock
     IElevator iElevatorMock;
