@@ -10,9 +10,9 @@ public class ElevatorModel {
 	private String errorMessage;
 	private boolean dataIsStale;
 	
-	public ElevatorModel() {
-		elevators = new ArrayList<Elevator>();
-		floors = new ArrayList<Floor>();
+	public ElevatorModel(ArrayList<Elevator> elevators, ArrayList<Floor> floors) {
+		this.elevators = elevators;
+		this.floors = floors;
 		observers = new ArrayList<ModelObserver>();
 	}
 	
