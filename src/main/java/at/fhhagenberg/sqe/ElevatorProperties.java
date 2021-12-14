@@ -65,6 +65,7 @@ public class ElevatorProperties {
      
      public String getDown() {
          return down;
+         
      }
      
      public void setDown(String fdown) {
