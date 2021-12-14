@@ -1,17 +1,11 @@
 package at.fhhagenberg.sqe;
  
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 
 public class ElevatorProperties {
-    //private final SimpleIntegerProperty position = new SimpleIntegerProperty(0);
-
 
     private Circle position;
-    //private Integer position;
     private Integer floor;
     private String up;
     private String down;
@@ -36,7 +30,7 @@ public class ElevatorProperties {
   
      public void setPosition(Integer fPosition) {
         position = new Circle(5);
-        if(fPosition == floor)
+        if(fPosition.equals(floor))
         {
             position.setFill(Color.GREEN);
         }

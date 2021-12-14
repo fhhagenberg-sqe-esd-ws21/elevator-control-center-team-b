@@ -65,9 +65,8 @@ public class ElevatorHardwareManager implements IElevatorManager {
 		case IElevator.ELEVATOR_DIRECTION_UP: return ElevatorDirection.Up;
 		case IElevator.ELEVATOR_DIRECTION_DOWN: return ElevatorDirection.Down;
 		case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED: return ElevatorDirection.Uncommitted;
+		default: throw new IllegalStateException("Illegal Elevator direction");
 		}
-		
-		throw new IllegalStateException("Illegal Elevator direction");
 	}
 
 	@Override
@@ -112,9 +111,8 @@ public class ElevatorHardwareManager implements IElevatorManager {
 		case IElevator.ELEVATOR_DOORS_CLOSED: return ElevatorDoorStatus.Closed;
 		case IElevator.ELEVATOR_DOORS_OPENING: return ElevatorDoorStatus.Opening;
 		case IElevator.ELEVATOR_DOORS_CLOSING: return ElevatorDoorStatus.Closing;
+		default: throw new IllegalStateException("Illegal Elevator door status");
 		}
-		
-		throw new IllegalStateException("Illegal Elevator door status");
 	}
 
 	@Override
@@ -256,10 +254,10 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			break;
 		case Down: dir = IElevator.ELEVATOR_DIRECTION_DOWN;
 			break;
-		case Uncommitted: dir = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
+		default: dir = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
 			break;
 		}
-		
+
 		try {			
 			hwInterface.setCommittedDirection(elevatorNumber, dir);
 		}
