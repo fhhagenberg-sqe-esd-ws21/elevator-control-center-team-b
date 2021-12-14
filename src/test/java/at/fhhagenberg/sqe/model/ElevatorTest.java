@@ -1,18 +1,11 @@
 package at.fhhagenberg.sqe.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
 
-@ExtendWith(MockitoExtension.class)
 class ElevatorTest {
 	
 	@Test
