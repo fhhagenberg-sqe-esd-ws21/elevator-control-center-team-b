@@ -5,9 +5,7 @@ import javafx.scene.paint.Color;
 
 public class ElevatorProperties {
 
-
     private Circle position;
-    //private Integer position;
     private Integer floor;
     private String up;
     private String down;
@@ -32,7 +30,7 @@ public class ElevatorProperties {
   
      public void setPosition(Integer fPosition) {
         position = new Circle(5);
-        if(fPosition == floor)
+        if(fPosition.equals(floor))
         {
             position.setFill(Color.GREEN);
         }

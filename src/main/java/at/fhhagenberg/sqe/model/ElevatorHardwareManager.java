@@ -65,9 +65,8 @@ public class ElevatorHardwareManager implements IElevatorManager {
 		case IElevator.ELEVATOR_DIRECTION_UP: return ElevatorDirection.UP;
 		case IElevator.ELEVATOR_DIRECTION_DOWN: return ElevatorDirection.DOWN;
 		case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED: return ElevatorDirection.UNCOMMITTED;
+		default: throw new IllegalStateException(Messages.getString("ElevatorLocalizedStrings.0")); //$NON-NLS-1$
 		}
-		
-		throw new IllegalStateException(Messages.getString("ElevatorLocalizedStrings.5")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -258,8 +257,10 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			break;
 		case UNCOMMITTED: dir = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
 			break;
+		default: dir = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
+			break;
 		}
-		
+
 		try {			
 			hwInterface.setCommittedDirection(elevatorNumber, dir);
 		}
