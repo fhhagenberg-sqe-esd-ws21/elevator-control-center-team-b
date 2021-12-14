@@ -1,7 +1,5 @@
 package at.fhhagenberg.sqe.model;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

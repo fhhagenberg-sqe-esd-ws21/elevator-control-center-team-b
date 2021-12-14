@@ -6,7 +6,10 @@ public class ElevatorModelFactory {
 	
 	public IElevatorManager manager;
 	
-	public ElevatorModelFactory(IElevatorManager manager) {
+	public ElevatorModelFactory(IElevatorManager manager) throws IllegalArgumentException {
+		if (manager == null) {
+			throw new IllegalArgumentException("Elevator manager must not be null");
+		}
 		this.manager = manager;
 	}
 	
@@ -19,7 +22,7 @@ public class ElevatorModelFactory {
 		ArrayList<Floor> floors = new ArrayList<Floor>(numFloors);
 		
 		for (int i = 0; i < numElevators; i++) {
-			elevators.add(new Elevator(i));
+			elevators.add(new Elevator(i, numFloors));
 		}
 		
 		for (int i = 0; i < numFloors; i++) {

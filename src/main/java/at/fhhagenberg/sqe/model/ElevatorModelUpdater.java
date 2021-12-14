@@ -1,10 +1,5 @@
 package at.fhhagenberg.sqe.model;
 
-import java.util.ArrayList;
-
-import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
-import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
-
 public class ElevatorModelUpdater implements ModelObserver {
 
 	private IElevatorManager manager;
@@ -12,47 +7,46 @@ public class ElevatorModelUpdater implements ModelObserver {
 	
 	public ElevatorModelUpdater(IElevatorManager manager, ElevatorModel model) {
 		this.manager = manager;
+		this.model = model;
+		
+		model.addModelObserver(this);
 	}
 	
 	public void update() {
 		
 		model.setDataIsStale(false);
-		
-		for (int elevatorNumber = 0; elevatorNumber < model.getNumElevators(); elevatorNumber++) {
-			Elevator el = model.getElevator(elevatorNumber);
-			try { 
-				el.setFloor(manager.getElevatorFloor(elevatorNumber));
-				el.setDoorStatus(manager.getElevatorDoorStatus(elevatorNumber));
-				el.setDirection(manager.getCommittedDirection(elevatorNumber));
-				el.setAcceleration(manager.getElevatorAccel(elevatorNumber));
-				el.setPosition(manager.getElevatorPosition(elevatorNumber));
-				el.setSpeed(manager.getElevatorSpeed(elevatorNumber));
-				el.setWeight(manager.getElevatorWeight(elevatorNumber));
-				el.setCapacity(manager.getElevatorCapacity(elevatorNumber));
-				el.setTargetFloor(manager.getTarget(elevatorNumber));
-				
-				for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
-					el.setFloorIsPressed(floorNumber, manager.getElevatorButton(elevatorNumber, floorNumber));
-					el.setFloorToService(floorNumber, manager.getServicesFloors(elevatorNumber, floorNumber));
-				}
+		try {
+			
+			for (int elevatorNumber = 0; elevatorNumber < model.getNumElevators(); elevatorNumber++) {
+				Elevator el = model.getElevator(elevatorNumber);
+					el.setFloor(manager.getElevatorFloor(elevatorNumber));
+					el.setDoorStatus(manager.getElevatorDoorStatus(elevatorNumber));
+					el.setDirection(manager.getCommittedDirection(elevatorNumber));
+					el.setAcceleration(manager.getElevatorAccel(elevatorNumber));
+					el.setPosition(manager.getElevatorPosition(elevatorNumber));
+					el.setSpeed(manager.getElevatorSpeed(elevatorNumber));
+					el.setWeight(manager.getElevatorWeight(elevatorNumber));
+					el.setCapacity(manager.getElevatorCapacity(elevatorNumber));
+					el.setTargetFloor(manager.getTarget(elevatorNumber));
+					
+					for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
+						el.setFloorIsPressed(floorNumber, manager.getElevatorButton(elevatorNumber, floorNumber));
+						el.setFloorToService(floorNumber, manager.getServicesFloors(elevatorNumber, floorNumber));
+					}		
 			}
-			catch (Exception exc) {
-				model.setErrorMessage(exc.getMessage());
-				model.setDataIsStale(true);
+			
+			for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
+				Floor floor = model.getFloor(floorNumber);
+				
+					floor.setButtonUpPressed(manager.getFloorButtonUp(floorNumber));
+					floor.setButtonDownPressed(manager.getFloorButtonDown(floorNumber));
+					floor.setFloorHeight(manager.getFloorHeight());	
+				
 			}
 		}
-		
-		for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
-			Floor floor = model.getFloor(floorNumber);
-			try {
-				floor.setButtonUpPressed(manager.getFloorButtonUp(floorNumber));
-				floor.setButtonDownPressed(manager.getFloorButtonDown(floorNumber));
-				floor.setFloorHeight(manager.getFloorHeight());	
-			}
-			catch (Exception exc) {
-				model.setErrorMessage(exc.getMessage());
-				model.setDataIsStale(true);
-			}
+		catch (Exception exc) {
+			model.setErrorMessage(exc.getMessage());
+			model.setDataIsStale(true);
 		}
 	}
 	
