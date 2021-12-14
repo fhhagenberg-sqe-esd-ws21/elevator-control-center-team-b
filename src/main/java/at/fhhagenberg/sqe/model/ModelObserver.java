@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
 
-public interface ElevatorObserver {
+public interface ModelObserver {
 	
 	public void ElevatorFloorUpdated(Elevator elevator);
 
@@ -29,4 +29,13 @@ public interface ElevatorObserver {
 	
 	public void ElevatorTargetFloorUpdated(Elevator elevator);
 	
+	public void ErrorMessageUpdated(ElevatorModel model);
+	
+	public void DataIsStaleUpdated(ElevatorModel model);
+	
+	public void FloorButtonUpPressedUpdated(Floor floor);
+	
+	public void FloorButtonDownPressedUpdated(Floor floor);
+
+	public void FloorHeightUpdated(Floor floor);
 }
