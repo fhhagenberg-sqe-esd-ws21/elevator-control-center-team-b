@@ -63,9 +63,9 @@ public class ElevatorHardwareManager implements IElevatorManager {
 		}
 
 		return switch (dir) {
-			case IElevator.ELEVATOR_DIRECTION_UP -> ElevatorDirection.Up;
-			case IElevator.ELEVATOR_DIRECTION_DOWN -> ElevatorDirection.Down;
-			case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED -> ElevatorDirection.Uncommitted;
+			case IElevator.ELEVATOR_DIRECTION_UP -> ElevatorDirection.UP;
+			case IElevator.ELEVATOR_DIRECTION_DOWN -> ElevatorDirection.DOWN;
+			case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED -> ElevatorDirection.UNCOMMITTED;
 			default -> throw new IllegalStateException("Illegal Elevator direction");
 		};
 	}
@@ -108,10 +108,10 @@ public class ElevatorHardwareManager implements IElevatorManager {
 		}
 
 		return switch (doorStatus) {
-			case IElevator.ELEVATOR_DOORS_OPEN -> ElevatorDoorStatus.Open;
-			case IElevator.ELEVATOR_DOORS_CLOSED -> ElevatorDoorStatus.Closed;
-			case IElevator.ELEVATOR_DOORS_OPENING -> ElevatorDoorStatus.Opening;
-			case IElevator.ELEVATOR_DOORS_CLOSING -> ElevatorDoorStatus.Closing;
+			case IElevator.ELEVATOR_DOORS_OPEN -> ElevatorDoorStatus.OPEN;
+			case IElevator.ELEVATOR_DOORS_CLOSED -> ElevatorDoorStatus.CLOSED;
+			case IElevator.ELEVATOR_DOORS_OPENING -> ElevatorDoorStatus.OPENING;
+			case IElevator.ELEVATOR_DOORS_CLOSING -> ElevatorDoorStatus.CLOSING;
 			default -> throw new IllegalStateException("Illegal Elevator door status");
 		};
 	}
@@ -250,8 +250,8 @@ public class ElevatorHardwareManager implements IElevatorManager {
 		checkValidElevator(elevatorNumber);
 		
 		int dir = switch (direction) {
-			case Up -> IElevator.ELEVATOR_DIRECTION_UP;
-			case Down -> IElevator.ELEVATOR_DIRECTION_DOWN;
+			case UP -> IElevator.ELEVATOR_DIRECTION_UP;
+			case DOWN -> IElevator.ELEVATOR_DIRECTION_DOWN;
 			default -> IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
 		};
 

@@ -33,7 +33,7 @@ class ElevatorModelUpdaterTest {
 		
 		updater.update();
 		
-		assertEquals(ElevatorDoorStatus.Closing, model.getElevator(0).getDoorStatus());
+		assertEquals(ElevatorDoorStatus.CLOSING, model.getElevator(0).getDoorStatus());
 	}
 
 	

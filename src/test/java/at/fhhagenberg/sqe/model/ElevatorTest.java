@@ -34,15 +34,15 @@ class ElevatorTest {
 	@Test
 	void testSetDoorStatusWorks() {
 		Elevator el = new Elevator(3, 5);
-		el.setDoorStatus(ElevatorDoorStatus.Closing);
-		assertEquals(ElevatorDoorStatus.Closing, el.getDoorStatus());
+		el.setDoorStatus(ElevatorDoorStatus.CLOSING);
+		assertEquals(ElevatorDoorStatus.CLOSING, el.getDoorStatus());
 	}
 	
 	@Test
 	void testSetDirectionWorks() {
 		Elevator el = new Elevator(8, 5);
-		el.setDirection(ElevatorDirection.Up);
-		assertEquals(ElevatorDirection.Up, el.getDirection());
+		el.setDirection(ElevatorDirection.UP);
+		assertEquals(ElevatorDirection.UP, el.getDirection());
 	}
 	
 	@Test 

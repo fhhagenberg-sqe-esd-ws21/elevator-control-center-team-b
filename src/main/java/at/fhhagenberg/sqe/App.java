@@ -1,7 +1,5 @@
 package at.fhhagenberg.sqe;
 
-import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,8 +10,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException {
-    	//Parent root = FXMLLoader.load(getClass().getResource("/elevator_control_center.fxml"));
+    public void start(Stage stage) {
     	var root = (new EccLayout()).getLayout();
         var scene = new Scene(root, 640, 480);
         stage.setTitle("Elevator Control Center");
