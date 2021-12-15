@@ -5,9 +5,10 @@ import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
 
 public class ElevatorHardwareManager implements IElevatorManager {
 	
-	private IElevator hwInterface;
-	private int numElevators;
-	private int numFloors;
+	private final IElevator hwInterface;
+	private final int numElevators;
+	private final int numFloors;
+	private static final String CONN_LOST = "Hardware connection lost";
 	
 	public ElevatorHardwareManager(IElevator hwInterface) throws IllegalArgumentException, HardwareConnectionException {
 		if (hwInterface == null) {
@@ -22,7 +23,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			numFloors = hwInterface.getFloorNum();
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -53,20 +54,20 @@ public class ElevatorHardwareManager implements IElevatorManager {
 	public ElevatorDirection getCommittedDirection(int elevatorNumber) throws IllegalArgumentException, HardwareConnectionException, IllegalStateException {
 		checkValidElevator(elevatorNumber);
 		
-		int dir = 0;
+		int dir;
 		try {
 			dir = hwInterface.getCommittedDirection(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
-		
-		switch (dir) {
-		case IElevator.ELEVATOR_DIRECTION_UP: return ElevatorDirection.Up;
-		case IElevator.ELEVATOR_DIRECTION_DOWN: return ElevatorDirection.Down;
-		case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED: return ElevatorDirection.Uncommitted;
-		default: throw new IllegalStateException("Illegal Elevator direction");
-		}
+
+		return switch (dir) {
+			case IElevator.ELEVATOR_DIRECTION_UP -> ElevatorDirection.Up;
+			case IElevator.ELEVATOR_DIRECTION_DOWN -> ElevatorDirection.Down;
+			case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED -> ElevatorDirection.Uncommitted;
+			default -> throw new IllegalStateException("Illegal Elevator direction");
+		};
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorAccel(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -90,7 +91,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorButton(elevatorNumber, floor);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -98,21 +99,21 @@ public class ElevatorHardwareManager implements IElevatorManager {
 	public ElevatorDoorStatus getElevatorDoorStatus(int elevatorNumber) throws HardwareConnectionException, IllegalStateException {
 		checkValidElevator(elevatorNumber);
 		
-		int doorStatus = 0;
+		int doorStatus;
 		try {
 			doorStatus = hwInterface.getElevatorDoorStatus(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
-		
-		switch (doorStatus) {
-		case IElevator.ELEVATOR_DOORS_OPEN: return ElevatorDoorStatus.Open;
-		case IElevator.ELEVATOR_DOORS_CLOSED: return ElevatorDoorStatus.Closed;
-		case IElevator.ELEVATOR_DOORS_OPENING: return ElevatorDoorStatus.Opening;
-		case IElevator.ELEVATOR_DOORS_CLOSING: return ElevatorDoorStatus.Closing;
-		default: throw new IllegalStateException("Illegal Elevator door status");
-		}
+
+		return switch (doorStatus) {
+			case IElevator.ELEVATOR_DOORS_OPEN -> ElevatorDoorStatus.Open;
+			case IElevator.ELEVATOR_DOORS_CLOSED -> ElevatorDoorStatus.Closed;
+			case IElevator.ELEVATOR_DOORS_OPENING -> ElevatorDoorStatus.Opening;
+			case IElevator.ELEVATOR_DOORS_CLOSING -> ElevatorDoorStatus.Closing;
+			default -> throw new IllegalStateException("Illegal Elevator door status");
+		};
 	}
 
 	@Override
@@ -123,7 +124,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorFloor(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -140,7 +141,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorPosition(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -152,7 +153,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorSpeed(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -164,7 +165,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorWeight(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -176,7 +177,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getElevatorCapacity(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -188,7 +189,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getFloorButtonDown(floor);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -200,7 +201,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getFloorButtonUp(floor);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -210,7 +211,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getFloorHeight();
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -228,7 +229,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getServicesFloors(elevatorNumber, floor);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -240,7 +241,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getTarget(elevatorNumber);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -248,21 +249,17 @@ public class ElevatorHardwareManager implements IElevatorManager {
 	public void setCommittedDirection(int elevatorNumber, ElevatorDirection direction) throws HardwareConnectionException {
 		checkValidElevator(elevatorNumber);
 		
-		int dir = 0;
-		switch (direction) {
-		case Up: dir = IElevator.ELEVATOR_DIRECTION_UP;
-			break;
-		case Down: dir = IElevator.ELEVATOR_DIRECTION_DOWN;
-			break;
-		default: dir = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
-			break;
-		}
+		int dir = switch (direction) {
+			case Up -> IElevator.ELEVATOR_DIRECTION_UP;
+			case Down -> IElevator.ELEVATOR_DIRECTION_DOWN;
+			default -> IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
+		};
 
 		try {			
 			hwInterface.setCommittedDirection(elevatorNumber, dir);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 		
 	}
@@ -276,7 +273,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			hwInterface.setServicesFloors(elevatorNumber, floor, service);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -289,7 +286,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			hwInterface.setTarget(elevatorNumber, targetFloor);
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 
@@ -299,7 +296,7 @@ public class ElevatorHardwareManager implements IElevatorManager {
 			return hwInterface.getClockTick();
 		}
 		catch (java.rmi.RemoteException exc) {
-			throw new HardwareConnectionException("Hardware connection lost", exc);
+			throw new HardwareConnectionException(CONN_LOST, exc);
 		}
 	}
 	

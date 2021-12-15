@@ -25,7 +25,7 @@ public class Floor {
 		}
 		
 		this.buttonUpPressed = buttonUpPressed;
-		observers.forEach((obs) -> obs.FloorButtonUpPressedUpdated(this));
+		observers.forEach((obs) -> obs.floorButtonUpPressedUpdated(this));
 	}
 
 	public boolean isButtonDownPressed() {
@@ -38,7 +38,7 @@ public class Floor {
 		}
 		
 		this.buttonDownPressed = buttonDownPressed;
-		observers.forEach((obs) -> obs.FloorButtonDownPressedUpdated(this));
+		observers.forEach((obs) -> obs.floorButtonDownPressedUpdated(this));
 	}
 
 	public int getFloorHeight() {
@@ -51,7 +51,7 @@ public class Floor {
 		}
 		
 		this.floorHeight = floorHeight;
-		observers.forEach((obs) -> obs.FloorHeightUpdated(this));
+		observers.forEach((obs) -> obs.floorHeightUpdated(this));
 	}
 
 	public int getFloorNumber() {

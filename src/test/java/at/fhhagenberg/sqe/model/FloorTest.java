@@ -1,9 +1,8 @@
 package at.fhhagenberg.sqe.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FloorTest {
+class FloorTest {
 
 	@Mock
 	ModelObserver observer;
@@ -23,7 +22,7 @@ public class FloorTest {
 		
 		fl.setButtonUpPressed(true);
 		
-		verify(observer, times(1)).FloorButtonUpPressedUpdated(fl);
+		verify(observer, times(1)).floorButtonUpPressedUpdated(fl);
 		assertTrue(fl.isButtonUpPressed());
 	}
 	
@@ -34,7 +33,7 @@ public class FloorTest {
 		
 		fl.setButtonDownPressed(true);
 		
-		verify(observer, times(1)).FloorButtonDownPressedUpdated(fl);
+		verify(observer, times(1)).floorButtonDownPressedUpdated(fl);
 		assertTrue(fl.isButtonDownPressed());
 	}
 	
@@ -45,7 +44,7 @@ public class FloorTest {
 		
 		fl.setFloorHeight(240);
 		
-		verify(observer, times(1)).FloorHeightUpdated(fl);
+		verify(observer, times(1)).floorHeightUpdated(fl);
 		assertEquals(240, fl.getFloorHeight());
 	}
 }

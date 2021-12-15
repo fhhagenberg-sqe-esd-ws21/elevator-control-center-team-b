@@ -5,15 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-
-
 import javafx.scene.shape.Circle;
 import javafx.util.Callback;
-
-
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -22,11 +15,16 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 
-public class eccLayout {
+class EccLayout {
     
-	private BorderPane fullLayout;
-	
-	eccLayout()
+	private final BorderPane fullLayout;
+
+    private static final String STR_SEL_DATA = "selectedData: ";
+    private static final String STR_FALSE = "false";
+    private static final String STR_TRUE = "true";
+    private static final String FX_FONT_SIZE_18 = "-fx-font-size: 18";
+
+    EccLayout()
 	{
 
 
@@ -40,24 +38,21 @@ public class eccLayout {
         status.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getPosition()));
 
         TableColumn<ElevatorProperties, Integer> floor = new TableColumn<>("Floor");
-        floor.setCellValueFactory(new PropertyValueFactory<ElevatorProperties, Integer>("floor"));
+        floor.setCellValueFactory(new PropertyValueFactory<>("floor"));
         
-        TableColumn<ElevatorProperties, Void> up = new TableColumn<ElevatorProperties, Void>("Up");
+        TableColumn<ElevatorProperties, Void> up = new TableColumn<>("Up");
 
-        Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>> upButtonFactory = new Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>>() {
+        Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>> upButtonFactory = new Callback<>() {
             @Override
             public TableCell<ElevatorProperties, Void> call(final TableColumn<ElevatorProperties, Void> param) {
-                final TableCell<ElevatorProperties, Void> cell = new TableCell<ElevatorProperties, Void>() {
+                return new TableCell<ElevatorProperties, Void>() {
 
                     private final ToggleButton btn = new ToggleButton("Up");
 
                     {
-                        btn.setOnAction(new EventHandler<ActionEvent>(){
-                            @Override
-                            public void handle(ActionEvent t) {
-	                        	ElevatorProperties data = getTableView().getItems().get(getIndex()); // gets the data of the selected row
-	                            System.out.println("selectedData: " + data);
-                            }
+                        btn.setOnAction(t -> {
+                            ElevatorProperties data = getTableView().getItems().get(getIndex()); // gets the data of the selected row
+                            System.out.println(STR_SEL_DATA + data);
                         });
                     }
 
@@ -71,28 +66,24 @@ public class eccLayout {
                         }
                     }
                 };
-                return cell;
             }
         };
         up.setCellFactory(upButtonFactory);
         
         
-        TableColumn<ElevatorProperties, Void> down = new TableColumn<ElevatorProperties, Void>("Down");
+        TableColumn<ElevatorProperties, Void> down = new TableColumn<>("Down");
 
-        Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>> downButtonFactory = new Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>>() {
+        Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>> downButtonFactory = new Callback<>() {
             @Override
             public TableCell<ElevatorProperties, Void> call(final TableColumn<ElevatorProperties, Void> param) {
-                final TableCell<ElevatorProperties, Void> cell = new TableCell<ElevatorProperties, Void>() {
+                return new TableCell<ElevatorProperties, Void>() {
 
                     private final ToggleButton btn = new ToggleButton("Down");
 
                     {
-                        btn.setOnAction(new EventHandler<ActionEvent>(){
-                            @Override
-                            public void handle(ActionEvent t) {
-	                        	ElevatorProperties data = getTableView().getItems().get(getIndex()); // gets the data of the selected row
-	                            System.out.println("selectedData: " + data);
-                            }
+                        btn.setOnAction(t -> {
+                            ElevatorProperties data = getTableView().getItems().get(getIndex()); // gets the data of the selected row
+                            System.out.println(STR_SEL_DATA + data);
                         });
                     }
 
@@ -106,26 +97,22 @@ public class eccLayout {
                         }
                     }
                 };
-                return cell;
             }
         };
         down.setCellFactory(downButtonFactory);
         
-        TableColumn<ElevatorProperties, Void> stopPlanned = new TableColumn<ElevatorProperties, Void>("Stop planned");
-        Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>> stopButtonFactory = new Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>>() {
+        TableColumn<ElevatorProperties, Void> stopPlanned = new TableColumn<>("Stop planned");
+        Callback<TableColumn<ElevatorProperties, Void>, TableCell<ElevatorProperties, Void>> stopButtonFactory = new Callback<>() {
             @Override
             public TableCell<ElevatorProperties, Void> call(final TableColumn<ElevatorProperties, Void> param) {
-                final TableCell<ElevatorProperties, Void> cell = new TableCell<ElevatorProperties, Void>() {
+                return new TableCell<ElevatorProperties, Void>() {
 
                     private final ToggleButton btn = new ToggleButton("stop");
 
                     {
-                        btn.setOnAction(new EventHandler<ActionEvent>(){
-                            @Override
-                            public void handle(ActionEvent t) {
-	                        	ElevatorProperties data = getTableView().getItems().get(getIndex()); // gets the data of the selected row
-	                            System.out.println("selectedData: " + data);
-                            }
+                        btn.setOnAction(t -> {
+                            ElevatorProperties data = getTableView().getItems().get(getIndex()); // gets the data of the selected row
+                            System.out.println(STR_SEL_DATA + data);
                         });
                     }
 
@@ -139,7 +126,6 @@ public class eccLayout {
                         }
                     }
                 };
-                return cell;
             }
         };
         stopPlanned.setCellFactory(stopButtonFactory);
@@ -152,73 +138,73 @@ public class eccLayout {
         				
         ObservableList<ElevatorProperties> data = FXCollections.observableArrayList();
 
-		data.add(new ElevatorProperties(0, 0, "false", "false", "true"));
-		data.add(new ElevatorProperties(0, 1, "false", "false" ,"false"));
-		data.add(new ElevatorProperties(0, 2, "false", "true", "false"));
+		data.add(new ElevatorProperties(0, 0, STR_FALSE, STR_FALSE, STR_TRUE));
+		data.add(new ElevatorProperties(0, 1, STR_FALSE, STR_FALSE ,STR_FALSE));
+		data.add(new ElevatorProperties(0, 2, STR_FALSE, STR_TRUE, STR_FALSE));
 		
 		elevatorPropertiesTable.setItems(data);    
 		elevatorPropertiesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
 		
-		ToggleButton Automatic = new ToggleButton("Automatic Mode");
-	    Label GoToLevel = new Label("Go to Level");
-	    TextField LevelToGo = new TextField();
-	    Button Go = new Button("Go");
+		ToggleButton automatic = new ToggleButton("Automatic Mode");
+	    Label goToLevel = new Label("Go to Level");
+	    TextField levelToGo = new TextField();
+	    Button go = new Button("Go");
 	    
 	    HBox controlPanel = new HBox();
 	    controlPanel.setSpacing(12);
-	    controlPanel.getChildren().addAll(Automatic, GoToLevel, LevelToGo, Go);
+	    controlPanel.getChildren().addAll(automatic, goToLevel, levelToGo, go);
 	    
 	    VBox rightSide = new VBox(25);
 	    rightSide.getChildren().addAll(elevatorPropertiesTable, controlPanel);
 	    
 	    
-	    ListView<String> elevators = new ListView<String>();
+	    ListView<String> elevators = new ListView<>();
 	    
 	    elevators.getItems().add("Elevator 1");
 	    elevators.getItems().add("Elevator 2");
 	    elevators.getItems().add("Elevator 3");
 	    elevators.getItems().add("Elevator 4");
 	    
-	    HBox TopView = new HBox(15);
+	    HBox topView = new HBox(15);
 	    
-	    TopView.getChildren().addAll(elevators, rightSide);
+	    topView.getChildren().addAll(elevators, rightSide);
 	    
-	    Label ErrBox = new Label("Error Box");
-	    TextArea ErrorBox = new TextArea();
-	    ErrorBox.setWrapText(true);   
+	    Label errBox = new Label("Error Box");
+	    TextArea errorBox = new TextArea();
+	    errorBox.setWrapText(true);
 	    
 	    
-	    VBox TopViewFull = new VBox(10);
+	    VBox topViewFull = new VBox(10);
 	    
-	    TopViewFull.getChildren().addAll(TopView, ErrBox, ErrorBox);
+	    topViewFull.getChildren().addAll(topView, errBox, errorBox);
 	    
 	    // botom   view
-	    Label Position = new Label("Position: " + "50m");
-	    Label Direction = new Label("Direction: " + "Down");
-	    Label Payload = new Label("Payload: " + "100kg");
-	   
-	    Position.setStyle("-fx-font-size: 18");
-	    Direction.setStyle("-fx-font-size: 18");
-	    Payload.setStyle("-fx-font-size: 18");
+	    Label position = new Label("Position: " + "50m");
+	    Label direction = new Label("Direction: " + "Down");
+	    Label payload = new Label("Payload: " + "100kg");
+
+	    position.setStyle(FX_FONT_SIZE_18);
+	    direction.setStyle(FX_FONT_SIZE_18);
+	    payload.setStyle(FX_FONT_SIZE_18);
 	    
 	    
 	    HBox botTopLine = new HBox(15);
 	    
-	    botTopLine.getChildren().addAll(Position, Direction, Payload);
+	    botTopLine.getChildren().addAll(position, direction, payload);
 	    
-	    Label Speed = new Label("Speed: " + "6km/h");
-	    Label Doors = new Label("Doors: " + "Closed");
-	    Label TargetFloor = new Label("Target floor: " + "1");
+	    Label speed = new Label("Speed: " + "6km/h");
+	    Label doors = new Label("Doors: " + "Closed");
+	    Label targetFloor = new Label("Target floor: " + "1");
 
-	    Speed.setStyle("-fx-font-size: 18");
-	    Doors.setStyle("-fx-font-size: 18");
-	    TargetFloor.setStyle("-fx-font-size: 18");
+        speed.setStyle(FX_FONT_SIZE_18);
+	    doors.setStyle(FX_FONT_SIZE_18);
+	    targetFloor.setStyle(FX_FONT_SIZE_18);
 	    
 	    
 	    HBox botBotLine = new HBox(15);
 	    
-	    botBotLine.getChildren().addAll(Speed, Doors, TargetFloor);
+	    botBotLine.getChildren().addAll(speed, doors, targetFloor);
 	    
 	    
 	    VBox bot = new VBox(20);
@@ -228,13 +214,13 @@ public class eccLayout {
 	    FlowPane botPane = new FlowPane();
 	    botPane.setHgap(20);
 	    botPane.setVgap(5);
-	    botPane.getChildren().addAll(Position, Direction, Payload, Speed, Doors, TargetFloor);
+	    botPane.getChildren().addAll(position, direction, payload, speed, doors, targetFloor);
 	    
 	    
 	    fullLayout = new BorderPane();
 	    fullLayout.setStyle("-fx-padding: 15; -fx-spacing: 15;");
 	    fullLayout.setTop(title);  
-        fullLayout.setCenter(TopViewFull);
+        fullLayout.setCenter(topViewFull);
         fullLayout.setBottom(botPane);
 		
 	}

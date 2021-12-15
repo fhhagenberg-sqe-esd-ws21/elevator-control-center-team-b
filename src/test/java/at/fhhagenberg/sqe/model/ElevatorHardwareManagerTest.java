@@ -18,15 +18,14 @@ class ElevatorHardwareManagerTest {
     @Mock
     IElevator iElevatorMock;
 
+    IElevator nullElevator = null;
     ElevatorHardwareManager ehm;
 
     // TODO add tests per function with connection abort
 
     @Test
     void testNoInterface() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> {
-            ehm = new ElevatorHardwareManager(null);
-        });
+        assertThrowsExactly(IllegalArgumentException.class, () -> ehm = new ElevatorHardwareManager(nullElevator));
     }
 
     @Test
@@ -34,9 +33,7 @@ class ElevatorHardwareManagerTest {
         lenient().when(iElevatorMock.getElevatorNum()).thenThrow(new RemoteException());
         lenient().when(iElevatorMock.getFloorNum()).thenThrow(new RemoteException());
 
-        assertThrowsExactly(HardwareConnectionException.class, () -> {
-            ehm = new ElevatorHardwareManager(iElevatorMock);
-        });
+        assertThrowsExactly(HardwareConnectionException.class, () -> ehm = new ElevatorHardwareManager(iElevatorMock));
     }
 
     @Test

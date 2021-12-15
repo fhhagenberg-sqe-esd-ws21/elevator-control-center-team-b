@@ -44,7 +44,7 @@ public class ElevatorModel {
 		}
 		
 		this.errorMessage = message;
-		observers.forEach((obs) -> obs.ErrorMessageUpdated(this));
+		observers.forEach((obs) -> obs.errorMessageUpdated(this));
 	}
 	
 	public String getErrorMessage() {
@@ -61,7 +61,7 @@ public class ElevatorModel {
 		}
 		
 		this.dataIsStale = dataIsStale;
-		observers.forEach((obs) -> obs.DataIsStaleUpdated(this));
+		observers.forEach((obs) -> obs.dataIsStaleUpdated(this));
 	}
 	
 	public void addModelObserver(ModelObserver observer) {

@@ -2,35 +2,35 @@ package at.fhhagenberg.sqe.model;
 
 public interface ModelObserver {
 	
-	public void ElevatorFloorUpdated(Elevator elevator);
+	void elevatorFloorUpdated(Elevator elevator);
 
-	public void ElevatorDoorStatusUpdated(Elevator elevator);
+	void elevatorDoorStatusUpdated(Elevator elevator);
 	
-	public void ElevatorDirectionUpdated(Elevator elevator);
+	void elevatorDirectionUpdated(Elevator elevator);
 	
-	public void ElevatorAccelerationUpdated(Elevator elevator);
+	void elevatorAccelerationUpdated(Elevator elevator);
 	
-	public void ElevatorFloorsPressedUpdated(Elevator elevator);
+	void elevatorFloorsPressedUpdated(Elevator elevator);
 	
-	public void ElevatorPositionUpdated(Elevator elevator);
+	void elevatorPositionUpdated(Elevator elevator);
 	
-	public void ElevatorSpeedUpdated(Elevator elevator);
+	void elevatorSpeedUpdated(Elevator elevator);
 	
-	public void ElevatorWeightUpdated(Elevator elevator);
+	void elevatorWeightUpdated(Elevator elevator);
 	
-	public void ElevatorCapacityUpdated(Elevator elevator);
+	void elevatorCapacityUpdated(Elevator elevator);
 	
-	public void ElevatorFloorsToServiceUpdated(Elevator elevator);
+	void elevatorFloorsToServiceUpdated(Elevator elevator);
 	
-	public void ElevatorTargetFloorUpdated(Elevator elevator);
+	void elevatorTargetFloorUpdated(Elevator elevator);
 	
-	public void ErrorMessageUpdated(ElevatorModel model);
+	void errorMessageUpdated(ElevatorModel model);
 	
-	public void DataIsStaleUpdated(ElevatorModel model);
+	void dataIsStaleUpdated(ElevatorModel model);
 	
-	public void FloorButtonUpPressedUpdated(Floor floor);
+	void floorButtonUpPressedUpdated(Floor floor);
 	
-	public void FloorButtonDownPressedUpdated(Floor floor);
+	void floorButtonDownPressedUpdated(Floor floor);
 
-	public void FloorHeightUpdated(Floor floor);
+	void floorHeightUpdated(Floor floor);
 }
