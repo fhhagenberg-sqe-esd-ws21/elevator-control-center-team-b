@@ -34,13 +34,6 @@ public class EccGuiUpdater implements ModelObserver {
 		Platform.runLater(() -> {layout.setAcceleration((elevator));} );
 	}
 
-	@Override
-	public void elevatorFloorsPressedUpdated(Elevator elevator) {
-		Platform.runLater(() -> {layout.setFloorsPressed((elevator));} );
-
-	}
-
-	@Override
 	public void elevatorPositionUpdated(Elevator elevator) {
 		Platform.runLater(() -> {layout.setPosition((elevator));} );
 	}

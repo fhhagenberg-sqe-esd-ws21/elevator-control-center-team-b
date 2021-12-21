@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqe.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Elevator {
 	/**
@@ -34,14 +35,13 @@ public class Elevator {
 	private ElevatorDoorStatus doorStatus;
 	private ElevatorDirection direction;
 	private int acceleration;
-	private ArrayList<Boolean> floorsPressed;
 	private int position; // in meters
 	private int speed;
 	private int weight;
 	private int capacity;
-	private ArrayList<Boolean> floorsToService;
+	private List<Boolean> floorsToService;
 	private int targetFloor;
-	private ArrayList<ModelObserver> observers;
+	private List<ModelObserver> observers;
 	
 	public Elevator(int elevatorNumber, int numFloors) throws IllegalArgumentException {
 		if (elevatorNumber < 0) {
@@ -52,12 +52,10 @@ public class Elevator {
 		}
 		
 		this.elevatorNumber = elevatorNumber;
-		this.floorsPressed = new ArrayList<Boolean>(numFloors);
 		this.floorsToService = new ArrayList<Boolean>(numFloors);
 		this.observers = new ArrayList<ModelObserver>();
 		
 		for (int i = 0; i < numFloors; i++) {
-			floorsPressed.add(false);
 			floorsToService.add(false);
 		}
 	}
@@ -112,19 +110,6 @@ public class Elevator {
 		
 		this.acceleration = acceleration;
 		observers.forEach((obs) -> obs.elevatorAccelerationUpdated(this));
-	}
-
-	public boolean getFloorIsPressed(int floorNumber) {
-		return floorsPressed.get(floorNumber);
-	}
-
-	public void setFloorIsPressed(int floorNumber, boolean pressed) {
-		if (this.floorsPressed.get(floorNumber) == pressed) {
-			return;
-		}
-		
-		this.floorsPressed.set(floorNumber, pressed);
-		observers.forEach((obs) -> obs.elevatorFloorsPressedUpdated(this));
 	}
 
 	public int getPosition() {
@@ -217,7 +202,7 @@ public class Elevator {
 	}
 	
 	public int getNumFloors() {
-		return floorsPressed.size();
+		return floorsToService.size();
 	}
 	
 	public void addModelObserver(ModelObserver observer) {
