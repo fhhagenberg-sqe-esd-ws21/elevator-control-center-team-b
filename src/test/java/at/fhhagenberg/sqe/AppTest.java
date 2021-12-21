@@ -11,6 +11,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 
+import at.fhhagenberg.sqe.model.HardwareConnectionException;
 import javafx.stage.Stage;
 
 @ExtendWith(ApplicationExtension.class)
@@ -20,9 +21,10 @@ public class AppTest {
      *
      * @param stage - Will be injected by the test runner.
      * @throws IOException 
+     * @throws HardwareConnectionException 
      */
     @Start
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, HardwareConnectionException {
         var app = new App();
         app.start(stage);
     }
