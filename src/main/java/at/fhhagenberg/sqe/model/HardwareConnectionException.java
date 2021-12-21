@@ -1,13 +1,10 @@
 package at.fhhagenberg.sqe.model;
 
 public class HardwareConnectionException extends Exception {
-	
-	private static final long serialVersionUID = 1L;
-	
-	public final java.rmi.RemoteException innerException;
 
-	public HardwareConnectionException(String message, java.rmi.RemoteException innerExc) {
-		super(message);
-		this.innerException = innerExc;		
+	private static final long serialVersionUID = 1L;
+
+	public HardwareConnectionException(String message, java.rmi.RemoteException cause) {
+		super(message, cause);
 	}
 }
