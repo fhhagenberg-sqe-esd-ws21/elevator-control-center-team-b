@@ -30,9 +30,11 @@ public class App extends Application {
 		if (iElevatorMock == null) {
 			iElevatorMock = Mockito.mock(ElevatorHardwareManager.class);
 			Mockito.when(iElevatorMock.getFloorNum()).thenReturn(2);
-			Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(1);
+			Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
 			Mockito.when(iElevatorMock.getElevatorPosition(0)).thenReturn(1, 2,3, 4);
 			Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(ElevatorDirection.Up);
+			Mockito.when(iElevatorMock.getCommittedDirection(1)).thenReturn(ElevatorDirection.Down);
+			Mockito.when(iElevatorMock.getCommittedDirection(2)).thenReturn(ElevatorDirection.Uncommitted);
 			Mockito.when(iElevatorMock.getElevatorButton(0, 1)).thenReturn(true);
 			Mockito.when(iElevatorMock.getElevatorButton(0, 0)).thenReturn(false);
 			Mockito.when(iElevatorMock.getElevatorDoorStatus(0)).thenReturn(ElevatorDoorStatus.Closed);
@@ -43,23 +45,30 @@ public class App extends Application {
 			Mockito.when(iElevatorMock.getFloorButtonUp(1)).thenReturn(true);
 			Mockito.when(iElevatorMock.getServicesFloors(0, 0)).thenReturn(true);
 			Mockito.when(iElevatorMock.getServicesFloors(0, 1)).thenReturn(false);
-			Mockito.when(iElevatorMock.getTarget(0)).thenReturn(0,1);
-			
+			Mockito.when(iElevatorMock.getTarget(0)).thenReturn(0);
+			Mockito.when(iElevatorMock.getTarget(1)).thenReturn(0);
+			Mockito.when(iElevatorMock.getTarget(2)).thenReturn(1);
+
 			
 			// TODO..
 		}
 		return iElevatorMock;
 	}
 
+	public ElevatorModel createModel() throws HardwareConnectionException, RemoteException {
+		IElevatorManager manager = getHardwareConnection();
+		ElevatorModelFactory factory = new ElevatorModelFactory(manager);
+		return factory.createModel();
+	}
+
+	public ElevatorModelUpdater createElevatorModelUpdater(ElevatorModel model) throws HardwareConnectionException, RemoteException {
+		return new ElevatorModelUpdater(getHardwareConnection(), model);
+	}
+
     @Override
     public void start(Stage stage) throws IOException, HardwareConnectionException {
-    	//Parent root = FXMLLoader.load(getClass().getResource("/elevator_control_center.fxml"));
-    	
-
-		IElevatorManager manager = getHardwareConnection();
-    	ElevatorModelFactory modelFactory = new ElevatorModelFactory(manager);
-    	ElevatorModel model = modelFactory.createModel();
-		ElevatorModelUpdater updater = new ElevatorModelUpdater(manager, model);
+    	ElevatorModel model = createModel();
+		ElevatorModelUpdater updater = createElevatorModelUpdater(model);
 		updater.update();
 		EccLayout gui = new EccLayout(updater, model);
 

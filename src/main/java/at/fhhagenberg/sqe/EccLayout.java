@@ -243,7 +243,7 @@ class EccLayout {
 	    payloadValue.setId("Payload");
 	    speedValue.setId("Speed");
 	    doorsValue.setId("Doors");
-	    targetFloor.setId("TargetFloor");
+	    targetFloorValue.setId("TargetFloor");
 	    automatic.setDisable(true);
 	    
 	    elevators.getSelectionModel().select(0);
@@ -375,7 +375,7 @@ class EccLayout {
 		// if update occurs on selected elevator, update view
 		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
 		{
-			payloadValue.setText(String.valueOf(elevator.getPosition()) + "kg");
+			payloadValue.setText(String.valueOf(elevator.getWeight()) + "kg");
 		}
 	}
 
@@ -406,7 +406,7 @@ class EccLayout {
 		// if update occurs on selected elevator, update view
 		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
 		{
-			//not displayed
+			targetFloorValue.setText(Integer.toString(elevator.getTargetFloor()));
 		}
 	}
 

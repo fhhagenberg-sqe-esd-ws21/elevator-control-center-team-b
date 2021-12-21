@@ -42,6 +42,7 @@ public class ElevatorModelUpdater {
 			}
 		}
 		catch (Exception exc) {
+			exc.printStackTrace();
 			model.setErrorMessage(exc.getMessage());
 			model.setDataIsStale(true);
 		}
