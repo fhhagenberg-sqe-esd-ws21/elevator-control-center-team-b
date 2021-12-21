@@ -62,9 +62,9 @@ class ElevatorModelUpdaterTest {
 		IElevatorManager man = new ElevatorHardwareManager(iElevatorMock);
 		ElevatorModelFactory fact = new ElevatorModelFactory(man);
 		ElevatorModel model = fact.createModel();
-		new ElevatorModelUpdater(man, model);
+		ElevatorModelUpdater updater = new ElevatorModelUpdater(man, model);
 		
-		model.getElevator(0).setTargetFloor(2); // calls target floor updated
+		updater.updateElevatorTargetFloor(0, 2);
 		
 		verify(iElevatorMock, times(1)).setTarget(0, 2);
 	}

@@ -1,6 +1,6 @@
 package at.fhhagenberg.sqe.model;
 
-public class ElevatorModelUpdater implements ModelObserver {
+public class ElevatorModelUpdater {
 
 	private IElevatorManager manager;
 	private ElevatorModel model;
@@ -8,8 +8,6 @@ public class ElevatorModelUpdater implements ModelObserver {
 	public ElevatorModelUpdater(IElevatorManager manager, ElevatorModel model) {
 		this.manager = manager;
 		this.model = model;
-		
-		model.addModelObserver(this);
 	}
 	
 	public void update() {
@@ -30,7 +28,6 @@ public class ElevatorModelUpdater implements ModelObserver {
 					el.setTargetFloor(manager.getTarget(elevatorNumber));
 					
 					for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
-						el.setFloorIsPressed(floorNumber, manager.getElevatorButton(elevatorNumber, floorNumber));
 						el.setFloorToService(floorNumber, manager.getServicesFloors(elevatorNumber, floorNumber));
 					}		
 			}
@@ -49,60 +46,14 @@ public class ElevatorModelUpdater implements ModelObserver {
 			model.setDataIsStale(true);
 		}
 	}
-	
-	@Override
-	public void elevatorFloorUpdated(Elevator elevator) {}
 
-	@Override
-	public void elevatorDoorStatusUpdated(Elevator elevator) {}
-
-	@Override
-	public void elevatorDirectionUpdated(Elevator elevator) {}
-
-	@Override
-	public void elevatorAccelerationUpdated(Elevator elevator) {}
-
-	@Override
-	public void elevatorFloorsPressedUpdated(Elevator elevator) {}
-
-	@Override
-	public void elevatorPositionUpdated(Elevator elevator) {}
-
-	@Override
-	public void elevatorSpeedUpdated(Elevator elevator) {}
-
-	@Override
-	public void elevatorWeightUpdated(Elevator elevator) {}
-
-	@Override
-	public void elevatorCapacityUpdated(Elevator elevator) {}
-
-	@Override
-	public void elevatorFloorsToServiceUpdated(Elevator elevator) {}
-
-	@Override
-	public void elevatorTargetFloorUpdated(Elevator elevator) {
+	public void updateElevatorTargetFloor(int elevatorNumber, int targetFloor) {
 		try {
-			manager.setTarget(elevator.getElevatorNumber(), elevator.getTargetFloor());
+			manager.setTarget(elevatorNumber, targetFloor);
 		}
 		catch (Exception exc) {
 			model.setErrorMessage(exc.getMessage());
 		}
 	}
-
-	@Override
-	public void errorMessageUpdated(ElevatorModel model) {}
-
-	@Override
-	public void dataIsStaleUpdated(ElevatorModel model) {}
-
-	@Override
-	public void floorButtonUpPressedUpdated(Floor floor) {}
-
-	@Override
-	public void floorButtonDownPressedUpdated(Floor floor) {}
-
-	@Override
-	public void floorHeightUpdated(Floor floor) {}
 	
 }
