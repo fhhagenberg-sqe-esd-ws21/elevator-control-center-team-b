@@ -37,7 +37,7 @@ public class App extends Application {
     	
     	//ElevatorModelFactory modelFactory = new ElevatorModelFactory(getHardwareConnection());    	
     	//ElevatorModel model = modelFactory.createModel();    	
-    	var root = (new EccLayout(null)).getLayout();
+    	var root = (new EccLayout(null ,null)).getLayout();
         var scene = new Scene(root, 640, 480);
         stage.setTitle("Elevator Control Center");
         stage.setScene(scene);
