@@ -73,6 +73,7 @@ class EccLayout {
     private ElevatorModel elevatorModel;
     
     
+    
     EccLayout(ElevatorModelUpdater elevModelUpdater ,ElevatorModel elevModel)
 	{
     	elevatorModelUpdater = elevModelUpdater;
@@ -138,20 +139,19 @@ class EccLayout {
 	    
 	    elevators = new ListView<Elevator>();
 	    elevators.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Elevator>() {
-
-			@Override
+	    	@Override
 			public void changed(ObservableValue<? extends Elevator> observable, Elevator oldValue, Elevator newValue) {
-	
 				if(oldValue == null || !oldValue.equals(newValue))
 				{
 					OnElevatorSelect(newValue);
+					
 				}
 				
 			}
-	    	
 		});
 	    
-
+	    elevators.getItems().addAll(elevModel.getElevators());
+	    
 
 /*
 	    elevators.getItems().add(new Elevator(1,10));
@@ -206,7 +206,8 @@ class EccLayout {
 	    
 	    FlowPane botPane = new FlowPane();
 	    botPane.setHgap(20);
-	    botPane.setVgap(5);  botPane.getChildren().addAll(position, positionValue, direction, directionValue, payload, payloadValue, speed, speedValue, doors, doorsValue, targetFloor, targetFloorValue);
+	    botPane.setVgap(5);  
+	    botPane.getChildren().addAll(position, positionValue, direction, directionValue, payload, payloadValue, speed, speedValue, doors, doorsValue, targetFloor, targetFloorValue);
 		  
 	    
 	    rightSide.getChildren().add(errBox);
@@ -238,15 +239,17 @@ class EccLayout {
 	    errorBox.setId("ErrorBox");
 
 	    positionValue.setId("Position");
-	    positionValue.setId("Direction");
-	    positionValue.setId("Payload");
-	    positionValue.setId("Speed");
-	    positionValue.setId("Doors");
-	    positionValue.setId("TargetFloor");
+	    directionValue.setId("Direction");
+	    payloadValue.setId("Payload");
+	    speedValue.setId("Speed");
+	    doorsValue.setId("Doors");
+	    targetFloor.setId("TargetFloor");
 	    automatic.setDisable(true);
+	    
+	    elevators.getSelectionModel().select(0);
 		
 	}
-	
+    
     
 	public Parent getLayout()
 	{
@@ -269,6 +272,8 @@ class EccLayout {
 							elevatorModel.getFloor(i).isButtonDownPressed(), 
 							newElevator.getFloorToService(i)));
 		}
+
+		elevatorPropertiesTable.setItems(floors); 
 
 		setPosition(newElevator);
 		setDirection(newElevator);
