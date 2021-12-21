@@ -4,6 +4,7 @@ import java.util.List;
 
 import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.ElevatorModel;
+import at.fhhagenberg.sqe.model.ElevatorModelUpdater;
 import at.fhhagenberg.sqe.model.Floor;
 import at.fhhagenberg.sqe.model.ModelObserver;
 import javafx.beans.property.SimpleObjectProperty;
@@ -68,9 +69,12 @@ class EccLayout {
     private Label targetFloor;
     private Label targetFloorValue;
     
-    EccLayout(ElevatorModel elevModel)
+    ElevatorModelUpdater elevatorModel;
+    
+    
+    EccLayout(ElevatorModelUpdater elevModelUpdater)
 	{
-
+    	elevatorModel = elevModelUpdater;
 
 	    Label title = new Label("Elevator Control Center");
 	    title.setStyle("-fx-font-size: 30");
@@ -144,6 +148,7 @@ class EccLayout {
 			}
 	    	
 		});
+	    
 	    
 	    /*elevators.getItems().add("Elevator 1");
 	    elevators.getItems().add("Elevator 2");
@@ -240,6 +245,7 @@ class EccLayout {
 	    positionValue.setId("Speed");
 	    positionValue.setId("Doors");
 	    positionValue.setId("TargetFloor");
+	    automatic.setDisable(true);
 		
 	}
 	
@@ -254,6 +260,7 @@ class EccLayout {
 	// private functions for gui interaction
 	private void OnElevatorSelect(Elevator newElevator)
 	{
+		// update table
 		errorBox.appendText("new Elevator selected\n");
 	}
 	
@@ -325,7 +332,7 @@ class EccLayout {
 	}
 
 
-	public void setTargetFloors(Elevator elevator) {
+	public void setTargetFloor(Elevator elevator) {
 		
 	}
 
@@ -346,7 +353,7 @@ class EccLayout {
 	}
 
 
-	public void setFloorHeight(Floor floor) {
+	public void setHeight(Floor floor) {
 		
 	}
 

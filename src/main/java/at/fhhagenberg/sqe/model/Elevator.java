@@ -29,7 +29,7 @@ public class Elevator {
 		Uncommitted
 	}
 	
-	private int elevatorNumber;
+	private Integer elevatorNumber;
 	private int floor;
 	private ElevatorDoorStatus doorStatus;
 	private ElevatorDirection direction;
@@ -223,4 +223,10 @@ public class Elevator {
 	public void addModelObserver(ModelObserver observer) {
 		observers.add(observer);
 	}	
+	
+	@Override
+	public String toString()
+	{
+		return "Elevator " + elevatorNumber.toString();
+	}
 }
