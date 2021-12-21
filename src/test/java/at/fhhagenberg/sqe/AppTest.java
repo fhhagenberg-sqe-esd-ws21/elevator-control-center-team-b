@@ -5,6 +5,9 @@ import java.io.IOException;
 import at.fhhagenberg.sqe.model.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.model.HardwareConnectionException;
 import at.fhhagenberg.sqe.model.IElevator;
+import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
+import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +43,19 @@ class AppTest {
         // build up the mock
         Mockito.when(iElevatorMock.getFloorNum()).thenReturn(3);
         Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(5);
+        Mockito.when(iElevatorMock.getElevatorPosition(0)).thenReturn(1, 2,3, 4);
+		Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
+		Mockito.when(iElevatorMock.getElevatorButton(0, 1)).thenReturn(true);
+		Mockito.when(iElevatorMock.getElevatorButton(0, 0)).thenReturn(false);
+		Mockito.when(iElevatorMock.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSING);
+		Mockito.when(iElevatorMock.getElevatorFloor(0)).thenReturn(0);
+		Mockito.when(iElevatorMock.getFloorButtonDown(0)).thenReturn(true);
+		Mockito.when(iElevatorMock.getFloorButtonDown(1)).thenReturn(false);
+		Mockito.when(iElevatorMock.getFloorButtonUp(0)).thenReturn(false);
+		Mockito.when(iElevatorMock.getFloorButtonUp(1)).thenReturn(true);
+		Mockito.when(iElevatorMock.getServicesFloors(0, 0)).thenReturn(true);
+		Mockito.when(iElevatorMock.getServicesFloors(0, 1)).thenReturn(false);
+		Mockito.when(iElevatorMock.getTarget(0)).thenReturn(0,1);
 
         ElevatorHardwareManager ehm = new ElevatorHardwareManager(iElevatorMock);
 
@@ -53,7 +69,7 @@ class AppTest {
 
     @Test
     void testElevatorListAmount(FxRobot robot) {
-        verifyThat("#elevatorsList", ListViewMatchers.hasItems(3));
+        verifyThat("#elevatorsList", ListViewMatchers.hasItems(5));
     }
 
     @Test

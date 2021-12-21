@@ -16,20 +16,20 @@ public class ElevatorModelUpdater {
 		try {
 			
 			for (int elevatorNumber = 0; elevatorNumber < model.getNumElevators(); elevatorNumber++) {
-				Elevator el = model.getElevator(elevatorNumber);
-					el.setFloor(manager.getElevatorFloor(elevatorNumber));
-					el.setDoorStatus(manager.getElevatorDoorStatus(elevatorNumber));
-					el.setDirection(manager.getCommittedDirection(elevatorNumber));
-					el.setAcceleration(manager.getElevatorAccel(elevatorNumber));
-					el.setPosition(manager.getElevatorPosition(elevatorNumber));
-					el.setSpeed(manager.getElevatorSpeed(elevatorNumber));
-					el.setWeight(manager.getElevatorWeight(elevatorNumber));
-					el.setCapacity(manager.getElevatorCapacity(elevatorNumber));
-					el.setTargetFloor(manager.getTarget(elevatorNumber));
-					
-					for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
-						el.setFloorToService(floorNumber, manager.getServicesFloors(elevatorNumber, floorNumber));
-					}		
+				Elevator el = model.getElevator(elevatorNumber);				
+				el.setFloor(manager.getElevatorFloor(elevatorNumber));
+				el.setDoorStatus(manager.getElevatorDoorStatus(elevatorNumber));
+				el.setDirection(manager.getCommittedDirection(elevatorNumber));
+				el.setAcceleration(manager.getElevatorAccel(elevatorNumber));
+				el.setPosition(manager.getElevatorPosition(elevatorNumber));
+				el.setSpeed(manager.getElevatorSpeed(elevatorNumber));
+				el.setWeight(manager.getElevatorWeight(elevatorNumber));
+				el.setCapacity(manager.getElevatorCapacity(elevatorNumber));
+				el.setTargetFloor(manager.getTarget(elevatorNumber));
+				
+				for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
+					el.setFloorToService(floorNumber, manager.getServicesFloors(elevatorNumber, floorNumber));
+				}		
 			}
 			
 			for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {

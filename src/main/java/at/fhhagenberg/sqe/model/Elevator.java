@@ -120,11 +120,9 @@ public class Elevator {
 		if (this.position == position) {
 			return;
 		}
-		
-		if (position < 0 || position >= getNumFloors()) {
-			throw new IllegalArgumentException("Invalid floor number");
+		if (position < 0) {
+			throw new IllegalArgumentException("Invalid elevator position");
 		}
-		
 		this.position = position;
 		observers.forEach((obs) -> obs.elevatorPositionUpdated(this));
 	}

@@ -62,7 +62,7 @@ class ElevatorTest {
 	@Test
 	void testSettingInvalidPositionFails() {
 		Elevator el = new Elevator(0, 2);
-		assertThrows(IllegalArgumentException.class, () -> el.setPosition(2));		
+		assertThrows(IllegalArgumentException.class, () -> el.setPosition(-2));		
 	}
 	
 	@Test 
