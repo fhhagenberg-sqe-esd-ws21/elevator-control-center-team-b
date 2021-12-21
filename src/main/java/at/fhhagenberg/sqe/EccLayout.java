@@ -1,5 +1,7 @@
 package at.fhhagenberg.sqe;
 
+import java.util.List;
+
 import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.ElevatorModel;
 import at.fhhagenberg.sqe.model.Floor;
@@ -9,6 +11,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -21,12 +25,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 
 class EccLayout {
     
-	private final BorderPane fullLayout;
+	private final VBox fullLayout;
 
     private static final String STR_SEL_DATA = "selectedData: ";
     private static final String STR_FALSE = "false";
@@ -41,23 +46,29 @@ class EccLayout {
     private TableColumn<ElevatorProperties, Circle> down;
     private TableColumn<ElevatorProperties, Circle> stopPlanned;
     
-    ListView<Elevator> elevators;
-    ObservableList<ElevatorProperties> floors;
-    ToggleButton automatic;
-    TextField levelToGo;
-    Button go;
-    TextArea errorBox;
+    private ListView<Elevator> elevators;
+    private ObservableList<ElevatorProperties> floors;
+    private ToggleButton automatic;
+    private TextField levelToGo;
+    private Button go;
+    private TextArea errorBox;
     
 
-    Label position;
-    Label direction;
-    Label payload;
+    private Label position;
+    private Label positionValue;
+    private Label direction;
+    private Label directionValue;
+    private Label payload;
+    private Label payloadValue;
+
+    private Label speed;
+    private Label speedValue;
+    private Label doors;
+    private Label doorsValue;
+    private Label targetFloor;
+    private Label targetFloorValue;
     
-    Label speed;
-    Label doors;
-    Label targetFloor;
-    
-    EccLayout()
+    EccLayout(ElevatorModel elevModel)
 	{
 
 
@@ -143,11 +154,10 @@ class EccLayout {
 	    elevators.getItems().add(new Elevator(1,10));
 	    elevators.getItems().add(new Elevator(2,10));
 	    elevators.getItems().add(new Elevator(3,10));
-	    
+	        
 	    
 	    HBox topView = new HBox(15);
 	    
-	    topView.getChildren().addAll(elevators, rightSide);
 	    
 	    Label errBox = new Label("Error Box");
 	    errorBox = new TextArea();
@@ -156,62 +166,92 @@ class EccLayout {
 	    
 	    VBox topViewFull = new VBox(10);
 	    
-	    topViewFull.getChildren().addAll(topView, errBox, errorBox);
+	    //topViewFull.getChildren().addAll(topView, errBox, errorBox);
 	    
 	    // botom   view
-	    position = new Label("Position: " + "50m");
-	    direction = new Label("Direction: " + "Down");
-	    payload = new Label("Payload: " + "100kg");
+	    position = new Label("Position:");
+	    positionValue = new Label("5000m");
+	    direction = new Label("Direction:");
+	    directionValue = new Label("Down");
+	    payload = new Label("Payload:");
+	    payloadValue = new Label("100kg");
 
 	    position.setStyle(FX_FONT_SIZE_18);
+	    positionValue.setStyle(FX_FONT_SIZE_18);
 	    direction.setStyle(FX_FONT_SIZE_18);
+	    directionValue.setStyle(FX_FONT_SIZE_18);
 	    payload.setStyle(FX_FONT_SIZE_18);
+	    payloadValue.setStyle(FX_FONT_SIZE_18);
 	    
 	    
-	    HBox botTopLine = new HBox(15);
-	    
-	    botTopLine.getChildren().addAll(position, direction, payload);
-	    
-	    speed = new Label("Speed: " + "6km/h");
-	    doors = new Label("Doors: " + "Closed");
-	    targetFloor = new Label("Target floor: " + "1");
+
+	    speed = new Label("Speed:");
+	    speedValue = new Label("6km/h");
+	    doors = new Label("Doors:");
+	    doorsValue = new Label("Closed");
+	    targetFloor = new Label("Target floor:");
+	    targetFloorValue = new Label("1");
 
         speed.setStyle(FX_FONT_SIZE_18);
+        speedValue.setStyle(FX_FONT_SIZE_18);
 	    doors.setStyle(FX_FONT_SIZE_18);
+	    doorsValue.setStyle(FX_FONT_SIZE_18);
 	    targetFloor.setStyle(FX_FONT_SIZE_18);
-	    
-	    
-	    HBox botBotLine = new HBox(15);
-	    
-	    botBotLine.getChildren().addAll(speed, doors, targetFloor);
-	    
-	    
-	    VBox bot = new VBox(20);
-	    bot.getChildren().addAll(botTopLine, botBotLine);
+	    targetFloorValue.setStyle(FX_FONT_SIZE_18);
+
 
 	    
 	    FlowPane botPane = new FlowPane();
 	    botPane.setHgap(20);
-	    botPane.setVgap(5);
-	    botPane.getChildren().addAll(position, direction, payload, speed, doors, targetFloor);
+	    botPane.setVgap(5);  botPane.getChildren().addAll(position, positionValue, direction, directionValue, payload, payloadValue, speed, speedValue, doors, doorsValue, targetFloor, targetFloorValue);
+		  
+	    
+	    rightSide.getChildren().add(errBox);
+	    rightSide.getChildren().add(errorBox);
+	    rightSide.getChildren().add(botPane);
+	    
+
+	    topView.getChildren().addAll(elevators, rightSide);
+	    topView.setHgrow(elevators, Priority.ALWAYS);
+	    topView.setHgrow(rightSide, Priority.ALWAYS);
 	    
 	    
-	    fullLayout = new BorderPane();
+	    fullLayout = new VBox();
 	    fullLayout.setStyle("-fx-padding: 15; -fx-spacing: 15;");
-	    fullLayout.setTop(title);  
-        fullLayout.setCenter(topViewFull);
-        fullLayout.setBottom(botPane);
+	    
+	    fullLayout.getChildren().addAll(title, topView);
+	    //fullLayout.setTop(title);  
+        //fullLayout.setRight(topView);
+        //fullLayout.setBottom(botPane);
+	    
+	    
+	    
+	    // set labels for easier testing
+	    elevators.setId("elevatorsList");
+	    elevatorPropertiesTable.setId("FloorTable");
+	    automatic.setId("AutomaticButton");
+	    levelToGo.setId("FloorToGo");
+	    go.setId("GoButton");
+	    errorBox.setId("ErrorBox");
+
+	    positionValue.setId("Position");
+	    positionValue.setId("Direction");
+	    positionValue.setId("Payload");
+	    positionValue.setId("Speed");
+	    positionValue.setId("Doors");
+	    positionValue.setId("TargetFloor");
 		
 	}
 	
-       
     
-	public BorderPane getLayout()
+	public Parent getLayout()
 	{
-		return fullLayout;
+		return (fullLayout);
 	}
 
+
 	
+	// private functions for gui interaction
 	private void OnElevatorSelect(Elevator newElevator)
 	{
 		errorBox.appendText("new Elevator selected\n");
@@ -228,7 +268,8 @@ class EccLayout {
 		
 	}
 	
-
+	
+	// public functions to update gui
 	public void setFloor(Elevator elevator) {
 		
 	}
