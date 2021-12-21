@@ -65,16 +65,8 @@ public class App extends Application {
 
 		EccGuiUpdater guiObserver = new EccGuiUpdater(gui);
 		model.addModelObserver(guiObserver);
-		
-    	var root = (gui).getLayout();
 
-    	
-        var scene = new Scene(root, 640, 480);
-        stage.setTitle("Elevator Control Center");
-        stage.setScene(scene);
-        stage.show();
-        
-        timer = new Timer();
+		timer = new Timer();
         task = new TimerTask() {
 
 			@Override
@@ -84,6 +76,15 @@ public class App extends Application {
         };
         
         timer.scheduleAtFixedRate(task, 0, TIMER_PERIOD);
+		
+		
+    	var root = (gui).getLayout();
+
+    	
+        var scene = new Scene(root, 640, 480);
+        stage.setTitle("Elevator Control Center");
+        stage.setScene(scene);
+        stage.show();   
     }
 
     public static void main(String[] args) {
