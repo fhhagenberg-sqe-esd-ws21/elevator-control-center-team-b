@@ -6,6 +6,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import at.fhhagenberg.sqe.model.*;
+import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
+import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -18,7 +20,7 @@ import org.mockito.Mockito;
 public class App extends Application {
 
 	@Mock
-	IElevator iElevatorMock;
+	ElevatorHardwareManager iElevatorMock;
 
 	private Timer timer;
 	private TimerTask task;
@@ -26,26 +28,47 @@ public class App extends Application {
 	
 	public ElevatorHardwareManager getHardwareConnection() throws IllegalArgumentException, HardwareConnectionException, RemoteException {
 		if (iElevatorMock == null) {
-			iElevatorMock = Mockito.mock(IElevator.class);
-			Mockito.when(iElevatorMock.getFloorNum()).thenReturn(3);
-			Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(5);
-			Mockito.when(iElevatorMock.getElevatorPosition(0)).thenReturn(1, 2, 3, 4);
+			iElevatorMock = Mockito.mock(ElevatorHardwareManager.class);
+			Mockito.when(iElevatorMock.getFloorNum()).thenReturn(2);
+			Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(1);
+			Mockito.when(iElevatorMock.getElevatorPosition(0)).thenReturn(1, 2,3, 4);
+			Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(ElevatorDirection.Up);
+			Mockito.when(iElevatorMock.getElevatorButton(0, 1)).thenReturn(true);
+			Mockito.when(iElevatorMock.getElevatorButton(0, 0)).thenReturn(false);
+			Mockito.when(iElevatorMock.getElevatorDoorStatus(0)).thenReturn(ElevatorDoorStatus.Closed);
+			Mockito.when(iElevatorMock.getElevatorFloor(0)).thenReturn(0);
+			Mockito.when(iElevatorMock.getFloorButtonDown(0)).thenReturn(true);
+			Mockito.when(iElevatorMock.getFloorButtonDown(1)).thenReturn(false);
+			Mockito.when(iElevatorMock.getFloorButtonUp(0)).thenReturn(false);
+			Mockito.when(iElevatorMock.getFloorButtonUp(1)).thenReturn(true);
+			Mockito.when(iElevatorMock.getServicesFloors(0, 0)).thenReturn(true);
+			Mockito.when(iElevatorMock.getServicesFloors(0, 1)).thenReturn(false);
+			Mockito.when(iElevatorMock.getTarget(0)).thenReturn(0,1);
+			
+			
 			// TODO..
 		}
-		return new ElevatorHardwareManager(iElevatorMock);
+		return iElevatorMock;
 	}
 
     @Override
     public void start(Stage stage) throws IOException, HardwareConnectionException {
     	//Parent root = FXMLLoader.load(getClass().getResource("/elevator_control_center.fxml"));
     	
-    	//todo:  thread updater
 
 		IElevatorManager manager = getHardwareConnection();
     	ElevatorModelFactory modelFactory = new ElevatorModelFactory(manager);
     	ElevatorModel model = modelFactory.createModel();
 		ElevatorModelUpdater updater = new ElevatorModelUpdater(manager, model);
-    	var root = (new EccLayout(model)).getLayout();
+		updater.update();
+		EccLayout gui = new EccLayout(updater, model);
+
+		EccGuiUpdater guiObserver = new EccGuiUpdater(gui);
+		model.addModelObserver(guiObserver);
+		
+    	var root = (gui).getLayout();
+
+    	
         var scene = new Scene(root, 640, 480);
         stage.setTitle("Elevator Control Center");
         stage.setScene(scene);

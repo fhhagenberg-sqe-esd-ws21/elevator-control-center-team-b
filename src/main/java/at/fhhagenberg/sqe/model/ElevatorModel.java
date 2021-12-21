@@ -11,6 +11,7 @@ public class ElevatorModel {
 	private String errorMessage;
 	private boolean dataIsStale;
 	
+	
 	public ElevatorModel(List<Elevator> elevators, List<Floor> floors) {
 		this.elevators = elevators;
 		this.floors = floors;
@@ -73,6 +74,11 @@ public class ElevatorModel {
 		for (Floor fl : floors) {
 			fl.addModelObserver(observer);
 		}
+	}
+	
+	public List<Elevator> getElevators()
+	{
+		return elevators;
 	}
 
 }

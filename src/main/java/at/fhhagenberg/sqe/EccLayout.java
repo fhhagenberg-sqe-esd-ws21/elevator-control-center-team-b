@@ -68,13 +68,16 @@ class EccLayout {
     private Label doorsValue;
     private Label targetFloor;
     private Label targetFloorValue;
+
+    private ElevatorModelUpdater elevatorModelUpdater;
+    private ElevatorModel elevatorModel;
     
-    ElevatorModelUpdater elevatorModel;
     
     
-    EccLayout(ElevatorModelUpdater elevModelUpdater)
+    EccLayout(ElevatorModelUpdater elevModelUpdater ,ElevatorModel elevModel)
 	{
-    	elevatorModel = elevModelUpdater;
+    	elevatorModelUpdater = elevModelUpdater;
+    	elevatorModel = elevModel;
 
 	    Label title = new Label("Elevator Control Center");
 	    title.setStyle("-fx-font-size: 30");
@@ -108,12 +111,12 @@ class EccLayout {
 		elevatorPropertiesTable.getColumns().add(stopPlanned);
 		
 		elevatorPropertiesTable.getColumns().get(0).getCellData(0);
-        				
+        		/*		
         floors = FXCollections.observableArrayList();
 
         floors.add(new ElevatorProperties(0, 0, false, false, true));
         floors.add(new ElevatorProperties(0, 1, false, false ,false));
-        floors.add(new ElevatorProperties(0, 2, false, true, false));
+        floors.add(new ElevatorProperties(0, 2, false, true, false));*/
 		
 		elevatorPropertiesTable.setItems(floors);    
 		elevatorPropertiesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -136,29 +139,24 @@ class EccLayout {
 	    
 	    elevators = new ListView<Elevator>();
 	    elevators.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Elevator>() {
-
-			@Override
+	    	@Override
 			public void changed(ObservableValue<? extends Elevator> observable, Elevator oldValue, Elevator newValue) {
-	
 				if(oldValue == null || !oldValue.equals(newValue))
 				{
 					OnElevatorSelect(newValue);
+					
 				}
 				
 			}
-	    	
 		});
 	    
+	    elevators.getItems().addAll(elevModel.getElevators());
 	    
-	    /*elevators.getItems().add("Elevator 1");
-	    elevators.getItems().add("Elevator 2");
-	    elevators.getItems().add("Elevator 3");
-	    elevators.getItems().add("Elevator 4");*/
 
-
+/*
 	    elevators.getItems().add(new Elevator(1,10));
 	    elevators.getItems().add(new Elevator(2,10));
-	    elevators.getItems().add(new Elevator(3,10));
+	    elevators.getItems().add(new Elevator(3,10));*/
 	        
 	    
 	    HBox topView = new HBox(15);
@@ -208,7 +206,8 @@ class EccLayout {
 	    
 	    FlowPane botPane = new FlowPane();
 	    botPane.setHgap(20);
-	    botPane.setVgap(5);  botPane.getChildren().addAll(position, positionValue, direction, directionValue, payload, payloadValue, speed, speedValue, doors, doorsValue, targetFloor, targetFloorValue);
+	    botPane.setVgap(5);  
+	    botPane.getChildren().addAll(position, positionValue, direction, directionValue, payload, payloadValue, speed, speedValue, doors, doorsValue, targetFloor, targetFloorValue);
 		  
 	    
 	    rightSide.getChildren().add(errBox);
@@ -240,15 +239,17 @@ class EccLayout {
 	    errorBox.setId("ErrorBox");
 
 	    positionValue.setId("Position");
-	    positionValue.setId("Direction");
-	    positionValue.setId("Payload");
-	    positionValue.setId("Speed");
-	    positionValue.setId("Doors");
-	    positionValue.setId("TargetFloor");
+	    directionValue.setId("Direction");
+	    payloadValue.setId("Payload");
+	    speedValue.setId("Speed");
+	    doorsValue.setId("Doors");
+	    targetFloor.setId("TargetFloor");
 	    automatic.setDisable(true);
+	    
+	    elevators.getSelectionModel().select(0);
 		
 	}
-	
+    
     
 	public Parent getLayout()
 	{
@@ -260,17 +261,48 @@ class EccLayout {
 	// private functions for gui interaction
 	private void OnElevatorSelect(Elevator newElevator)
 	{
-		// update table
-		errorBox.appendText("new Elevator selected\n");
+		// update all
+		int nrOfFloors = elevatorModel.getNumFloors();
+		
+		floors = FXCollections.observableArrayList();
+		for(int i = 0; i < nrOfFloors; i++)
+		{
+			floors.add(new ElevatorProperties(newElevator.getFloor(), i, 
+							elevatorModel.getFloor(i).isButtonUpPressed(), 
+							elevatorModel.getFloor(i).isButtonDownPressed(), 
+							newElevator.getFloorToService(i)));
+		}
+
+		elevatorPropertiesTable.setItems(floors); 
+
+		setPosition(newElevator);
+		setDirection(newElevator);
+		setWeight(newElevator);
+		setSpeed(newElevator);
+		setDoorState(newElevator);
+		setTargetFloor(newElevator);
+		
+		errorBox.appendText(newElevator.toString() + " selected\n");
 	}
 	
 	private void OnGo()
 	{
+		int targetFloor;
+		try
+		{
+			targetFloor = Integer.parseInt(levelToGo.getText());
+		}
+		catch (NumberFormatException e) {
+			errorBox.appendText("Invalid Flor Number: \n" + levelToGo.getText()+ "\n is not a valid Floor\n\n");
+			return;
+		}
+		elevatorModelUpdater.updateElevatorTargetFloor(elevators.getSelectionModel().getSelectedItem().getElevatorNumber(), targetFloor);
 		errorBox.appendText("Go Button pressed\n");		
 	}
 	
 	private void OnAutomaticMode()
 	{
+		// not implemented
 		errorBox.appendText("Automaic Mode Button pressed\n");	
 		
 	}
@@ -278,83 +310,125 @@ class EccLayout {
 	
 	// public functions to update gui
 	public void setFloor(Elevator elevator) {
-		
+		// if update occurs on selected elevator, update view
+		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
+		{
+			for(int i = 0; i < floors.size();i++)
+			{
+				floors.get(i).setPosition(elevator.getFloor());
+			}
+		}
 	}
 
 
 	public void setDoorState(Elevator elevator) {
-		
+		// if update occurs on selected elevator, update view
+		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
+		{
+			doorsValue.setText(elevator.getDoorStatus().toString());
+		}
 	}
 
 
 	public void setDirection(Elevator elevator) {
-		
+		// if update occurs on selected elevator, update view
+		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
+		{
+			directionValue.setText(elevator.getDirection().toString());			
+		}
 	}
 
 
 
 	public void setAcceleration(Elevator elevator) {
-		
+		// if update occurs on selected elevator, update view
+		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
+		{
+			// not shown
+			//acceleratinValue.setText(elevator.getAcceleration().toString());			
+		}
 	}
 
-
-
-	public void setFloorsPressed(Elevator elevator) {
-		
-	}
 
 
 
 	public void setPosition(Elevator elevator) {
-		
+		// if update occurs on selected elevator, update view
+		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
+		{
+			positionValue.setText(String.valueOf(elevator.getPosition()) + "m");
+		}
 	}
 
 
 	public void setSpeed(Elevator elevator) {
-		
+		// if update occurs on selected elevator, update view
+		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
+		{
+			speedValue.setText(String.valueOf(elevator.getSpeed()) + "m/s");
+		}
 	}
 
 
 
 	public void setWeight(Elevator elevator) {
-		
+		// if update occurs on selected elevator, update view
+		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
+		{
+			payloadValue.setText(String.valueOf(elevator.getPosition()) + "kg");
+		}
 	}
 
 
 	public void setCapacity(Elevator elevator) {
-		
+		// if update occurs on selected elevator, update view
+		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
+		{
+			//not displayed
+		}
 	}
 
 
 
 	public void setFloorsToService(Elevator elevator) {
-		
+		// if update occurs on selected elevator, update view
+		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
+		{
+			for(int i = 0; i < floors.size();i++)
+			{
+				floors.get(i).setStopPlanned(elevator.getFloorToService(i));
+			}
+		}
 	}
 
 
 	public void setTargetFloor(Elevator elevator) {
-		
+		// if update occurs on selected elevator, update view
+		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
+		{
+			//not displayed
+		}
 	}
 
 
 	public void appendErrorMessage(ElevatorModel model) {
-		
+		errorBox.appendText(model.getErrorMessage()  + "\n\n");		
 	}
 
 
 
 	public void setButtonUpPressed(Floor floor) {
-		
+		floors.get(floor.getFloorNumber()).setUp(floor.isButtonUpPressed());
 	}
 
 
 	public void setButtonDownPressed(Floor floor) {
-		
+		floors.get(floor.getFloorNumber()).setDown(floor.isButtonDownPressed());
 	}
 
 
 	public void setHeight(Floor floor) {
-		
+		// not used in gui
 	}
 
 
