@@ -10,8 +10,6 @@ public interface ModelObserver {
 	
 	void elevatorAccelerationUpdated(Elevator elevator);
 	
-	void elevatorFloorsPressedUpdated(Elevator elevator);
-	
 	void elevatorPositionUpdated(Elevator elevator);
 	
 	void elevatorSpeedUpdated(Elevator elevator);

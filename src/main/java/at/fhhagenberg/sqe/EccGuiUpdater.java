@@ -36,12 +36,6 @@ public class EccGuiUpdater implements ModelObserver {
 	}
 
 	@Override
-	public void elevatorFloorsPressedUpdated(Elevator elevator) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void elevatorPositionUpdated(Elevator elevator) {
 		// TODO Auto-generated method stub
 

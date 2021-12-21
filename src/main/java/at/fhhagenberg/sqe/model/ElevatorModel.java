@@ -1,16 +1,17 @@
 package at.fhhagenberg.sqe.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ElevatorModel {
 	
-	private ArrayList<Elevator> elevators;
-	private ArrayList<Floor> floors;
-	private ArrayList<ModelObserver> observers;
+	private List<Elevator> elevators;
+	private List<Floor> floors;
+	private List<ModelObserver> observers;
 	private String errorMessage;
 	private boolean dataIsStale;
 	
-	public ElevatorModel(ArrayList<Elevator> elevators, ArrayList<Floor> floors) {
+	public ElevatorModel(List<Elevator> elevators, List<Floor> floors) {
 		this.elevators = elevators;
 		this.floors = floors;
 		observers = new ArrayList<ModelObserver>();
