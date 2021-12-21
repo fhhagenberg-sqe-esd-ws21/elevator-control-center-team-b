@@ -7,16 +7,16 @@ public class ElevatorProperties {
 
     private Circle position;
     private Integer floor;
-    private String up;
-    private String down;
-    private String stopPlanned;
+    private Circle up;
+    private Circle down;
+    private Circle stopPlanned;
 
  
  public ElevatorProperties() {
-         this(0, 0, "", "", "");
+         this(0, 0, false, false, false);
      }
   
-     public ElevatorProperties(Integer position, Integer floor, String up, String down, String stopPlanned) {         
+     public ElevatorProperties(Integer position, Integer floor, Boolean up, Boolean down, Boolean stopPlanned) {         
     	 setFloor(floor);
          setPosition(position);
          setUp(up);
@@ -49,28 +49,30 @@ public class ElevatorProperties {
          floor = fFloor;
      }
      
-     public String getUp() {
+     public Circle getUp() {
          return up;
      }
      
-     public void setUp(String fup) {
-         up = fup;
+     public void setUp(Boolean fup) {       
+    	 up = new Circle(5);
+    	 up.setFill(fup?Color.GREEN:Color.GRAY);
      }
      
-     public String getDown() {
+     public Circle getDown() {
          return down;
-         
      }
      
-     public void setDown(String fdown) {
-         down = fdown;
+     public void setDown(Boolean fdown) {
+    	 down = new Circle(5);
+    	 down.setFill(fdown?Color.GREEN:Color.GRAY);
      }
 
-     public String getStopPlanned() {
+     public Circle getStopPlanned() {
         return stopPlanned;
     }
     
-    public void setStopPlanned(String fStopPlanned) {
-        stopPlanned = fStopPlanned;
+    public void setStopPlanned(Boolean fstopPlanned) {
+   	 stopPlanned = new Circle(5);
+   	stopPlanned.setFill(fstopPlanned?Color.GREEN:Color.GRAY);
     }
  }
