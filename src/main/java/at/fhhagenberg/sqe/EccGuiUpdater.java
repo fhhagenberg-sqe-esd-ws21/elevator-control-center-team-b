@@ -21,83 +21,71 @@ public class EccGuiUpdater implements ModelObserver {
 
 	@Override
 	public void elevatorDoorStatusUpdated(Elevator elevator) {
+		Platform.runLater(() -> {layout.setDoorState((elevator));} );
 	}
 
 	@Override
 	public void elevatorDirectionUpdated(Elevator elevator) {
-		// TODO Auto-generated method stub
-
+		Platform.runLater(() -> {layout.setDirection((elevator));} );
 	}
 
 	@Override
 	public void elevatorAccelerationUpdated(Elevator elevator) {
-		// TODO Auto-generated method stub
-
+		Platform.runLater(() -> {layout.setAcceleration((elevator));} );
 	}
 
-	@Override
 	public void elevatorPositionUpdated(Elevator elevator) {
-		// TODO Auto-generated method stub
-
+		Platform.runLater(() -> {layout.setPosition((elevator));} );
 	}
 
 	@Override
 	public void elevatorSpeedUpdated(Elevator elevator) {
-		// TODO Auto-generated method stub
-
+		Platform.runLater(() -> {layout.setSpeed((elevator));} );
 	}
 
 	@Override
 	public void elevatorWeightUpdated(Elevator elevator) {
-		// TODO Auto-generated method stub
-
+		Platform.runLater(() -> {layout.setWeight((elevator));} );
 	}
 
 	@Override
 	public void elevatorCapacityUpdated(Elevator elevator) {
-		// TODO Auto-generated method stub
-
+		Platform.runLater(() -> {layout.setCapacity((elevator));} );
 	}
 
 	@Override
 	public void elevatorFloorsToServiceUpdated(Elevator elevator) {
-		// TODO Auto-generated method stub
-
+		Platform.runLater(() -> {layout.setFloorsToService((elevator));} );		
 	}
 
 	@Override
 	public void elevatorTargetFloorUpdated(Elevator elevator) {
-		// TODO Auto-generated method stub
-
+		Platform.runLater(() -> {layout.setTargetFloor((elevator));} );
 	}
 
 	@Override
 	public void errorMessageUpdated(ElevatorModel model) {
-		// TODO Auto-generated method stub
-
+		Platform.runLater(() -> {layout.appendErrorMessage(model);} );
 	}
 
 	@Override
 	public void dataIsStaleUpdated(ElevatorModel model) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void floorButtonUpPressedUpdated(Floor floor) {
-		// TODO Auto-generated method stub
+		Platform.runLater(() -> {layout.setButtonUpPressed(floor);} );
 
 	}
 
 	@Override
 	public void floorButtonDownPressedUpdated(Floor floor) {
-		// TODO Auto-generated method stub
-
+		Platform.runLater(() -> {layout.setButtonDownPressed(floor);} );
 	}
 
 	@Override
 	public void floorHeightUpdated(Floor floor) {
-		// TODO Auto-generated method stub
+		Platform.runLater(() -> {layout.setHeight(floor);} );
 
 	}
 
