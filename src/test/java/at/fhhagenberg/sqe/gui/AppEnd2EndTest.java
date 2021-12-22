@@ -1,25 +1,21 @@
-package at.fhhagenberg.sqe;
+package at.fhhagenberg.sqe.gui;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Predicate;
 
-import at.fhhagenberg.sqe.model.ElevatorHardwareManager;
-import at.fhhagenberg.sqe.model.HardwareConnectionException;
-import at.fhhagenberg.sqe.model.IElevator;
+import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
+import at.fhhagenberg.sqe.backend.HardwareConnectionException;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
 
 import javafx.scene.Node;
-import javafx.scene.control.ListView;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
@@ -28,14 +24,12 @@ import org.testfx.matcher.control.LabeledMatchers;
 import javafx.stage.Stage;
 import org.testfx.matcher.control.ListViewMatchers;
 import org.testfx.matcher.control.TableViewMatchers;
-import org.testfx.matcher.control.TextInputControlMatchers;
-import org.testfx.service.query.NodeQuery;
 import org.testfx.util.WaitForAsyncUtils;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
 @ExtendWith(ApplicationExtension.class)
-class AppHardwareManagerMockTest {
+class AppEnd2EndTest {
 
     @Mock
     ElevatorHardwareManager ehmMock;

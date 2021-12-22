@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqe.model;
+package at.fhhagenberg.sqe.backend;
 
 public class HardwareConnectionException extends Exception {
 

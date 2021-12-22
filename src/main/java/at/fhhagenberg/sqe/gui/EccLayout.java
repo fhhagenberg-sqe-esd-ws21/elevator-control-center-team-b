@@ -1,19 +1,15 @@
-package at.fhhagenberg.sqe;
-
-import java.util.List;
+package at.fhhagenberg.sqe.gui;
 
 import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.ElevatorModel;
 import at.fhhagenberg.sqe.model.ElevatorModelUpdater;
 import at.fhhagenberg.sqe.model.Floor;
-import at.fhhagenberg.sqe.model.ModelObserver;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -23,7 +19,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;

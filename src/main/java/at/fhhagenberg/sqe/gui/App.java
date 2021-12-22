@@ -1,10 +1,13 @@
-package at.fhhagenberg.sqe;
+package at.fhhagenberg.sqe.gui;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
+import at.fhhagenberg.sqe.backend.HardwareConnectionException;
+import at.fhhagenberg.sqe.backend.IElevatorManager;
 import at.fhhagenberg.sqe.model.*;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;

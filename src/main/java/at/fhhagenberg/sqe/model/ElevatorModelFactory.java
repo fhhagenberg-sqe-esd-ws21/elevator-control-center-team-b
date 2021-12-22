@@ -1,5 +1,8 @@
 package at.fhhagenberg.sqe.model;
 
+import at.fhhagenberg.sqe.backend.HardwareConnectionException;
+import at.fhhagenberg.sqe.backend.IElevatorManager;
+
 import java.util.ArrayList;
 
 public class ElevatorModelFactory {

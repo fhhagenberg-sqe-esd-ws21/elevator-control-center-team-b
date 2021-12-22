@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqe.model;
+package at.fhhagenberg.sqe.backend;
 
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;

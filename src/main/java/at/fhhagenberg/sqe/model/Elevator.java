@@ -41,7 +41,7 @@ public class Elevator {
 	private int capacity;
 	private List<Boolean> floorsToService;
 	private int targetFloor;
-	private List<ModelObserver> observers;
+	private List<IModelObserver> observers;
 	
 	public Elevator(int elevatorNumber, int numFloors) throws IllegalArgumentException {
 		if (elevatorNumber < 0) {
@@ -52,8 +52,8 @@ public class Elevator {
 		}
 		
 		this.elevatorNumber = elevatorNumber;
-		this.floorsToService = new ArrayList<Boolean>(numFloors);
-		this.observers = new ArrayList<ModelObserver>();
+		this.floorsToService = new ArrayList<>(numFloors);
+		this.observers = new ArrayList<>();
 		
 		for (int i = 0; i < numFloors; i++) {
 			floorsToService.add(false);
@@ -203,7 +203,7 @@ public class Elevator {
 		return floorsToService.size();
 	}
 	
-	public void addModelObserver(ModelObserver observer) {
+	public void addModelObserver(IModelObserver observer) {
 		observers.add(observer);
 	}	
 	
