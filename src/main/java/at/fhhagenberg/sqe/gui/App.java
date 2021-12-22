@@ -20,15 +20,15 @@ import javafx.stage.Stage;
 /**
  * JavaFX App
  */
-public class App extends Application {
+class App extends Application {
 
 	ElevatorHardwareManager iElevatorHM;
 
 	private Timer timer;
 	private TimerTask task;
-	private long TIMER_PERIOD = 1000l; // milliseconds
+	private static final long TIMER_PERIOD = 1000L; // milliseconds
 	
-	public ElevatorHardwareManager getHardwareConnection() throws IllegalArgumentException, HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
+	protected ElevatorHardwareManager getHardwareConnection() throws IllegalArgumentException, HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
 		if (iElevatorHM == null) {
 			IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
 			iElevatorHM = new ElevatorHardwareManager(controller);
@@ -36,14 +36,18 @@ public class App extends Application {
 		return iElevatorHM;
 	}
 
-	public ElevatorModel createModel() throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
+	protected ElevatorModel createModel() throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
 		IElevatorManager manager = getHardwareConnection();
 		ElevatorModelFactory factory = new ElevatorModelFactory(manager);
 		return factory.createModel();
 	}
 
-	public ElevatorModelUpdater createElevatorModelUpdater(ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
+	protected ElevatorModelUpdater createElevatorModelUpdater(ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
 		return new ElevatorModelUpdater(getHardwareConnection(), model);
+	}
+
+	protected long getTimerPeriodMs() {
+		return TIMER_PERIOD;
 	}
 
     @Override
@@ -59,14 +63,13 @@ public class App extends Application {
 
 		timer = new Timer();
         task = new TimerTask() {
-
 			@Override
 			public void run() {
 				updater.update();
 			}
         };
         
-        timer.scheduleAtFixedRate(task, 0, TIMER_PERIOD);
+        timer.scheduleAtFixedRate(task, 0, getTimerPeriodMs());
 		
 		
     	var root = (gui).getLayout();

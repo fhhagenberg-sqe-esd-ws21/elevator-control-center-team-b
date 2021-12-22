@@ -177,6 +177,7 @@ class AppModelMockTest {
     }
 
     @Test
+    @Disabled
     void testGUI(FxRobot robot) {
 
         elevators.get(0).setTargetFloor(1);
