@@ -101,7 +101,7 @@ class AppEnd2EndTest {
     }
 
     void waitForUpdate() {
-        WaitForAsyncUtils.sleep(TIMER_PERIOD, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2*TIMER_PERIOD, TimeUnit.MILLISECONDS);
         WaitForAsyncUtils.waitForFxEvents();
     }
 
