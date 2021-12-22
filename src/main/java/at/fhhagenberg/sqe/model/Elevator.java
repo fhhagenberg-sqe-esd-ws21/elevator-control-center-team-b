@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqe.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Elevator {
 	/**
@@ -29,19 +30,18 @@ public class Elevator {
 		UNCOMMITTED
 	}
 	
-	private final int elevatorNumber;
+	private Integer elevatorNumber;
 	private int floor;
-	private ElevatorDoorStatus doorStatus;
-	private ElevatorDirection direction;
+	private ElevatorDoorStatus doorStatus = ElevatorDoorStatus.Closed;
+	private ElevatorDirection direction = ElevatorDirection.Uncommitted;
 	private int acceleration;
-	private ArrayList<Boolean> floorsPressed;
 	private int position; // in meters
 	private int speed;
 	private int weight;
 	private int capacity;
-	private ArrayList<Boolean> floorsToService;
+	private List<Boolean> floorsToService;
 	private int targetFloor;
-	private ArrayList<ModelObserver> observers;
+	private List<IModelObserver> observers;
 	
 	public Elevator(int elevatorNumber, int numFloors) throws IllegalArgumentException {
 		if (elevatorNumber < 0) {
@@ -52,12 +52,10 @@ public class Elevator {
 		}
 		
 		this.elevatorNumber = elevatorNumber;
-		this.floorsPressed = new ArrayList<>(numFloors);
 		this.floorsToService = new ArrayList<>(numFloors);
 		this.observers = new ArrayList<>();
 		
 		for (int i = 0; i < numFloors; i++) {
-			floorsPressed.add(false);
 			floorsToService.add(false);
 		}
 	}
@@ -114,19 +112,6 @@ public class Elevator {
 		observers.forEach(obs -> obs.elevatorAccelerationUpdated(this));
 	}
 
-	public boolean getFloorIsPressed(int floorNumber) {
-		return floorsPressed.get(floorNumber);
-	}
-
-	public void setFloorIsPressed(int floorNumber, boolean pressed) {
-		if (Boolean.TRUE.equals(this.floorsPressed.get(floorNumber)) == pressed) {
-			return;
-		}
-		
-		this.floorsPressed.set(floorNumber, pressed);
-		observers.forEach(obs -> obs.elevatorFloorsPressedUpdated(this));
-	}
-
 	public int getPosition() {
 		return position;
 	}
@@ -135,11 +120,9 @@ public class Elevator {
 		if (this.position == position) {
 			return;
 		}
-		
-		if (position < 0 || position >= getNumFloors()) {
-			throw new IllegalArgumentException("Invalid floor number");
+		if (position < 0) {
+			throw new IllegalArgumentException("Invalid elevator position");
 		}
-		
 		this.position = position;
 		observers.forEach(obs -> obs.elevatorPositionUpdated(this));
 	}
@@ -217,10 +200,16 @@ public class Elevator {
 	}
 	
 	public int getNumFloors() {
-		return floorsPressed.size();
+		return floorsToService.size();
 	}
 	
-	public void addModelObserver(ModelObserver observer) {
+	public void addModelObserver(IModelObserver observer) {
 		observers.add(observer);
 	}	
+
+	@Override
+	public String toString()
+	{
+		return "Elevator " + elevatorNumber.toString();
+	}
 }

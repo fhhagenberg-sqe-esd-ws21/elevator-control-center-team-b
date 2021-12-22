@@ -53,16 +53,6 @@ class ElevatorTest {
 	}
 	
 	@Test
-	void testSetFloorIsPressedWorks() {
-		Elevator el = new Elevator(0, 3);
-		el.setFloorIsPressed(0, true);
-		assertTrue(el.getFloorIsPressed(0));
-		for (int i = 1; i < 3; i++) {
-			assertFalse(el.getFloorIsPressed(i));
-		}
-	}
-	
-	@Test
 	void testSetPositionWorks() {
 		Elevator el = new Elevator(0, 2);
 		el.setPosition(1);
@@ -72,7 +62,7 @@ class ElevatorTest {
 	@Test
 	void testSettingInvalidPositionFails() {
 		Elevator el = new Elevator(0, 2);
-		assertThrows(IllegalArgumentException.class, () -> el.setPosition(2));		
+		assertThrows(IllegalArgumentException.class, () -> el.setPosition(-2));		
 	}
 	
 	@Test 

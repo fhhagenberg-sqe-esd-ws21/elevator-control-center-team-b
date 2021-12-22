@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqe.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Floor {
 
@@ -8,11 +9,11 @@ public class Floor {
 	private boolean buttonUpPressed;
 	private boolean buttonDownPressed;
 	private int floorHeight;
-	private ArrayList<ModelObserver> observers;
+	private List<IModelObserver> observers;
 	
 	public Floor(int floorNumber) {
 		this.floorNumber = floorNumber;
-		observers = new ArrayList<ModelObserver>();
+		observers = new ArrayList<>();
 	}
 	
 	public boolean isButtonUpPressed() {
@@ -58,7 +59,7 @@ public class Floor {
 		return floorNumber;
 	}
 
-	public void addModelObserver(ModelObserver observer) {
+	public void addModelObserver(IModelObserver observer) {
 		observers.add(observer);
 	}
 	

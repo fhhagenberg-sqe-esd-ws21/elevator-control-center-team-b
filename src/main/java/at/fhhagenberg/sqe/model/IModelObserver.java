@@ -1,6 +1,6 @@
 package at.fhhagenberg.sqe.model;
 
-public interface ModelObserver {
+public interface IModelObserver {
 	
 	void elevatorFloorUpdated(Elevator elevator);
 
@@ -9,8 +9,6 @@ public interface ModelObserver {
 	void elevatorDirectionUpdated(Elevator elevator);
 	
 	void elevatorAccelerationUpdated(Elevator elevator);
-	
-	void elevatorFloorsPressedUpdated(Elevator elevator);
 	
 	void elevatorPositionUpdated(Elevator elevator);
 	

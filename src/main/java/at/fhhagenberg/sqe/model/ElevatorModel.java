@@ -1,19 +1,21 @@
 package at.fhhagenberg.sqe.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ElevatorModel {
 	
-	private ArrayList<Elevator> elevators;
-	private ArrayList<Floor> floors;
-	private ArrayList<ModelObserver> observers;
+	private List<Elevator> elevators;
+	private List<Floor> floors;
+	private List<IModelObserver> observers;
 	private String errorMessage;
 	private boolean dataIsStale;
 	
-	public ElevatorModel(ArrayList<Elevator> elevators, ArrayList<Floor> floors) {
+	
+	public ElevatorModel(List<Elevator> elevators, List<Floor> floors) {
 		this.elevators = elevators;
 		this.floors = floors;
-		observers = new ArrayList<ModelObserver>();
+		observers = new ArrayList<>();
 	}
 	
 	public int getNumElevators() {
@@ -64,7 +66,7 @@ public class ElevatorModel {
 		observers.forEach((obs) -> obs.dataIsStaleUpdated(this));
 	}
 	
-	public void addModelObserver(ModelObserver observer) {
+	public void addModelObserver(IModelObserver observer) {
 		observers.add(observer);
 		for (Elevator el : elevators) {
 			el.addModelObserver(observer);
@@ -72,6 +74,11 @@ public class ElevatorModel {
 		for (Floor fl : floors) {
 			fl.addModelObserver(observer);
 		}
+	}
+	
+	public List<Elevator> getElevators()
+	{
+		return elevators;
 	}
 
 }
