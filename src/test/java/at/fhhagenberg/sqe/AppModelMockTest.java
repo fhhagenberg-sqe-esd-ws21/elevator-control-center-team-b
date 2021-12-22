@@ -169,6 +169,7 @@ class AppModelMockTest {
     }
 
     @Test
+    @Disabled
     void testElevatorStopPlanned(FxRobot robot) {
         TableView<ElevatorProperties> floorTable = robot.lookup("#FloorTable").nth(0).query();
         ObservableList<ElevatorProperties> rows = floorTable.getItems();
