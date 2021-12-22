@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqe.gui;
 
 import java.io.IOException;
+import java.rmi.NotBoundException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -44,7 +45,7 @@ class AppEnd2EndTest {
      * @param stage - Will be injected by the test runner.
      */
     @Start
-    public void start(Stage stage) throws IOException, HardwareConnectionException {
+    public void start(Stage stage) throws IOException, HardwareConnectionException, NotBoundException {
         assert(nrOfFloors > nrOfElevators); // we need more floors than elevators for this tests.
 
         ehmMock = Mockito.mock(ElevatorHardwareManager.class);
