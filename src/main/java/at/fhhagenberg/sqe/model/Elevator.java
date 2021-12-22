@@ -12,10 +12,10 @@ public class Elevator {
 	 * Closing - The door are transitioning from Open to Closed
 	 */
 	public enum ElevatorDoorStatus {
-		Open, 
-		Closed, 
-		Opening,
-		Closing
+		OPEN,
+		CLOSED,
+		OPENING,
+		CLOSING
 	}
 
 	/**
@@ -25,15 +25,15 @@ public class Elevator {
 	 * Uncommitted - The elevator is currently not moving
 	 */
 	public enum ElevatorDirection {
-		Up, 
-		Down, 
-		Uncommitted
+		UP,
+		DOWN,
+		UNCOMMITTED
 	}
 	
 	private Integer elevatorNumber;
 	private int floor;
-	private ElevatorDoorStatus doorStatus = ElevatorDoorStatus.Closed;
-	private ElevatorDirection direction = ElevatorDirection.Uncommitted;
+	private ElevatorDoorStatus doorStatus = ElevatorDoorStatus.CLOSED;
+	private ElevatorDirection direction = ElevatorDirection.UNCOMMITTED;
 	private int acceleration;
 	private int position; // in meters
 	private int speed;
@@ -70,7 +70,7 @@ public class Elevator {
 		}
 		
 		this.floor = floor;		
-		observers.forEach((obs) -> obs.elevatorFloorUpdated(this));
+		observers.forEach(obs -> obs.elevatorFloorUpdated(this));
 	}
 
 	public ElevatorDoorStatus getDoorStatus() {
@@ -83,7 +83,7 @@ public class Elevator {
 		}
 		
 		this.doorStatus = doorStatus;
-		observers.forEach((obs) -> obs.elevatorDoorStatusUpdated(this));
+		observers.forEach(obs -> obs.elevatorDoorStatusUpdated(this));
 	}
 
 	public ElevatorDirection getDirection() {
@@ -96,7 +96,7 @@ public class Elevator {
 		}
 		
 		this.direction = direction;
-		observers.forEach((obs) -> obs.elevatorDirectionUpdated(this));
+		observers.forEach(obs -> obs.elevatorDirectionUpdated(this));
 	}
 
 	public int getAcceleration() {
@@ -109,7 +109,7 @@ public class Elevator {
 		}
 		
 		this.acceleration = acceleration;
-		observers.forEach((obs) -> obs.elevatorAccelerationUpdated(this));
+		observers.forEach(obs -> obs.elevatorAccelerationUpdated(this));
 	}
 
 	public int getPosition() {
@@ -124,7 +124,7 @@ public class Elevator {
 			throw new IllegalArgumentException("Invalid elevator position");
 		}
 		this.position = position;
-		observers.forEach((obs) -> obs.elevatorPositionUpdated(this));
+		observers.forEach(obs -> obs.elevatorPositionUpdated(this));
 	}
 
 	public int getSpeed() {
@@ -137,7 +137,7 @@ public class Elevator {
 		}
 		
 		this.speed = speed;
-		observers.forEach((obs) -> obs.elevatorSpeedUpdated(this));
+		observers.forEach(obs -> obs.elevatorSpeedUpdated(this));
 	}
 
 	public int getWeight() {
@@ -150,7 +150,7 @@ public class Elevator {
 		}
 		
 		this.weight = weight;
-		observers.forEach((obs) -> obs.elevatorWeightUpdated(this));
+		observers.forEach(obs -> obs.elevatorWeightUpdated(this));
 	}
 
 	public int getCapacity() {
@@ -163,7 +163,7 @@ public class Elevator {
 		}
 		
 		this.capacity = capacity;
-		observers.forEach((obs) -> obs.elevatorCapacityUpdated(this));
+		observers.forEach(obs -> obs.elevatorCapacityUpdated(this));
 	}
 
 	public boolean getFloorToService(int floorNumber) {
@@ -171,12 +171,12 @@ public class Elevator {
 	}
 
 	public void setFloorToService(int floorNumber, boolean service) {
-		if (this.floorsToService.get(floorNumber) == service) {
+		if (Boolean.TRUE.equals(this.floorsToService.get(floorNumber)) == service) {
 			return;
 		}
 		
 		this.floorsToService.set(floorNumber, service);
-		observers.forEach((obs) -> obs.elevatorFloorsToServiceUpdated(this));
+		observers.forEach(obs -> obs.elevatorFloorsToServiceUpdated(this));
 	}
 
 	public int getTargetFloor() {
@@ -192,7 +192,7 @@ public class Elevator {
 		}
 		
 		this.targetFloor = targetFloor;
-		observers.forEach((obs) -> obs.elevatorTargetFloorUpdated(this));
+		observers.forEach(obs -> obs.elevatorTargetFloorUpdated(this));
 	}
 
 	public int getElevatorNumber() {
@@ -206,7 +206,7 @@ public class Elevator {
 	public void addModelObserver(IModelObserver observer) {
 		observers.add(observer);
 	}	
-	
+
 	@Override
 	public String toString()
 	{

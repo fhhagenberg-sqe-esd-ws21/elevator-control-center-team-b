@@ -35,12 +35,12 @@ public class App extends Application {
 			Mockito.when(iElevatorMock.getFloorNum()).thenReturn(2);
 			Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
 			Mockito.when(iElevatorMock.getElevatorPosition(0)).thenReturn(1, 2,3, 4);
-			Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(ElevatorDirection.Up);
-			Mockito.when(iElevatorMock.getCommittedDirection(1)).thenReturn(ElevatorDirection.Down);
-			Mockito.when(iElevatorMock.getCommittedDirection(2)).thenReturn(ElevatorDirection.Uncommitted);
+			Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(ElevatorDirection.UP);
+			Mockito.when(iElevatorMock.getCommittedDirection(1)).thenReturn(ElevatorDirection.DOWN);
+			Mockito.when(iElevatorMock.getCommittedDirection(2)).thenReturn(ElevatorDirection.UNCOMMITTED);
 			Mockito.when(iElevatorMock.getElevatorButton(0, 1)).thenReturn(true);
 			Mockito.when(iElevatorMock.getElevatorButton(0, 0)).thenReturn(false);
-			Mockito.when(iElevatorMock.getElevatorDoorStatus(0)).thenReturn(ElevatorDoorStatus.Closed);
+			Mockito.when(iElevatorMock.getElevatorDoorStatus(0)).thenReturn(ElevatorDoorStatus.CLOSED);
 			Mockito.when(iElevatorMock.getElevatorFloor(0)).thenReturn(0);
 			Mockito.when(iElevatorMock.getFloorButtonDown(0)).thenReturn(true);
 			Mockito.when(iElevatorMock.getFloorButtonDown(1)).thenReturn(false);

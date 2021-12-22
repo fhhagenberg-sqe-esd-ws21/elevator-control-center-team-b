@@ -54,13 +54,13 @@ class ElevatorHardwareManagerTest {
         ehm = new ElevatorHardwareManager(iElevatorMock);
 
         Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
-        assertEquals(Elevator.ElevatorDirection.Up, ehm.getCommittedDirection(0));
+        assertEquals(Elevator.ElevatorDirection.UP, ehm.getCommittedDirection(0));
 
         Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_DOWN);
-        assertEquals(Elevator.ElevatorDirection.Down, ehm.getCommittedDirection(0));
+        assertEquals(Elevator.ElevatorDirection.DOWN, ehm.getCommittedDirection(0));
 
         Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
-        assertEquals(Elevator.ElevatorDirection.Uncommitted, ehm.getCommittedDirection(0));
+        assertEquals(Elevator.ElevatorDirection.UNCOMMITTED, ehm.getCommittedDirection(0));
 
         Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(-1);
         assertThrowsExactly(IllegalStateException.class, () -> ehm.getCommittedDirection(0));
@@ -250,13 +250,13 @@ class ElevatorHardwareManagerTest {
 
         ehm = new ElevatorHardwareManager(iElevatorMock);
 
-        ehm.setCommittedDirection(0, Elevator.ElevatorDirection.Up);
+        ehm.setCommittedDirection(0, Elevator.ElevatorDirection.UP);
         Mockito.verify(iElevatorMock, times(1)).setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
 
-        ehm.setCommittedDirection(0, Elevator.ElevatorDirection.Down);
+        ehm.setCommittedDirection(0, Elevator.ElevatorDirection.DOWN);
         Mockito.verify(iElevatorMock, times(1)).setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_DOWN);
 
-        ehm.setCommittedDirection(0, Elevator.ElevatorDirection.Uncommitted);
+        ehm.setCommittedDirection(0, Elevator.ElevatorDirection.UNCOMMITTED);
         Mockito.verify(iElevatorMock, times(1)).setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
     }
 
