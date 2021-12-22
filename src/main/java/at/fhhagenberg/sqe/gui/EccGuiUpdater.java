@@ -1,12 +1,12 @@
-package at.fhhagenberg.sqe;
+package at.fhhagenberg.sqe.gui;
 
 import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.ElevatorModel;
 import at.fhhagenberg.sqe.model.Floor;
-import at.fhhagenberg.sqe.model.ModelObserver;
+import at.fhhagenberg.sqe.model.IModelObserver;
 import javafx.application.Platform;
 
-public class EccGuiUpdater implements ModelObserver {
+public class EccGuiUpdater implements IModelObserver {
 
 	private EccLayout layout;
 

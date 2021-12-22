@@ -1,5 +1,7 @@
 package at.fhhagenberg.sqe.model;
 
+import at.fhhagenberg.sqe.backend.IElevatorManager;
+
 public class ElevatorModelUpdater {
 
 	private IElevatorManager manager;

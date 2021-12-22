@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class FloorTest {
 
 	@Mock
-	ModelObserver observer;
+    IModelObserver observer;
 	
 	@Test 
 	void testSetButtonUpPressedNotifiesObserver() {

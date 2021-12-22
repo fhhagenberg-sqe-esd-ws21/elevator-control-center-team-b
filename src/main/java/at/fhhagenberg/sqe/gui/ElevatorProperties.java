@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqe;
+package at.fhhagenberg.sqe.gui;
  
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;

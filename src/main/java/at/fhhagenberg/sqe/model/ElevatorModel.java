@@ -7,7 +7,7 @@ public class ElevatorModel {
 	
 	private List<Elevator> elevators;
 	private List<Floor> floors;
-	private List<ModelObserver> observers;
+	private List<IModelObserver> observers;
 	private String errorMessage;
 	private boolean dataIsStale;
 	
@@ -15,7 +15,7 @@ public class ElevatorModel {
 	public ElevatorModel(List<Elevator> elevators, List<Floor> floors) {
 		this.elevators = elevators;
 		this.floors = floors;
-		observers = new ArrayList<ModelObserver>();
+		observers = new ArrayList<>();
 	}
 	
 	public int getNumElevators() {
@@ -66,7 +66,7 @@ public class ElevatorModel {
 		observers.forEach((obs) -> obs.dataIsStaleUpdated(this));
 	}
 	
-	public void addModelObserver(ModelObserver observer) {
+	public void addModelObserver(IModelObserver observer) {
 		observers.add(observer);
 		for (Elevator el : elevators) {
 			el.addModelObserver(observer);

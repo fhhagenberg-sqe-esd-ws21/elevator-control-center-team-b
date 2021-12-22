@@ -7,18 +7,22 @@ import static org.mockito.Mockito.when;
 
 import java.rmi.RemoteException;
 
+import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
+import at.fhhagenberg.sqe.backend.HardwareConnectionException;
+import at.fhhagenberg.sqe.backend.IElevatorManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
+import at.fhhagenberg.sqe.backend.IElevator;
 
 @ExtendWith(MockitoExtension.class)
 class ElevatorModelUpdaterTest {
 	
 	@Mock
-    IElevator iElevatorMock;
+	IElevator iElevatorMock;
 	
 	@Test
 	void testUpdateSetsModelProperties() throws IllegalArgumentException, HardwareConnectionException, RemoteException {
