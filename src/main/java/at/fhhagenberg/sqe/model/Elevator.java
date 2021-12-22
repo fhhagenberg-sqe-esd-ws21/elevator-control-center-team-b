@@ -32,8 +32,8 @@ public class Elevator {
 	
 	private Integer elevatorNumber;
 	private int floor;
-	private ElevatorDoorStatus doorStatus = ElevatorDoorStatus.Closed;
-	private ElevatorDirection direction = ElevatorDirection.Uncommitted;
+	private ElevatorDoorStatus doorStatus = ElevatorDoorStatus.CLOSED;
+	private ElevatorDirection direction = ElevatorDirection.UNCOMMITTED;
 	private int acceleration;
 	private int position; // in meters
 	private int speed;

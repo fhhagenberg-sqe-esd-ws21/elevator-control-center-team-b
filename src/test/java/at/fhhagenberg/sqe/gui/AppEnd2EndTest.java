@@ -60,8 +60,8 @@ class AppEnd2EndTest {
         }
 
         for (int i = 0; i < nrOfElevators; i++) {
-            Mockito.when(ehmMock.getCommittedDirection(i)).thenReturn(ElevatorDirection.Uncommitted);
-            Mockito.when(ehmMock.getElevatorDoorStatus(i)).thenReturn(ElevatorDoorStatus.Closed);
+            Mockito.when(ehmMock.getCommittedDirection(i)).thenReturn(ElevatorDirection.UNCOMMITTED);
+            Mockito.when(ehmMock.getElevatorDoorStatus(i)).thenReturn(ElevatorDoorStatus.CLOSED);
 
             Mockito.when(ehmMock.getTarget(i)).thenReturn(nrOfFloors-(i+1));
             Mockito.when(ehmMock.getElevatorPosition(i)).thenReturn(i*floorHeight);
@@ -105,10 +105,10 @@ class AppEnd2EndTest {
 
         for (int i = 0; i < nrOfElevators; i++) {
             verifyThat("#Position", LabeledMatchers.hasText(i * floorHeight + "m"));
-            verifyThat("#Direction", LabeledMatchers.hasText("Uncommitted"));
+            verifyThat("#Direction", LabeledMatchers.hasText("UNCOMMITTED"));
             verifyThat("#Payload", LabeledMatchers.hasText("0kg"));
             verifyThat("#Speed", LabeledMatchers.hasText("0m/s"));
-            verifyThat("#Doors", LabeledMatchers.hasText("Closed"));
+            verifyThat("#Doors", LabeledMatchers.hasText("CLOSED"));
             verifyThat("#TargetFloor", LabeledMatchers.hasText(nrOfFloors-(i+1) + ""));
 
             Node el = robot.lookup("#elevatorsList .list-cell").nth(i+1).query();
