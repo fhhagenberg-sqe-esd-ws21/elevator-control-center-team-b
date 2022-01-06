@@ -10,19 +10,20 @@ import java.util.TimerTask;
 
 import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.backend.HardwareConnectionException;
-import at.fhhagenberg.sqe.backend.IElevator;
 import at.fhhagenberg.sqe.backend.IElevatorManager;
 import at.fhhagenberg.sqe.model.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sqelevator.IElevator;
 
 /**
  * JavaFX App
  */
-class App extends Application {
+public class App extends Application {
 
-	ElevatorHardwareManager iElevatorHM;
+
+	private ElevatorHardwareManager iElevatorHM;
 
 	private Timer timer;
 	private TimerTask task;
@@ -41,6 +42,7 @@ class App extends Application {
 		ElevatorModelFactory factory = new ElevatorModelFactory(manager);
 		return factory.createModel();
 	}
+
 
 	protected ElevatorModelUpdater createElevatorModelUpdater(ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
 		return new ElevatorModelUpdater(getHardwareConnection(), model);
@@ -72,7 +74,7 @@ class App extends Application {
         timer.scheduleAtFixedRate(task, 0, getTimerPeriodMs());
 		
 		
-    	var root = (gui).getLayout();
+    	var root = gui.getLayout();
 
     	
         var scene = new Scene(root, 640, 480);
