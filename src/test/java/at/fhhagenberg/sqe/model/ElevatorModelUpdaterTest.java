@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
+import sqelevator.IElevator;
 
 @ExtendWith(MockitoExtension.class)
 class ElevatorModelUpdaterTest {

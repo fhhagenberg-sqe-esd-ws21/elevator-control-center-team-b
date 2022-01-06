@@ -1,25 +1,24 @@
 package at.fhhagenberg.sqe;
 
 import java.io.IOException;
+import java.rmi.NotBoundException;
 
 import at.fhhagenberg.sqe.model.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.model.HardwareConnectionException;
-import at.fhhagenberg.sqe.model.IElevator;
-import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
-import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 
 import javafx.stage.Stage;
+import sqelevator.IElevator;
+
 import org.testfx.matcher.control.ListViewMatchers;
 import org.testfx.matcher.control.TableViewMatchers;
 
@@ -35,9 +34,11 @@ class AppTest {
      * Will be called with {@code @Before} semantics, i. e. before each test method.
      *
      * @param stage - Will be injected by the test runner.
+     * @throws NotBoundException 
+     * @throws IllegalArgumentException 
      */
     @Start
-    public void start(Stage stage) throws IOException, HardwareConnectionException {
+    public void start(Stage stage) throws IOException, HardwareConnectionException, IllegalArgumentException, NotBoundException {
 
         iElevatorMock = Mockito.mock(IElevator.class);
         // build up the mock

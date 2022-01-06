@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import sqelevator.IElevator;
+
 @ExtendWith(MockitoExtension.class)
 class ElevatorModelFactoryTest {
 	@Mock

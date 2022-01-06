@@ -2,6 +2,7 @@ package at.fhhagenberg.sqe.model;
 
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
+import sqelevator.IElevator;
 
 public class ElevatorHardwareManager implements IElevatorManager {
 	
