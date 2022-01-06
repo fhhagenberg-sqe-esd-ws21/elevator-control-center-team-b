@@ -1,6 +1,8 @@
 package at.fhhagenberg.sqe.backend;
 
 import at.fhhagenberg.sqe.model.Elevator;
+import sqelevator.IElevator;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
