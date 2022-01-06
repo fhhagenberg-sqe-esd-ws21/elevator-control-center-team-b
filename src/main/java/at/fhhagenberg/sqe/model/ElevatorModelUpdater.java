@@ -1,5 +1,12 @@
 package at.fhhagenberg.sqe.model;
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
+import at.fhhagenberg.sqe.backend.ElevatorConnectionManager;
+import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
+import at.fhhagenberg.sqe.backend.HardwareConnectionException;
 import at.fhhagenberg.sqe.backend.IElevatorManager;
 
 public class ElevatorModelUpdater {
@@ -13,10 +20,12 @@ public class ElevatorModelUpdater {
 	}
 	
 	public void update() {
-		
-		model.setDataIsStale(false);
+		boolean stale = true;
 		try {
-			
+			if (!manager.isConnected()) {
+				manager = ElevatorConnectionManager.getElevatorConnection();
+			}			
+						
 			for (int elevatorNumber = 0; elevatorNumber < model.getNumElevators(); elevatorNumber++) {
 				Elevator el = model.getElevator(elevatorNumber);				
 				el.setFloor(manager.getElevatorFloor(elevatorNumber));
@@ -31,22 +40,25 @@ public class ElevatorModelUpdater {
 				
 				for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
 					el.setFloorToService(floorNumber, manager.getServicesFloors(elevatorNumber, floorNumber));
+					el.setFloorStopRequested(floorNumber, manager.getElevatorButton(elevatorNumber, floorNumber));
 				}		
 			}
 			
 			for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
 				Floor floor = model.getFloor(floorNumber);
 				
-					floor.setButtonUpPressed(manager.getFloorButtonUp(floorNumber));
-					floor.setButtonDownPressed(manager.getFloorButtonDown(floorNumber));
-					floor.setFloorHeight(manager.getFloorHeight());	
-				
+				floor.setButtonUpPressed(manager.getFloorButtonUp(floorNumber));
+				floor.setButtonDownPressed(manager.getFloorButtonDown(floorNumber));
+				floor.setFloorHeight(manager.getFloorHeight());					
 			}
+			stale = false;
 		}
 		catch (Exception exc) {
+			System.out.println(exc.getMessage());
 			model.setErrorMessage(exc.getMessage());
-			model.setDataIsStale(true);
 		}
+
+		model.setDataIsStale(stale);
 	}
 
 	public void updateElevatorTargetFloor(int elevatorNumber, int targetFloor) {

@@ -60,6 +60,7 @@ class AppEnd2EndTest {
         when(ehmMock.getFloorNum()).thenReturn(nrOfFloors);
         when(ehmMock.getElevatorNum()).thenReturn(nrOfElevators);
         when(ehmMock.getFloorHeight()).thenReturn(floorHeight);
+        when(ehmMock.isConnected()).thenReturn(true);
 
         for (int i = 0; i < nrOfFloors; i++) {
             when(ehmMock.getFloorButtonDown(i)).thenReturn(false);

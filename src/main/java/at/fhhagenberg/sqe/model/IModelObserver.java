@@ -31,4 +31,6 @@ public interface IModelObserver {
 	void floorButtonDownPressedUpdated(Floor floor);
 
 	void floorHeightUpdated(Floor floor);
+
+	void elevatorFloorStopRequestedUpdated(Elevator elevator);
 }
