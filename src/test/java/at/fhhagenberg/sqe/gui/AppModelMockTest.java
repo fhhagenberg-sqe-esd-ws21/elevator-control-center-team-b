@@ -1,5 +1,6 @@
 package at.fhhagenberg.sqe.gui;
 
+import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.backend.HardwareConnectionException;
 import at.fhhagenberg.sqe.model.*;
 import javafx.collections.ObservableList;
@@ -38,6 +39,15 @@ class AppModelMockTest {
     ArrayList<Floor> floors = new ArrayList<>(nrOfFloors);
 
 
+    private ElevatorProperties getFloorInTableView(ObservableList<ElevatorProperties> rows, int floorNumber) {
+    	for (int i = 0; i < rows.size(); i++) {
+        	if (rows.get(i).getFloor() == floorNumber) {
+        		return rows.get(i);
+        	}
+        }   
+    	return null;
+    }
+    
     /**
      * Will be called with {@code @Before} semantics, i. e. before each test method.
      *
@@ -61,12 +71,16 @@ class AppModelMockTest {
         testModel = new ElevatorModel(elevators, floors);
 
         var app = new App() {
+        	@Override
+            public ElevatorHardwareManager getHardwareConnection() {
+                return null;
+            }
             @Override
-            public ElevatorModel createModel() {
+            public ElevatorModel createModel(ElevatorHardwareManager manager) {
                 return testModel;
             }
             @Override
-            public ElevatorModelUpdater createElevatorModelUpdater(ElevatorModel model) {
+            public ElevatorModelUpdater createElevatorModelUpdater(ElevatorHardwareManager manager, ElevatorModel model) {
                 return new ElevatorModelUpdater(null, model) {
                     @Override
                     public void update() {
@@ -106,33 +120,33 @@ class AppModelMockTest {
 
         elevators.get(0).setFloor(0);
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(Color.GREEN, rows.get(0).getPosition().getFill());
-        assertEquals(Color.RED, rows.get(1).getPosition().getFill());
-        assertEquals(Color.RED, rows.get(2).getPosition().getFill());
-        assertEquals(Color.RED, rows.get(3).getPosition().getFill());
+        assertEquals(Color.GREEN, getFloorInTableView(rows, 0).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 1).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 2).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 3).getPosition().getFill());
 
         elevators.get(0).setFloor(1);
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(Color.RED, rows.get(0).getPosition().getFill());
-        assertEquals(Color.GREEN, rows.get(1).getPosition().getFill());
-        assertEquals(Color.RED, rows.get(2).getPosition().getFill());
-        assertEquals(Color.RED, rows.get(3).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 0).getPosition().getFill());
+        assertEquals(Color.GREEN, getFloorInTableView(rows, 1).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 2).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 3).getPosition().getFill());
 
         elevators.get(0).setFloor(2);
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(Color.RED, rows.get(0).getPosition().getFill());
-        assertEquals(Color.RED, rows.get(1).getPosition().getFill());
-        assertEquals(Color.GREEN, rows.get(2).getPosition().getFill());
-        assertEquals(Color.RED, rows.get(3).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 0).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 1).getPosition().getFill());
+        assertEquals(Color.GREEN, getFloorInTableView(rows, 2).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 3).getPosition().getFill());
 
         elevators.get(0).setFloor(3);
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(Color.RED, rows.get(0).getPosition().getFill());
-        assertEquals(Color.RED, rows.get(1).getPosition().getFill());
-        assertEquals(Color.RED, rows.get(2).getPosition().getFill());
-        assertEquals(Color.GREEN, rows.get(3).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 0).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 1).getPosition().getFill());
+        assertEquals(Color.RED, getFloorInTableView(rows, 2).getPosition().getFill());
+        assertEquals(Color.GREEN, getFloorInTableView(rows, 3).getPosition().getFill());
     }
-
+    
     @Test
     void testElevatorCallingUp(FxRobot robot) {
         TableView<ElevatorProperties> floorTable = robot.lookup("#FloorTable").nth(0).query();
@@ -140,11 +154,12 @@ class AppModelMockTest {
 
         floors.get(0).setButtonUpPressed(false);
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(Color.GRAY, rows.get(0).getUp().getFill());
+        assertEquals(Color.GRAY, getFloorInTableView(rows, 0).getUp().getFill());
 
         floors.get(0).setButtonUpPressed(true);
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(Color.GREEN, rows.get(0).getUp().getFill());
+
+		assertEquals(Color.GREEN, getFloorInTableView(rows, 0).getUp().getFill());
     }
 
     @Test
@@ -154,11 +169,11 @@ class AppModelMockTest {
 
         floors.get(0).setButtonDownPressed(false);
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(Color.GRAY, rows.get(0).getDown().getFill());
+        assertEquals(Color.GRAY, getFloorInTableView(rows, 0).getDown().getFill());
 
         floors.get(0).setButtonDownPressed(true);
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(Color.GREEN, rows.get(0).getDown().getFill());
+        assertEquals(Color.GREEN, getFloorInTableView(rows, 0).getDown().getFill());
     }
 
     @Test
@@ -169,11 +184,11 @@ class AppModelMockTest {
 
         elevators.get(0).setTargetFloor(0);
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(Color.GRAY, rows.get(0).getStopPlanned().getFill());
+        assertEquals(Color.GRAY, getFloorInTableView(rows, 0).getStopPlanned().getFill());
 
         elevators.get(0).setTargetFloor(2);
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(Color.GREEN, rows.get(2).getStopPlanned().getFill());
+        assertEquals(Color.GREEN, getFloorInTableView(rows, 2).getStopPlanned().getFill());
     }
 
     @Test

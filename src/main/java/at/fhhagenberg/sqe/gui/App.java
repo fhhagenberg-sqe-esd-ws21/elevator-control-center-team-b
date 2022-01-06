@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import at.fhhagenberg.sqe.backend.ElevatorConnectionManager;
 import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.backend.HardwareConnectionException;
 import at.fhhagenberg.sqe.backend.IElevatorManager;
@@ -22,30 +23,22 @@ import sqelevator.IElevator;
  */
 public class App extends Application {
 
-
-	private ElevatorHardwareManager iElevatorHM;
-
 	private Timer timer;
 	private TimerTask task;
 	private static final long TIMER_PERIOD = 1000L; // milliseconds
-	
-	protected ElevatorHardwareManager getHardwareConnection() throws IllegalArgumentException, HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
-		if (iElevatorHM == null) {
-			IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
-			iElevatorHM = new ElevatorHardwareManager(controller);
-		}
-		return iElevatorHM;
-	}
 
-	protected ElevatorModel createModel() throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
-		IElevatorManager manager = getHardwareConnection();
+	public ElevatorHardwareManager getHardwareConnection() throws MalformedURLException, RemoteException, IllegalArgumentException, NotBoundException, HardwareConnectionException {		
+		return ElevatorConnectionManager.getElevatorConnection();
+	}
+	
+	protected ElevatorModel createModel(ElevatorHardwareManager manager) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {		
 		ElevatorModelFactory factory = new ElevatorModelFactory(manager);
 		return factory.createModel();
 	}
 
 
-	protected ElevatorModelUpdater createElevatorModelUpdater(ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
-		return new ElevatorModelUpdater(getHardwareConnection(), model);
+	protected ElevatorModelUpdater createElevatorModelUpdater(ElevatorHardwareManager manager, ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
+		return new ElevatorModelUpdater(manager, model);
 	}
 
 	protected long getTimerPeriodMs() {
@@ -55,8 +48,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException, HardwareConnectionException, NotBoundException {
     	// TODO handle exceptions and display in GUI
-		ElevatorModel model = createModel();
-		ElevatorModelUpdater updater = createElevatorModelUpdater(model);
+    	ElevatorHardwareManager manager = getHardwareConnection();
+		ElevatorModel model = createModel(manager);
+		ElevatorModelUpdater updater = createElevatorModelUpdater(manager, model);
 		updater.update();
 		EccLayout gui = new EccLayout(updater, model);
 

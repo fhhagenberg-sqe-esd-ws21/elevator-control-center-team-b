@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -85,7 +86,7 @@ class EccLayout {
         status.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getPosition()));
 
         floor = new TableColumn<>("Floor");
-        floor.setCellValueFactory(new PropertyValueFactory<>("floor"));
+        floor.setCellValueFactory(new PropertyValueFactory<>("floor"));        
 
         up = new TableColumn<>("Up");
         up.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getUp()));
@@ -104,16 +105,10 @@ class EccLayout {
 		elevatorPropertiesTable.getColumns().add(down);
 		elevatorPropertiesTable.getColumns().add(stopPlanned);
 		
-		elevatorPropertiesTable.getColumns().get(0).getCellData(0);
-        		/*		
-        floors = FXCollections.observableArrayList();
-
-        floors.add(new ElevatorProperties(0, 0, false, false, true));
-        floors.add(new ElevatorProperties(0, 1, false, false ,false));
-        floors.add(new ElevatorProperties(0, 2, false, true, false));*/
-		
+		elevatorPropertiesTable.getColumns().get(0).getCellData(0);		
 		elevatorPropertiesTable.setItems(floors);    
 		elevatorPropertiesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		
 		
 		
 		automatic = new ToggleButton("Automatic Mode");
@@ -146,25 +141,13 @@ class EccLayout {
 	    
 	    elevators.getItems().addAll(elevModel.getElevators());
 	    
-
-/*
-	    elevators.getItems().add(new Elevator(1,10));
-	    elevators.getItems().add(new Elevator(2,10));
-	    elevators.getItems().add(new Elevator(3,10));*/
-	        
-	    
 	    HBox topView = new HBox(15);
 	    
 	    
 	    Label errBox = new Label("Error Box");
 	    errorBox = new TextArea();
 	    errorBox.setWrapText(true);
-	    
-	    
-	    VBox topViewFull = new VBox(10);
-	    
-	    //topViewFull.getChildren().addAll(topView, errBox, errorBox);
-	    
+	       
 	    // botom   view
 	    position = new Label("Position:");
 	    positionValue = new Label("5000m");
@@ -179,7 +162,6 @@ class EccLayout {
 	    directionValue.setStyle(FX_FONT_SIZE_18);
 	    payload.setStyle(FX_FONT_SIZE_18);
 	    payloadValue.setStyle(FX_FONT_SIZE_18);
-	    
 	    
 
 	    speed = new Label("Speed:");
@@ -218,11 +200,6 @@ class EccLayout {
 	    fullLayout.setStyle("-fx-padding: 15; -fx-spacing: 15;");
 	    
 	    fullLayout.getChildren().addAll(title, topView);
-	    //fullLayout.setTop(title);  
-        //fullLayout.setRight(topView);
-        //fullLayout.setBottom(botPane);
-	    
-	    
 	    
 	    // set labels for easier testing
 	    elevators.setId("elevatorsList");
@@ -264,10 +241,13 @@ class EccLayout {
 			floors.add(new ElevatorProperties(newElevator.getFloor(), i, 
 							elevatorModel.getFloor(i).isButtonUpPressed(), 
 							elevatorModel.getFloor(i).isButtonDownPressed(), 
-							newElevator.getFloorToService(i)));
+							newElevator.getFloorStopRequested(i)));
 		}
 
 		elevatorPropertiesTable.setItems(floors); 
+		elevatorPropertiesTable.getSortOrder().add(floor);
+		floor.setSortType(TableColumn.SortType.DESCENDING);
+		elevatorPropertiesTable.sort();
 
 		setPosition(newElevator);
 		setDirection(newElevator);
@@ -311,6 +291,7 @@ class EccLayout {
 			{
 				floors.get(i).setPosition(elevator.getFloor());
 			}
+			elevatorPropertiesTable.refresh();
 		}
 	}
 
@@ -342,8 +323,6 @@ class EccLayout {
 			//acceleratinValue.setText(elevator.getAcceleration().toString());			
 		}
 	}
-
-
 
 
 	public void setPosition(Elevator elevator) {
@@ -384,14 +363,16 @@ class EccLayout {
 
 
 
-	public void setFloorsToService(Elevator elevator) {
+	public void setFloorsToStop(Elevator elevator) {
 		// if update occurs on selected elevator, update view
 		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
 		{
 			for(int i = 0; i < floors.size();i++)
 			{
-				floors.get(i).setStopPlanned(elevator.getFloorToService(i));
+				int floorNumber = floors.get(i).getFloor();
+				floors.get(i).setStopPlanned(elevator.getFloorStopRequested(floorNumber));					
 			}
+			elevatorPropertiesTable.refresh();
 		}
 	}
 
@@ -410,20 +391,31 @@ class EccLayout {
 	}
 
 
-
 	public void setButtonUpPressed(Floor floor) {
-		floors.get(floor.getFloorNumber()).setUp(floor.isButtonUpPressed());
+		for(int i = 0; i < floors.size(); i++)
+		{
+			if(floors.get(i).getFloor() == floor.getFloorNumber())
+			{
+				floors.get(i).setUp(floor.isButtonUpPressed());
+			}
+		}
+		elevatorPropertiesTable.refresh();
 	}
 
-
 	public void setButtonDownPressed(Floor floor) {
-		floors.get(floor.getFloorNumber()).setDown(floor.isButtonDownPressed());
+		for(int i = 0; i < floors.size(); i++)
+		{
+			if(floors.get(i).getFloor() == floor.getFloorNumber())
+			{
+				floors.get(i).setDown(floor.isButtonDownPressed());
+			}
+		}
+		elevatorPropertiesTable.refresh();
 	}
 
 
 	public void setHeight(Floor floor) {
 		// not used in gui
 	}
-
 
 }
