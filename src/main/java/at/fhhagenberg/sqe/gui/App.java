@@ -12,47 +12,50 @@ import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.backend.HardwareConnectionException;
 import at.fhhagenberg.sqe.backend.IElevatorManager;
 import at.fhhagenberg.sqe.model.*;
-import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
-import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
-
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 /**
  * JavaFX App
  */
 public class App extends Application {
 
+
+	private ElevatorHardwareManager iElevatorHM;
+
 	private Timer timer;
 	private TimerTask task;
-	private long TIMER_PERIOD = 1000l; // milliseconds
+	private static final long TIMER_PERIOD = 1000L; // milliseconds
 	
-	public ElevatorHardwareManager getHardwareConnection() {
-		try {
+	protected ElevatorHardwareManager getHardwareConnection() throws IllegalArgumentException, HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
+		if (iElevatorHM == null) {
 			IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
-			return new ElevatorHardwareManager(controller);
-		} catch (Exception e) {
-			return null;
-		}		
+			iElevatorHM = new ElevatorHardwareManager(controller);
+		}
+		return iElevatorHM;
 	}
 
-	public ElevatorModel createModel() throws HardwareConnectionException {
+	protected ElevatorModel createModel() throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
 		IElevatorManager manager = getHardwareConnection();
 		ElevatorModelFactory factory = new ElevatorModelFactory(manager);
 		return factory.createModel();
 	}
 
-	public ElevatorModelUpdater createElevatorModelUpdater(ElevatorModel model) {
+
+	protected ElevatorModelUpdater createElevatorModelUpdater(ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
 		return new ElevatorModelUpdater(getHardwareConnection(), model);
 	}
 
+	protected long getTimerPeriodMs() {
+		return TIMER_PERIOD;
+	}
+
     @Override
-    public void start(Stage stage) throws HardwareConnectionException {
-    	ElevatorModel model = createModel();
+    public void start(Stage stage) throws IOException, HardwareConnectionException, NotBoundException {
+    	// TODO handle exceptions and display in GUI
+		ElevatorModel model = createModel();
 		ElevatorModelUpdater updater = createElevatorModelUpdater(model);
 		updater.update();
 		EccLayout gui = new EccLayout(updater, model);
@@ -62,17 +65,16 @@ public class App extends Application {
 
 		timer = new Timer();
         task = new TimerTask() {
-
 			@Override
 			public void run() {
 				updater.update();
 			}
         };
         
-        timer.scheduleAtFixedRate(task, 0, TIMER_PERIOD);
+        timer.scheduleAtFixedRate(task, 0, getTimerPeriodMs());
 		
 		
-    	var root = (gui).getLayout();
+    	var root = gui.getLayout();
 
     	
         var scene = new Scene(root, 640, 480);

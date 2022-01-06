@@ -96,7 +96,6 @@ class EccLayout {
 
         stopPlanned = new TableColumn<>("Stop Planned");
         stopPlanned.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getStopPlanned()));
-
         
         
         elevatorPropertiesTable.getColumns().add(status);
