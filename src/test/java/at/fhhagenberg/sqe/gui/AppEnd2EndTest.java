@@ -34,7 +34,7 @@ import static org.testfx.api.FxAssert.verifyThat;
 
 @ExtendWith(ApplicationExtension.class)
 class AppEnd2EndTest {
-    private static final long TIMER_PERIOD = 10L; // milliseconds
+    private static final long TIMER_PERIOD = 500L; // milliseconds
 
     App app;
 
@@ -202,13 +202,15 @@ class AppEnd2EndTest {
 
     @Test
     void testElevatorPosition(FxRobot robot) throws HardwareConnectionException {
+    	waitForUpdate();
         verifyThat("#Position", LabeledMatchers.hasText("0m"));
 
         for (int i = 0; i < nrOfElevators; i++) {
             Node el = robot.lookup("#elevatorsList .list-cell").nth(i).query();
             robot.clickOn(el);
+            
             for (int j = 0; j < nrOfFloors; j++) {
-                doReturn(j * floorHeight).when(ehmMock).getElevatorPosition(i);
+                when(ehmMock.getElevatorPosition(i)).thenReturn(j*floorHeight);
                 waitForUpdate();
                 verifyThat("#Position", LabeledMatchers.hasText(j * floorHeight + "m"));
             }

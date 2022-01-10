@@ -96,10 +96,8 @@ public class App extends Application {
 					updater.update();
 										
 					Platform.runLater(() -> {
-						if (!((VBox)stage.getScene().getRoot()).getChildren().get(0).equals(normalUI)) {
-							//stage.getScene().setRoot(normalUI);
-							((VBox)stage.getScene().getRoot()).getChildren().clear();
-							((VBox)stage.getScene().getRoot()).getChildren().add(normalUI);
+						if (!stage.getScene().getRoot().equals(normalUI)) {
+							stage.getScene().setRoot(normalUI);
 						}
 					});					
 				}
@@ -109,10 +107,8 @@ public class App extends Application {
 					}
 										
 					Platform.runLater(() -> {
-						if (!((VBox)stage.getScene().getRoot()).getChildren().get(0).equals(errorUI)) {
-							((VBox)stage.getScene().getRoot()).getChildren().clear();
-							//stage.getScene().setRoot(errorUI);
-							((VBox)stage.getScene().getRoot()).getChildren().add(errorUI);
+						if (!stage.getScene().getRoot().equals(errorUI)) {	
+							stage.getScene().setRoot(errorUI);
 						}
 					});												
 				}
@@ -127,12 +123,8 @@ public class App extends Application {
         timer.scheduleAtFixedRate(task, getTimerPeriodMs(), getTimerPeriodMs());
         
         task.run();
-        var ui = normalUI;
-        if (normalUI == null) {
-        	ui = errorUI;
-        }
-        ((VBox)stage.getScene().getRoot()).getChildren().add(ui);
-
+        
+        stage.getScene().setRoot(normalUI != null ? normalUI : errorUI);
         stage.show();   
     }
 

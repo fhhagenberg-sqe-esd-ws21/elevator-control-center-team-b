@@ -54,7 +54,7 @@ class AppModelMockTest {
      * @param stage - Will be injected by the test runner.
      */
     @Start
-    public void start(Stage stage) throws IOException, HardwareConnectionException, NotBoundException {
+    public void start(Stage stage) {
         assert(nrOfFloors > nrOfElevators); // we need more floors than elevators for this tests.
 
         elevators = new ArrayList<>(nrOfElevators);

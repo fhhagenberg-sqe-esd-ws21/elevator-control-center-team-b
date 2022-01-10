@@ -30,7 +30,8 @@ class ElevatorModelUpdaterTest {
 	void testUpdateSetsModelProperties() throws IllegalArgumentException, HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
 		when(iElevatorMock.getElevatorNum()).thenReturn(10);
 		when(iElevatorMock.getFloorNum()).thenReturn(5);
-		when(iElevatorMock.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSING);
+		for (int i = 0; i < 10; i++)
+			when(iElevatorMock.getElevatorDoorStatus(i)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSING);
 		
 		IElevatorManager man = new ElevatorHardwareManager(iElevatorMock);
 		ElevatorModelFactory fact = new ElevatorModelFactory(man);
@@ -40,24 +41,6 @@ class ElevatorModelUpdaterTest {
 		updater.update();
 		
 		assertEquals(ElevatorDoorStatus.CLOSING, model.getElevator(0).getDoorStatus());
-	}
-
-	
-	@Test 
-	void testUpdateSetsErrorMessage() throws RemoteException, HardwareConnectionException, MalformedURLException, IllegalArgumentException, NotBoundException {
-		when(iElevatorMock.getElevatorNum()).thenReturn(10);
-		when(iElevatorMock.getFloorNum()).thenReturn(5);
-		
-		IElevatorManager man = new ElevatorHardwareManager(iElevatorMock);
-		ElevatorModelFactory fact = new ElevatorModelFactory(man);
-		ElevatorModel model = fact.createModel();
-		ElevatorModelUpdater updater = new ElevatorModelUpdater(man, model);
-		
-		when(iElevatorMock.getElevatorFloor(0)).thenThrow(new RemoteException());		
-		updater.update();
-		
-		assertEquals("Hardware connection lost", model.getErrorMessage());
-		assertTrue(model.isDataIsStale());
 	}
 	
 	@Test 
