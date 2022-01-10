@@ -145,3 +145,7 @@ buildNumber.properties
 
 # End of https://www.gitignore.io/api/java,maven,eclipse,intellij
 /.idea/
+
+!elevator_sim/bin/elevator.sh
+!elevator_sim/bin/elevator.properties
+!elevator_sim/bin/elevator.sh
