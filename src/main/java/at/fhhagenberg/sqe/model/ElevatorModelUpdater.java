@@ -19,46 +19,36 @@ public class ElevatorModelUpdater {
 		this.model = model;
 	}
 	
-	public void update() {
-		boolean stale = true;
-		try {
-			if (!manager.isConnected()) {
-				manager = ElevatorConnectionManager.getElevatorConnection();
-			}			
-						
-			for (int elevatorNumber = 0; elevatorNumber < model.getNumElevators(); elevatorNumber++) {
-				Elevator el = model.getElevator(elevatorNumber);				
-				el.setFloor(manager.getElevatorFloor(elevatorNumber));
-				el.setDoorStatus(manager.getElevatorDoorStatus(elevatorNumber));
-				el.setDirection(manager.getCommittedDirection(elevatorNumber));
-				el.setAcceleration(manager.getElevatorAccel(elevatorNumber));
-				el.setPosition(manager.getElevatorPosition(elevatorNumber));
-				el.setSpeed(manager.getElevatorSpeed(elevatorNumber));
-				el.setWeight(manager.getElevatorWeight(elevatorNumber));
-				el.setCapacity(manager.getElevatorCapacity(elevatorNumber));
-				el.setTargetFloor(manager.getTarget(elevatorNumber));
-				
-				for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
-					el.setFloorToService(floorNumber, manager.getServicesFloors(elevatorNumber, floorNumber));
-					el.setFloorStopRequested(floorNumber, manager.getElevatorButton(elevatorNumber, floorNumber));
-				}		
-			}
+	public void update() throws MalformedURLException, RemoteException, IllegalArgumentException, NotBoundException, HardwareConnectionException {
+		if (!manager.isConnected()) {
+			manager = ElevatorConnectionManager.getElevatorConnection();
+		}			
+					
+		for (int elevatorNumber = 0; elevatorNumber < model.getNumElevators(); elevatorNumber++) {
+			Elevator el = model.getElevator(elevatorNumber);				
+			el.setFloor(manager.getElevatorFloor(elevatorNumber));
+			el.setDoorStatus(manager.getElevatorDoorStatus(elevatorNumber));
+			el.setDirection(manager.getCommittedDirection(elevatorNumber));
+			el.setAcceleration(manager.getElevatorAccel(elevatorNumber));
+			el.setPosition(manager.getElevatorPosition(elevatorNumber));
+			el.setSpeed(manager.getElevatorSpeed(elevatorNumber));
+			el.setWeight(manager.getElevatorWeight(elevatorNumber));
+			el.setCapacity(manager.getElevatorCapacity(elevatorNumber));
+			el.setTargetFloor(manager.getTarget(elevatorNumber));
 			
 			for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
-				Floor floor = model.getFloor(floorNumber);
-				
-				floor.setButtonUpPressed(manager.getFloorButtonUp(floorNumber));
-				floor.setButtonDownPressed(manager.getFloorButtonDown(floorNumber));
-				floor.setFloorHeight(manager.getFloorHeight());					
-			}
-			stale = false;
+				el.setFloorToService(floorNumber, manager.getServicesFloors(elevatorNumber, floorNumber));
+				el.setFloorStopRequested(floorNumber, manager.getElevatorButton(elevatorNumber, floorNumber));
+			}		
 		}
-		catch (Exception exc) {
-			System.out.println(exc.getMessage());
-			model.setErrorMessage(exc.getMessage());
+		
+		for (int floorNumber = 0; floorNumber < model.getNumFloors(); floorNumber++) {
+			Floor floor = model.getFloor(floorNumber);
+			
+			floor.setButtonUpPressed(manager.getFloorButtonUp(floorNumber));
+			floor.setButtonDownPressed(manager.getFloorButtonDown(floorNumber));
+			floor.setFloorHeight(manager.getFloorHeight());					
 		}
-
-		model.setDataIsStale(stale);
 	}
 
 	public void updateElevatorTargetFloor(int elevatorNumber, int targetFloor) {

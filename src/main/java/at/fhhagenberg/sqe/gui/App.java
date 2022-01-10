@@ -14,7 +14,12 @@ import at.fhhagenberg.sqe.backend.HardwareConnectionException;
 import at.fhhagenberg.sqe.backend.IElevatorManager;
 import at.fhhagenberg.sqe.model.*;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
 
@@ -22,10 +27,13 @@ import sqelevator.IElevator;
  * JavaFX App
  */
 public class App extends Application {
-
+	
+	private ElevatorModelUpdater updater;
+	private Parent normalUI;
+	private Parent errorUI;
 	private Timer timer;
-	private TimerTask task;
-	private static final long TIMER_PERIOD = 1000L; // milliseconds
+	
+	private static final long TIMER_PERIOD = 100L; // milliseconds
 
 	public ElevatorHardwareManager getHardwareConnection() throws MalformedURLException, RemoteException, IllegalArgumentException, NotBoundException, HardwareConnectionException {		
 		return ElevatorConnectionManager.getElevatorConnection();
@@ -45,35 +53,86 @@ public class App extends Application {
 		return TIMER_PERIOD;
 	}
 
-    @Override
-    public void start(Stage stage) throws IOException, HardwareConnectionException, NotBoundException {
-    	// TODO handle exceptions and display in GUI
-    	ElevatorHardwareManager manager = getHardwareConnection();
+	protected Parent getBackupUI() {
+		VBox root = new VBox();
+		Label errorLabel = new Label("Could not establish connection. Please contact your administrator.");
+		errorLabel.setWrapText(true);
+		errorLabel.setStyle("-fx-font-size: 30; -fx-padding: 15");
+		Label retryLabel = new Label("Retrying ...");
+		retryLabel.setStyle("-fx-font-size: 24");
+		retryLabel.setMaxWidth(Double.MAX_VALUE);
+		retryLabel.setAlignment(Pos.CENTER);
+		root.getChildren().addAll(errorLabel, retryLabel);
+		return root;
+	}
+	
+	protected Parent getNormalUI() throws MalformedURLException, RemoteException, IllegalArgumentException, NotBoundException, HardwareConnectionException {
+		ElevatorHardwareManager manager = getHardwareConnection();
 		ElevatorModel model = createModel(manager);
-		ElevatorModelUpdater updater = createElevatorModelUpdater(manager, model);
+		updater = createElevatorModelUpdater(manager, model);
 		updater.update();
 		EccLayout gui = new EccLayout(updater, model);
-
+		
 		EccGuiUpdater guiObserver = new EccGuiUpdater(gui);
-		model.addModelObserver(guiObserver);
+		model.addModelObserver(guiObserver);    		
+        
+        return gui.getLayout();
+	}
+	
+	@Override
+    public void start(Stage stage) {
 
-		timer = new Timer();
-        task = new TimerTask() {
+    	timer = new Timer();  
+    	
+    	TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
-				updater.update();
+				
+				try {
+					if (normalUI == null) {
+						normalUI = getNormalUI();
+					}
+					
+					updater.update();
+										
+					Platform.runLater(() -> {
+						if (!((VBox)stage.getScene().getRoot()).getChildren().get(0).equals(normalUI)) {
+							//stage.getScene().setRoot(normalUI);
+							((VBox)stage.getScene().getRoot()).getChildren().clear();
+							((VBox)stage.getScene().getRoot()).getChildren().add(normalUI);
+						}
+					});					
+				}
+				catch (Exception exc) {
+					if (errorUI == null) {
+						errorUI = getBackupUI();
+					}
+										
+					Platform.runLater(() -> {
+						if (!((VBox)stage.getScene().getRoot()).getChildren().get(0).equals(errorUI)) {
+							((VBox)stage.getScene().getRoot()).getChildren().clear();
+							//stage.getScene().setRoot(errorUI);
+							((VBox)stage.getScene().getRoot()).getChildren().add(errorUI);
+						}
+					});												
+				}
 			}
-        };
-        
-        timer.scheduleAtFixedRate(task, 0, getTimerPeriodMs());
-		
-		
-    	var root = gui.getLayout();
-
+        };      
     	
-        var scene = new Scene(root, 640, 480);
+        
+        var scene = new Scene(new VBox(), 640, 480);
         stage.setTitle("Elevator Control Center");
         stage.setScene(scene);
+        
+        timer.scheduleAtFixedRate(task, getTimerPeriodMs(), getTimerPeriodMs());
+        
+        task.run();
+        var ui = normalUI;
+        if (normalUI == null) {
+        	ui = errorUI;
+        }
+        ((VBox)stage.getScene().getRoot()).getChildren().add(ui);
+
         stage.show();   
     }
 
@@ -83,8 +142,10 @@ public class App extends Application {
     
     @Override
     public void stop() throws Exception {
-    	task.cancel();
-    	timer.cancel();
+    	if (timer != null) {
+        	timer.cancel();
+    	}
+    	
     	super.stop();
     }
 

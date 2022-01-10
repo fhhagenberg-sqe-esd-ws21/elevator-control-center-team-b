@@ -28,6 +28,6 @@ class AppTest {
 	@Test
 	void testExceptionWithoutRMI(FxRobot robot) {
 		var app = new App();
-		assertThrows(Exception.class, () -> app.start(stage));
+		app.start(stage);
 	}
 }

@@ -192,8 +192,8 @@ class EccLayout {
 	    
 
 	    topView.getChildren().addAll(elevators, rightSide);
-	    topView.setHgrow(elevators, Priority.ALWAYS);
-	    topView.setHgrow(rightSide, Priority.ALWAYS);
+	    HBox.setHgrow(elevators, Priority.ALWAYS);
+	    HBox.setHgrow(rightSide, Priority.ALWAYS);
 	    
 	    
 	    fullLayout = new VBox();
