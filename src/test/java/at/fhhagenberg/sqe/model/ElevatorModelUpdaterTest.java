@@ -55,7 +55,6 @@ class ElevatorModelUpdaterTest {
 		updater.update();
 		
 		assertEquals("Hardware connection lost", model.getErrorMessage());
-		assertTrue(model.isDataIsStale());
 	}
 	
 	@Test 

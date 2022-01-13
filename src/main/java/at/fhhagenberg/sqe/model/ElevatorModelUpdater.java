@@ -20,7 +20,6 @@ public class ElevatorModelUpdater {
 	}
 	
 	public void update() {
-		boolean stale = true;
 		try {
 			if (!manager.isConnected()) {
 				manager = ElevatorConnectionManager.getElevatorConnection();
@@ -51,14 +50,11 @@ public class ElevatorModelUpdater {
 				floor.setButtonDownPressed(manager.getFloorButtonDown(floorNumber));
 				floor.setFloorHeight(manager.getFloorHeight());					
 			}
-			stale = false;
 		}
 		catch (Exception exc) {
 			System.out.println(exc.getMessage());
 			model.setErrorMessage(exc.getMessage());
 		}
-
-		model.setDataIsStale(stale);
 	}
 
 	public void updateElevatorTargetFloor(int elevatorNumber, int targetFloor) {

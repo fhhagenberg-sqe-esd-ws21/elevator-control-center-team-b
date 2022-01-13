@@ -2,6 +2,7 @@ package at.fhhagenberg.sqe.gui;
 
 import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.backend.HardwareConnectionException;
+import at.fhhagenberg.sqe.backend.IElevatorManager;
 import at.fhhagenberg.sqe.model.*;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
@@ -76,11 +77,11 @@ class AppModelMockTest {
                 return null;
             }
             @Override
-            public ElevatorModel createModel(ElevatorHardwareManager manager) {
+            public ElevatorModel createModel(IElevatorManager manager) {
                 return testModel;
             }
             @Override
-            public ElevatorModelUpdater createElevatorModelUpdater(ElevatorHardwareManager manager, ElevatorModel model) {
+            public ElevatorModelUpdater createElevatorModelUpdater(IElevatorManager manager, ElevatorModel model) {
                 return new ElevatorModelUpdater(null, model) {
                     @Override
                     public void update() {

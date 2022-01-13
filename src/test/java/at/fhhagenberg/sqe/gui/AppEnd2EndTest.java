@@ -8,6 +8,7 @@ import java.util.concurrent.TimeoutException;
 
 import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.backend.HardwareConnectionException;
+import at.fhhagenberg.sqe.backend.IElevatorManager;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
 
@@ -15,8 +16,6 @@ import javafx.scene.Node;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
@@ -24,12 +23,11 @@ import org.testfx.framework.junit5.Stop;
 import org.testfx.matcher.control.LabeledMatchers;
 
 import javafx.stage.Stage;
+import mocks.ElevatorManagerMock;
+
 import org.testfx.matcher.control.ListViewMatchers;
 import org.testfx.matcher.control.TableViewMatchers;
 import org.testfx.util.WaitForAsyncUtils;
-
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 import static org.testfx.api.FxAssert.verifyThat;
 
 @ExtendWith(ApplicationExtension.class)
@@ -37,9 +35,8 @@ class AppEnd2EndTest {
     private static final long TIMER_PERIOD = 10L; // milliseconds
 
     App app;
-
-    @Mock
-    ElevatorHardwareManager ehmMock;
+    
+    ElevatorManagerMock ehmMock;
 
     int nrOfFloors = 4;
     int nrOfElevators = 3;
@@ -54,30 +51,28 @@ class AppEnd2EndTest {
     public void start(Stage stage) throws IOException, HardwareConnectionException, NotBoundException {
         assert(nrOfFloors > nrOfElevators); // we need more floors than elevators for this tests.
 
-        ehmMock = Mockito.mock(ElevatorHardwareManager.class);
-
+        ehmMock = new ElevatorManagerMock(nrOfElevators, nrOfFloors);
+        
         // build up default mock
-        when(ehmMock.getFloorNum()).thenReturn(nrOfFloors);
-        when(ehmMock.getElevatorNum()).thenReturn(nrOfElevators);
-        when(ehmMock.getFloorHeight()).thenReturn(floorHeight);
-        when(ehmMock.isConnected()).thenReturn(true);
+        ehmMock.setFloorHeight(floorHeight);
+        ehmMock.setConnected(true);
 
         for (int i = 0; i < nrOfFloors; i++) {
-            when(ehmMock.getFloorButtonDown(i)).thenReturn(false);
-            when(ehmMock.getFloorButtonUp(i)).thenReturn(false);
+        	ehmMock.setFloorButtonDown(i, false);
+        	ehmMock.setFloorButtonUp(i, false);
         }
 
         for (int i = 0; i < nrOfElevators; i++) {
-            when(ehmMock.getCommittedDirection(i)).thenReturn(ElevatorDirection.UNCOMMITTED);
-            when(ehmMock.getElevatorDoorStatus(i)).thenReturn(ElevatorDoorStatus.CLOSED);
-
-            when(ehmMock.getTarget(i)).thenReturn(nrOfFloors-(i+1));
-            when(ehmMock.getElevatorPosition(i)).thenReturn(i*floorHeight);
-            when(ehmMock.getElevatorFloor(i)).thenReturn(i);
+        	ehmMock.setCommittedDirection(i, ElevatorDirection.UNCOMMITTED);
+        	ehmMock.setDoorStatus(i, ElevatorDoorStatus.CLOSED);
+        	
+        	ehmMock.setTarget(i, nrOfFloors-(i+1));
+        	ehmMock.setElevatorPosition(i, i*floorHeight);
+        	ehmMock.setElevatorFloor(i, i);
 
             for (int j = 0; j < nrOfFloors; j++) {
-                when(ehmMock.getElevatorButton(i, j)).thenReturn(false);
-                when(ehmMock.getServicesFloors(i, j)).thenReturn(false);
+            	ehmMock.setElevatorButtons(i, j, false);
+            	ehmMock.setServicesFloors(i, j, false);
             }
         }
 
@@ -85,7 +80,7 @@ class AppEnd2EndTest {
 
         app = new App() {
             @Override
-            public ElevatorHardwareManager getHardwareConnection() {
+            public IElevatorManager getHardwareConnection() {
                 return ehmMock;
             }
             @Override
@@ -145,7 +140,7 @@ class AppEnd2EndTest {
 
     @Test
     void testChangingState(FxRobot robot) throws HardwareConnectionException {
-        when(ehmMock.getTarget(0)).thenReturn(1);
+    	ehmMock.setTarget(0, 1);
         waitForUpdate();
 
         verifyThat("#TargetFloor", LabeledMatchers.hasText("1"));
@@ -154,20 +149,20 @@ class AppEnd2EndTest {
     @Test
     void testDoorState(FxRobot robot) throws HardwareConnectionException {
         verifyThat("#Doors", LabeledMatchers.hasText("CLOSED"));
-
-        doReturn(ElevatorDoorStatus.OPENING).when(ehmMock).getElevatorDoorStatus(0);
+        
+        ehmMock.setDoorStatus(0, ElevatorDoorStatus.OPENING);
         waitForUpdate();
         verifyThat("#Doors", LabeledMatchers.hasText("OPENING"));
-
-        doReturn(ElevatorDoorStatus.OPEN).when(ehmMock).getElevatorDoorStatus(0);
+        
+        ehmMock.setDoorStatus(0, ElevatorDoorStatus.OPEN);
         waitForUpdate();
         verifyThat("#Doors", LabeledMatchers.hasText("OPEN"));
-
-        doReturn(ElevatorDoorStatus.CLOSING).when(ehmMock).getElevatorDoorStatus(0);
+        
+        ehmMock.setDoorStatus(0, ElevatorDoorStatus.CLOSING);
         waitForUpdate();
         verifyThat("#Doors", LabeledMatchers.hasText("CLOSING"));
-
-        doReturn(ElevatorDoorStatus.CLOSING).when(ehmMock).getElevatorDoorStatus(1);
+        
+        ehmMock.setDoorStatus(1, ElevatorDoorStatus.CLOSING);
         waitForUpdate();
 
         Node el1 = robot.lookup("#elevatorsList .list-cell").nth(1).query();
@@ -178,17 +173,17 @@ class AppEnd2EndTest {
     @Test
     void testElevatorDirection(FxRobot robot) throws HardwareConnectionException {
         verifyThat("#Direction", LabeledMatchers.hasText("UNCOMMITTED"));
-
-        doReturn(ElevatorDirection.UP).when(ehmMock).getCommittedDirection(0);
+        
+        ehmMock.setCommittedDirection(0, ElevatorDirection.UP);
         waitForUpdate();
         verifyThat("#Direction", LabeledMatchers.hasText("UP"));
-
-        doReturn(ElevatorDirection.DOWN).when(ehmMock).getCommittedDirection(0);
+        
+        ehmMock.setCommittedDirection(0, ElevatorDirection.DOWN);
         waitForUpdate();
         verifyThat("#Direction", LabeledMatchers.hasText("DOWN"));
 
-        doReturn(ElevatorDirection.UP).when(ehmMock).getCommittedDirection(1);
-        doReturn(ElevatorDirection.DOWN).when(ehmMock).getCommittedDirection(2);
+        ehmMock.setCommittedDirection(1, ElevatorDirection.UP);
+        ehmMock.setCommittedDirection(2, ElevatorDirection.DOWN);
         waitForUpdate();
 
         Node el1 = robot.lookup("#elevatorsList .list-cell").nth(1).query();
@@ -208,7 +203,7 @@ class AppEnd2EndTest {
             Node el = robot.lookup("#elevatorsList .list-cell").nth(i).query();
             robot.clickOn(el);
             for (int j = 0; j < nrOfFloors; j++) {
-                doReturn(j * floorHeight).when(ehmMock).getElevatorPosition(i);
+            	ehmMock.setElevatorPosition(i, j*floorHeight);
                 waitForUpdate();
                 verifyThat("#Position", LabeledMatchers.hasText(j * floorHeight + "m"));
             }

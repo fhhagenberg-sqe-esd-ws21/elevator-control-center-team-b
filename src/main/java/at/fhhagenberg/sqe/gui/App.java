@@ -27,17 +27,17 @@ public class App extends Application {
 	private TimerTask task;
 	private static final long TIMER_PERIOD = 1000L; // milliseconds
 
-	public ElevatorHardwareManager getHardwareConnection() throws MalformedURLException, RemoteException, IllegalArgumentException, NotBoundException, HardwareConnectionException {		
+	public IElevatorManager getHardwareConnection() throws MalformedURLException, RemoteException, IllegalArgumentException, NotBoundException, HardwareConnectionException {		
 		return ElevatorConnectionManager.getElevatorConnection();
 	}
 	
-	protected ElevatorModel createModel(ElevatorHardwareManager manager) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {		
+	protected ElevatorModel createModel(IElevatorManager manager) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {		
 		ElevatorModelFactory factory = new ElevatorModelFactory(manager);
 		return factory.createModel();
 	}
 
 
-	protected ElevatorModelUpdater createElevatorModelUpdater(ElevatorHardwareManager manager, ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
+	protected ElevatorModelUpdater createElevatorModelUpdater(IElevatorManager manager, ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
 		return new ElevatorModelUpdater(manager, model);
 	}
 
@@ -48,7 +48,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException, HardwareConnectionException, NotBoundException {
     	// TODO handle exceptions and display in GUI
-    	ElevatorHardwareManager manager = getHardwareConnection();
+    	IElevatorManager manager = getHardwareConnection();
 		ElevatorModel model = createModel(manager);
 		ElevatorModelUpdater updater = createElevatorModelUpdater(manager, model);
 		updater.update();
