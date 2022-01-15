@@ -276,6 +276,7 @@ class EccLayout {
 		}
 		// if exception occurs, string is invalid value, thus not a valid floor
 		catch (Exception e) {
+			return false;
 		}
 
 		return false;
