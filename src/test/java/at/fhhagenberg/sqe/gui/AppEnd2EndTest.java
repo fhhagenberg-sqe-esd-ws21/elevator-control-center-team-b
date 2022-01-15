@@ -139,7 +139,21 @@ class AppEnd2EndTest {
 
 		for (int i = 0; i < nrOfElevators; i++) {
 			verifyThat("#Position", LabeledMatchers.hasText(i * floorHeight + "m"));
-			verifyThat("#Direction", LabeledMatchers.hasText("UNCOMMITTED"));
+			int target = ehmMock.getTarget(i);
+			int current = ehmMock.getElevatorFloor(i);
+			
+			if(target> current)
+			{
+				verifyThat("#Direction", LabeledMatchers.hasText("UP"));
+			}
+			else if(target < current)
+			{
+				verifyThat("#Direction", LabeledMatchers.hasText("DOWN"));
+			}
+			else
+			{
+				verifyThat("#Direction", LabeledMatchers.hasText("UNCOMMITED"));
+			}
 			verifyThat("#Payload", LabeledMatchers.hasText("0kg"));
 			verifyThat("#Speed", LabeledMatchers.hasText("0m/s"));
 			verifyThat("#Doors", LabeledMatchers.hasText("CLOSED"));
@@ -187,7 +201,7 @@ class AppEnd2EndTest {
 
 	@Test
 	void testElevatorDirection(FxRobot robot) throws HardwareConnectionException {
-		verifyThat("#Direction", LabeledMatchers.hasText("UNCOMMITTED"));
+		verifyThat("#Direction", LabeledMatchers.hasText("UP"));
 
 		ehmMock.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
 		waitForUpdate();
