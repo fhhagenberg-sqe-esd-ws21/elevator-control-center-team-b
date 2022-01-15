@@ -66,11 +66,7 @@ public class EccGuiUpdater implements IModelObserver {
 	public void errorMessageUpdated(ElevatorModel model) {
 		Platform.runLater(() -> layout.appendErrorMessage(model) );
 	}
-
-	@Override
-	public void dataIsStaleUpdated(ElevatorModel model) {
-	}
-
+	
 	@Override
 	public void floorButtonUpPressedUpdated(Floor floor) {
 		Platform.runLater(() -> layout.setButtonUpPressed(floor) );
