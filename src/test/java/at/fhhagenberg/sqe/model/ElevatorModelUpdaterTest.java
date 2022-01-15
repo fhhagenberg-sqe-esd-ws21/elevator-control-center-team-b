@@ -20,55 +20,55 @@ import sqelevator.IElevator;
 
 @ExtendWith(MockitoExtension.class)
 class ElevatorModelUpdaterTest {
-	
+
 	@Mock
 	IElevator iElevatorMock;
-	
+
 	@Test
 	void testUpdateSetsModelProperties() throws IllegalArgumentException, HardwareConnectionException, RemoteException {
 		when(iElevatorMock.getElevatorNum()).thenReturn(10);
 		when(iElevatorMock.getFloorNum()).thenReturn(5);
 		when(iElevatorMock.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSING);
-		
+
 		IElevatorManager man = new ElevatorHardwareManager(iElevatorMock);
 		ElevatorModelFactory fact = new ElevatorModelFactory(man);
 		ElevatorModel model = fact.createModel();
 		ElevatorModelUpdater updater = new ElevatorModelUpdater(man, model);
-		
+
 		updater.update();
-		
+
 		assertEquals(ElevatorDoorStatus.CLOSING, model.getElevator(0).getDoorStatus());
 	}
 
-	
-	@Test 
+	@Test
 	void testUpdateSetsErrorMessage() throws RemoteException, HardwareConnectionException {
 		when(iElevatorMock.getElevatorNum()).thenReturn(10);
 		when(iElevatorMock.getFloorNum()).thenReturn(5);
-		
+
 		IElevatorManager man = new ElevatorHardwareManager(iElevatorMock);
 		ElevatorModelFactory fact = new ElevatorModelFactory(man);
 		ElevatorModel model = fact.createModel();
 		ElevatorModelUpdater updater = new ElevatorModelUpdater(man, model);
-		
-		when(iElevatorMock.getElevatorFloor(0)).thenThrow(new RemoteException());		
+
+		when(iElevatorMock.getElevatorFloor(0)).thenThrow(new RemoteException());
 		updater.update();
-		
+
 		assertEquals("Hardware connection lost", model.getErrorMessage());
 	}
-	
-	@Test 
-	void testModelUpdaterSetsTargetFloorCorrectly() throws RemoteException, IllegalArgumentException, HardwareConnectionException {
+
+	@Test
+	void testModelUpdaterSetsTargetFloorCorrectly()
+			throws RemoteException, IllegalArgumentException, HardwareConnectionException {
 		when(iElevatorMock.getElevatorNum()).thenReturn(10);
 		when(iElevatorMock.getFloorNum()).thenReturn(5);
-		
+
 		IElevatorManager man = new ElevatorHardwareManager(iElevatorMock);
 		ElevatorModelFactory fact = new ElevatorModelFactory(man);
 		ElevatorModel model = fact.createModel();
 		ElevatorModelUpdater updater = new ElevatorModelUpdater(man, model);
-		
+
 		updater.updateElevatorTargetFloor(0, 2);
-		
+
 		verify(iElevatorMock, times(1)).setTarget(0, 2);
 	}
 }

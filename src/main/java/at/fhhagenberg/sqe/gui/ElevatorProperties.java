@@ -11,18 +11,16 @@ public class ElevatorProperties {
 	private Circle down;
 	private Circle stopPlanned;
 
-
 	public ElevatorProperties() {
 		this(0, 0, false, false, false);
 	}
 
-	public ElevatorProperties(Integer position, Integer floor, Boolean up, Boolean down, Boolean stopPlanned) {         
+	public ElevatorProperties(Integer position, Integer floor, Boolean up, Boolean down, Boolean stopPlanned) {
 		this.position = new Circle(5);
 		this.up = new Circle(5);
 		this.down = new Circle(5);
 		this.stopPlanned = new Circle(5);
-		
-		
+
 		setFloor(floor);
 		setPosition(position);
 		setUp(up);
@@ -50,7 +48,7 @@ public class ElevatorProperties {
 		return up;
 	}
 
-	public void setUp(Boolean fup) {       
+	public void setUp(Boolean fup) {
 		up.setFill(fup ? Color.GREEN : Color.GRAY);
 	}
 

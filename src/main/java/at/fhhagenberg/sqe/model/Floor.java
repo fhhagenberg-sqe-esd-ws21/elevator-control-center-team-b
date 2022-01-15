@@ -10,12 +10,12 @@ public class Floor {
 	private boolean buttonDownPressed;
 	private int floorHeight;
 	private List<IModelObserver> observers;
-	
+
 	public Floor(int floorNumber) {
 		this.floorNumber = floorNumber;
 		observers = new ArrayList<>();
 	}
-	
+
 	public boolean isButtonUpPressed() {
 		return buttonUpPressed;
 	}
@@ -24,7 +24,7 @@ public class Floor {
 		if (this.buttonUpPressed == buttonUpPressed) {
 			return;
 		}
-		
+
 		this.buttonUpPressed = buttonUpPressed;
 		observers.forEach((obs) -> obs.floorButtonUpPressedUpdated(this));
 	}
@@ -37,7 +37,7 @@ public class Floor {
 		if (this.buttonDownPressed == buttonDownPressed) {
 			return;
 		}
-		
+
 		this.buttonDownPressed = buttonDownPressed;
 		observers.forEach((obs) -> obs.floorButtonDownPressedUpdated(this));
 	}
@@ -50,7 +50,7 @@ public class Floor {
 		if (this.floorHeight == floorHeight) {
 			return;
 		}
-		
+
 		this.floorHeight = floorHeight;
 		observers.forEach((obs) -> obs.floorHeightUpdated(this));
 	}
@@ -62,6 +62,5 @@ public class Floor {
 	public void addModelObserver(IModelObserver observer) {
 		observers.add(observer);
 	}
-	
-	
+
 }

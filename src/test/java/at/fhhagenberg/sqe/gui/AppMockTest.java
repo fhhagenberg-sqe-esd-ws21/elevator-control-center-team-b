@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-
 @ExtendWith(ApplicationExtension.class)
 class AppMockTest {
 
@@ -35,13 +34,14 @@ class AppMockTest {
 			@Mock
 			ElevatorHardwareManager iElevatorMock;
 
-			public ElevatorHardwareManager getHardwareConnection() throws IllegalArgumentException, HardwareConnectionException, RemoteException {
+			public ElevatorHardwareManager getHardwareConnection()
+					throws IllegalArgumentException, HardwareConnectionException, RemoteException {
 				if (iElevatorMock == null) {
 					iElevatorMock = Mockito.mock(ElevatorHardwareManager.class);
 
 					Mockito.when(iElevatorMock.getFloorNum()).thenReturn(2);
 					Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
-					Mockito.when(iElevatorMock.getElevatorPosition(0)).thenReturn(1, 2,3, 4);
+					Mockito.when(iElevatorMock.getElevatorPosition(0)).thenReturn(1, 2, 3, 4);
 					Mockito.when(iElevatorMock.getCommittedDirection(0)).thenReturn(ElevatorDirection.UP);
 					Mockito.when(iElevatorMock.getCommittedDirection(1)).thenReturn(ElevatorDirection.DOWN);
 					Mockito.when(iElevatorMock.getCommittedDirection(2)).thenReturn(ElevatorDirection.UNCOMMITTED);
@@ -69,7 +69,7 @@ class AppMockTest {
 	@Test
 	void runForeverTest(FxRobot robot) throws Throwable {
 		// run forever..
-		while(true) {
+		while (true) {
 			WaitForAsyncUtils.checkException();
 		}
 	}
