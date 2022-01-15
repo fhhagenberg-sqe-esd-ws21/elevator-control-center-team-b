@@ -1,5 +1,6 @@
 package mocks;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,17 +8,18 @@ import at.fhhagenberg.sqe.backend.HardwareConnectionException;
 import at.fhhagenberg.sqe.backend.IElevatorManager;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
+import sqelevator.IElevator;
 
-public class ElevatorManagerMock implements IElevatorManager {
+public class ElevatorMock implements IElevator {
 
 	private boolean connected;
 	private int numElevators;
 	private int numFloors;
 	private int floorHeight;
 	
-	private List<ElevatorDirection> committedDirections;
+	private List<Integer> committedDirections;
 	private List<Integer> elevatorAccelerations;
-	private List<ElevatorDoorStatus> doorStatus;
+	private List<Integer> doorStatus;
 	private List<Integer> elevatorFloor;
 	private List<Integer> elevatorPosition;
 	private List<Integer> elevatorSpeed;
@@ -30,7 +32,7 @@ public class ElevatorManagerMock implements IElevatorManager {
 	private List<List<Boolean>> servicesFloors;
 	private int clockTick;
 	
-	public ElevatorManagerMock(int numElevators, int numFloors) {
+	public ElevatorMock(int numElevators, int numFloors) {
 		this.numElevators = numElevators;
 		this.numFloors = numFloors;
 		
@@ -54,9 +56,9 @@ public class ElevatorManagerMock implements IElevatorManager {
 		}
 		
 		for (int i = 0; i < numElevators; i++) {
-			committedDirections.add(ElevatorDirection.UNCOMMITTED);
+			committedDirections.add(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
 			elevatorAccelerations.add(0);
-			doorStatus.add(ElevatorDoorStatus.CLOSED);
+			doorStatus.add(IElevator.ELEVATOR_DOORS_CLOSED);
 			elevatorFloor.add(0);
 			elevatorPosition.add(0);
 			elevatorSpeed.add(0);
@@ -72,114 +74,89 @@ public class ElevatorManagerMock implements IElevatorManager {
 		}
 	}
 	
-	@Override
-	public boolean isConnected() {
-		return connected;
-	}
 
 	@Override
-	public ElevatorDirection getCommittedDirection(int elevatorNumber)
-			throws IllegalArgumentException, HardwareConnectionException, IllegalStateException {
-		return committedDirections.get(elevatorNumber);
-	}
-
-	@Override
-	public int getElevatorAccel(int elevatorNumber) throws IllegalArgumentException, HardwareConnectionException {
+	public int getElevatorAccel(int elevatorNumber) {
 		return elevatorAccelerations.get(elevatorNumber);
 	}
 
 	@Override
-	public boolean getElevatorButton(int elevatorNumber, int floor)
-			throws IllegalArgumentException, HardwareConnectionException {
+	public boolean getElevatorButton(int elevatorNumber, int floor) {
 		return elevatorButtons.get(elevatorNumber).get(floor);
 	}
 
 	@Override
-	public ElevatorDoorStatus getElevatorDoorStatus(int elevatorNumber)
-			throws IllegalArgumentException, HardwareConnectionException, IllegalStateException {
-		return doorStatus.get(elevatorNumber);
-	}
-
-	@Override
-	public int getElevatorFloor(int elevatorNumber) throws IllegalArgumentException, HardwareConnectionException {
+	public int getElevatorFloor(int elevatorNumber) {
 		return elevatorFloor.get(elevatorNumber);
 	}
 
 	@Override
-	public int getElevatorNum() throws HardwareConnectionException {
+	public int getElevatorNum() {
 		return numElevators;
 	}
 
 	@Override
-	public int getElevatorPosition(int elevatorNumber) throws IllegalArgumentException, HardwareConnectionException {
+	public int getElevatorPosition(int elevatorNumber) {
 		return elevatorPosition.get(elevatorNumber);
 	}
 
 	@Override
-	public int getElevatorSpeed(int elevatorNumber) throws IllegalArgumentException, HardwareConnectionException {
+	public int getElevatorSpeed(int elevatorNumber) {
 		return elevatorSpeed.get(elevatorNumber);
 	}
 
 	@Override
-	public int getElevatorWeight(int elevatorNumber) throws IllegalArgumentException, HardwareConnectionException {
+	public int getElevatorWeight(int elevatorNumber) {
 		return elevatorWeight.get(elevatorNumber);
 	}
 
 	@Override
-	public int getElevatorCapacity(int elevatorNumber) throws IllegalArgumentException, HardwareConnectionException {
+	public int getElevatorCapacity(int elevatorNumber) {
 		return elevatorCapacity.get(elevatorNumber);
 	}
 
 	@Override
-	public boolean getFloorButtonDown(int floor) throws IllegalArgumentException, HardwareConnectionException {
+	public boolean getFloorButtonDown(int floor) {
 		return floorButtonDown.get(floor);
 	}
 
 	@Override
-	public boolean getFloorButtonUp(int floor) throws IllegalArgumentException, HardwareConnectionException {
+	public boolean getFloorButtonUp(int floor) {
 		return floorButtonUp.get(floor);
 	}
 
 	@Override
-	public int getFloorHeight() throws HardwareConnectionException {
+	public int getFloorHeight() {
 		return floorHeight;
 	}
 
 	@Override
-	public int getFloorNum() throws HardwareConnectionException {
+	public int getFloorNum() {
 		return numFloors;
 	}
 
 	@Override
-	public boolean getServicesFloors(int elevatorNumber, int floor)
-			throws IllegalArgumentException, HardwareConnectionException {
+	public boolean getServicesFloors(int elevatorNumber, int floor) {
 		return servicesFloors.get(elevatorNumber).get(floor);
 	}
 
 	@Override
-	public int getTarget(int elevatorNumber) throws IllegalArgumentException, HardwareConnectionException {
+	public int getTarget(int elevatorNumber) {
 		return elevatorTargets.get(elevatorNumber);
 	}
 
 	@Override
-	public void setCommittedDirection(int elevatorNumber, ElevatorDirection direction)
-			throws IllegalArgumentException, HardwareConnectionException {
-		committedDirections.set(elevatorNumber, direction);
-	}
-
-	@Override
-	public void setServicesFloors(int elevatorNumber, int floor, boolean service)
-			throws IllegalArgumentException, HardwareConnectionException {
+	public void setServicesFloors(int elevatorNumber, int floor, boolean service) {
 		servicesFloors.get(elevatorNumber).set(floor, service);
 	}
 
 	@Override
-	public void setTarget(int elevatorNumber, int target) throws IllegalArgumentException, HardwareConnectionException {
+	public void setTarget(int elevatorNumber, int target) {
 		elevatorTargets.set(elevatorNumber, target);
 	}
 
 	@Override
-	public long getClockTick() throws HardwareConnectionException {
+	public long getClockTick() {
 		return clockTick;
 	}
 
@@ -191,7 +168,7 @@ public class ElevatorManagerMock implements IElevatorManager {
 		this.floorHeight = floorHeight;
 	}
 
-	public void setCommittedDirections(int elevatorNumber, ElevatorDirection direction) {
+	public void setCommittedDirections(int elevatorNumber, int direction) {
 		committedDirections.set(elevatorNumber, direction);
 	}
 
@@ -203,7 +180,7 @@ public class ElevatorManagerMock implements IElevatorManager {
 		elevatorButtons.get(elevatorNumber).set(floorNumber, set);
 	}
 
-	public void setDoorStatus(int elevatorNumber, ElevatorDoorStatus status) {
+	public void setDoorStatus(int elevatorNumber, int status) {
 		doorStatus.set(elevatorNumber, status);
 	}
 
@@ -238,6 +215,19 @@ public class ElevatorManagerMock implements IElevatorManager {
 	public void setClockTick(int clockTick) {
 		this.clockTick = clockTick;
 	}
-	
-	
+
+	@Override
+	public int getCommittedDirection(int elevatorNumber) {
+		return committedDirections.get(elevatorNumber);
+	}
+
+	@Override
+	public int getElevatorDoorStatus(int elevatorNumber) {
+		return doorStatus.get(elevatorNumber);
+	}
+
+	@Override
+	public void setCommittedDirection(int elevatorNumber, int direction) {
+		committedDirections.set(elevatorNumber, direction);
+	}
 }
