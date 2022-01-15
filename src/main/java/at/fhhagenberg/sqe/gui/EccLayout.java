@@ -6,8 +6,6 @@ import at.fhhagenberg.sqe.model.ElevatorModel;
 import at.fhhagenberg.sqe.model.ElevatorModelUpdater;
 import at.fhhagenberg.sqe.model.Floor;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
@@ -16,13 +14,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderRepeat;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
@@ -116,20 +112,16 @@ class EccLayout {
 		// only allow empty field or number
 		levelToGo.setTextFormatter(
 				new TextFormatter<>(change -> (change.getControlNewText().matches("([0-9]*)?")) ? change : null));
-		levelToGo.setOnAction(event -> OnEnterPressedLevelToGo(levelToGo)); // add listener for enter
-		levelToGo.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+		levelToGo.setOnAction(event -> onEnterPressedLevelToGo(levelToGo)); // add listener for enter
+		levelToGo.textProperty().addListener((observable,  oldValue,  newValue) -> {
 				if (oldValue == null || !oldValue.equals(newValue)) {
-					OnLevelToGoChanged(newValue, levelToGo, go);
-
+					onLevelToGoChanged(newValue, levelToGo, go);
 				}
-
 			}
-		});
+		);
 
 		go = new Button("Go");
-		go.setOnAction(evt -> OnGo());
+		go.setOnAction(evt -> onGo());
 		go.disableProperty().set(true);
 
 		HBox controlPanel = new HBox();
@@ -140,16 +132,13 @@ class EccLayout {
 		rightSide.getChildren().addAll(elevatorPropertiesTable, controlPanel);
 
 		elevators = new ListView<Elevator>();
-		elevators.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Elevator>() {
-			@Override
-			public void changed(ObservableValue<? extends Elevator> observable, Elevator oldValue, Elevator newValue) {
+		elevators.getSelectionModel().selectedItemProperty().addListener((observable,  oldValue,  newValue) -> {
 				if (oldValue == null || !oldValue.equals(newValue)) {
-					OnElevatorSelect(newValue);
-
+					onElevatorSelect(newValue);
 				}
 
 			}
-		});
+		);
 
 		elevators.getItems().addAll(elevModel.getElevators());
 
@@ -225,7 +214,7 @@ class EccLayout {
 	}
 
 	// private functions for gui interaction
-	private void OnElevatorSelect(Elevator newElevator) {
+	private void onElevatorSelect(Elevator newElevator) {
 		// update all
 		int nrOfFloors = elevatorModel.getNumFloors();
 
@@ -249,7 +238,7 @@ class EccLayout {
 
 	}
 
-	private void OnGo() {
+	private void onGo() {
 		int targetFloor;
 		try {
 			targetFloor = Integer.parseInt(levelToGo.getText());
@@ -261,23 +250,23 @@ class EccLayout {
 
 	}
 
-	private void OnEnterPressedLevelToGo(TextField value) {
+	private void onEnterPressedLevelToGo(TextField value) {
 		if (isValidFloor(elevators.getSelectionModel().getSelectedItem(), value.getText())) {
-			OnGo();
+			onGo();
 		}
 	}
 
-	private void OnLevelToGoChanged(String level, TextField LevelToGo, Button GoButton) {
+	private void onLevelToGoChanged(String level, TextField levelToGo, Button goButton) {
 		if (isValidFloor(elevators.getSelectionModel().getSelectedItem(), level)) {
-			GoButton.disableProperty().set(false);
+			goButton.disableProperty().set(false);
 			levelToGo.borderProperty().set(boarderBlack);
 		} else {
-			GoButton.disableProperty().set(true);
+			goButton.disableProperty().set(true);
 			levelToGo.borderProperty().set(boarderRed);
 		}
 	}
 
-	private Boolean isValidFloor(Elevator el, String floor) {
+	private boolean isValidFloor(Elevator el, String floor) {
 
 		try {
 			Integer fl = Integer.valueOf(floor);
@@ -378,6 +367,7 @@ class EccLayout {
 	}
 
 	public void appendErrorMessage(ElevatorModel model) {
+		//not used in gui
 	}
 
 	public void setButtonUpPressed(Floor floor) {

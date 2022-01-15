@@ -30,13 +30,12 @@ public class App extends Application {
 	}
 
 	protected ElevatorModel createModel(IElevatorManager manager)
-			throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
+			throws HardwareConnectionException {
 		ElevatorModelFactory factory = new ElevatorModelFactory(manager);
 		return factory.createModel();
 	}
 
-	protected ElevatorModelUpdater createElevatorModelUpdater(IElevatorManager manager, ElevatorModel model)
-			throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
+	protected ElevatorModelUpdater createElevatorModelUpdater(IElevatorManager manager, ElevatorModel model){
 		return new ElevatorModelUpdater(manager, model);
 	}
 
