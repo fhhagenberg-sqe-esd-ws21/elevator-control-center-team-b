@@ -81,7 +81,6 @@ public class EccGuiUpdater implements IModelObserver {
 	@Override
 	public void floorHeightUpdated(Floor floor) {
 		Platform.runLater(() -> layout.setHeight(floor) );
-
 	}
 
 	@Override
