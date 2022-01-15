@@ -16,6 +16,7 @@ import at.fhhagenberg.sqe.model.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -32,20 +33,21 @@ public class App extends Application {
 	private Parent normalUI;
 	private Parent errorUI;
 	private Timer timer;
+	private VBox mainUIContainer;
 	
 	private static final long TIMER_PERIOD = 100L; // milliseconds
 
-	public ElevatorHardwareManager getHardwareConnection() throws MalformedURLException, RemoteException, IllegalArgumentException, NotBoundException, HardwareConnectionException {		
+	public IElevatorManager getHardwareConnection() throws MalformedURLException, RemoteException, IllegalArgumentException, NotBoundException, HardwareConnectionException {		
 		return ElevatorConnectionManager.getElevatorConnection();
 	}
 	
-	protected ElevatorModel createModel(ElevatorHardwareManager manager) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {		
+	protected ElevatorModel createModel(IElevatorManager manager) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {		
 		ElevatorModelFactory factory = new ElevatorModelFactory(manager);
 		return factory.createModel();
 	}
 
 
-	protected ElevatorModelUpdater createElevatorModelUpdater(ElevatorHardwareManager manager, ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
+	protected ElevatorModelUpdater createElevatorModelUpdater(IElevatorManager manager, ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
 		return new ElevatorModelUpdater(manager, model);
 	}
 
@@ -56,6 +58,7 @@ public class App extends Application {
 	protected Parent getBackupUI() {
 		VBox root = new VBox();
 		Label errorLabel = new Label("Could not establish connection. Please contact your administrator.");
+		errorLabel.setId("BackupErrorLabel");
 		errorLabel.setWrapText(true);
 		errorLabel.setStyle("-fx-font-size: 30; -fx-padding: 15");
 		Label retryLabel = new Label("Retrying ...");
@@ -67,7 +70,7 @@ public class App extends Application {
 	}
 	
 	protected Parent getNormalUI() throws MalformedURLException, RemoteException, IllegalArgumentException, NotBoundException, HardwareConnectionException {
-		ElevatorHardwareManager manager = getHardwareConnection();
+		IElevatorManager manager = getHardwareConnection();
 		ElevatorModel model = createModel(manager);
 		updater = createElevatorModelUpdater(manager, model);
 		updater.update();
@@ -96,9 +99,13 @@ public class App extends Application {
 					updater.update();
 										
 					Platform.runLater(() -> {
-						if (!stage.getScene().getRoot().equals(normalUI)) {
-							stage.getScene().setRoot(normalUI);
+						if (!mainUIContainer.getChildren().contains(normalUI)) {
+							mainUIContainer.getChildren().clear();
+							mainUIContainer.getChildren().add(normalUI);
 						}
+//						if (!stage.getScene().getRoot().equals(normalUI)) {
+//							stage.getScene().setRoot(normalUI);
+//						}
 					});					
 				}
 				catch (Exception exc) {
@@ -107,16 +114,20 @@ public class App extends Application {
 					}
 										
 					Platform.runLater(() -> {
-						if (!stage.getScene().getRoot().equals(errorUI)) {	
-							stage.getScene().setRoot(errorUI);
+						if (!mainUIContainer.getChildren().contains(errorUI)) {
+							mainUIContainer.getChildren().clear();
+							mainUIContainer.getChildren().add(errorUI);
 						}
+//						if (!stage.getScene().getRoot().equals(errorUI)) {	
+//							stage.getScene().setRoot(errorUI);
+//						}
 					});												
 				}
 			}
         };      
     	
-        
-        var scene = new Scene(new VBox(), 640, 480);
+        mainUIContainer = new VBox();
+        var scene = new Scene(mainUIContainer, 640, 480);
         stage.setTitle("Elevator Control Center");
         stage.setScene(scene);
         
@@ -124,7 +135,7 @@ public class App extends Application {
         
         task.run();
         
-        stage.getScene().setRoot(normalUI != null ? normalUI : errorUI);
+        mainUIContainer.getChildren().add(normalUI != null ? normalUI : errorUI);
         stage.show();   
     }
 

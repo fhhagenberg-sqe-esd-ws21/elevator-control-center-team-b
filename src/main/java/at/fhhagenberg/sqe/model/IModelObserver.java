@@ -24,8 +24,6 @@ public interface IModelObserver {
 	
 	void errorMessageUpdated(ElevatorModel model);
 	
-	void dataIsStaleUpdated(ElevatorModel model);
-	
 	void floorButtonUpPressedUpdated(Floor floor);
 	
 	void floorButtonDownPressedUpdated(Floor floor);

@@ -52,20 +52,7 @@ public class ElevatorModel {
 	public String getErrorMessage() {
 		return errorMessage;
 	}
-	
-	public boolean isDataIsStale() {
-		return dataIsStale;
-	}
-
-	public void setDataIsStale(boolean dataIsStale) {
-		if (this.dataIsStale == dataIsStale) {
-			return;
-		}
 		
-		this.dataIsStale = dataIsStale;
-		observers.forEach((obs) -> obs.dataIsStaleUpdated(this));
-	}
-	
 	public void addModelObserver(IModelObserver observer) {
 		observers.add(observer);
 		for (Elevator el : elevators) {

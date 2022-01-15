@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqe.backend;
 
 import at.fhhagenberg.sqe.model.Elevator;
+import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 import sqelevator.IElevator;
 
 import org.junit.jupiter.api.Test;
@@ -310,5 +311,122 @@ class ElevatorHardwareManagerTest {
 
         Mockito.when(iElevatorMock.getClockTick()).thenThrow(new RemoteException());
         assertThrowsExactly(HardwareConnectionException.class, () -> ehm.getClockTick());
+    }
+    
+    @Test 
+    void testThrowsExceptionWhenInvalidElevatorIsGiven() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(5);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+
+    	assertThrows(IllegalArgumentException.class, () -> ehm.getCommittedDirection(5));
+    }
+    
+    @Test 
+    void testCommittedDirectionFailsWithNoConnection() throws Exception {
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getCommittedDirection(0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getCommittedDirection(0));
+    }
+    
+    @Test 
+    void testElevatorAccelerationFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getElevatorAccel(0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getElevatorAccel(0));
+    }
+    
+    @Test 
+    void testGetElevatorButtonFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getFloorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getElevatorButton(0, 0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getElevatorButton(0, 0));
+    }
+    
+    @Test 
+    void testGetElevatorDoorStatusFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getElevatorDoorStatus(0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getElevatorDoorStatus(0));
+    }
+    
+    @Test 
+    void testGetElevatorPositionFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getElevatorPosition(0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getElevatorPosition(0));
+    }
+    
+    @Test 
+    void testGetElevatorSpeedFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getElevatorSpeed(0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getElevatorSpeed(0));
+    }
+    
+    @Test 
+    void testGetElevatorWeightFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getElevatorWeight(0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getElevatorWeight(0));
+    }
+    
+    @Test 
+    void testGetElevatorCapacityFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getElevatorCapacity(0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getElevatorCapacity(0));
+    }
+    
+    @Test 
+    void testFloorButtonDownFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getFloorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getFloorButtonDown(0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getFloorButtonDown(0));
+    }
+    
+    @Test 
+    void testFloorButtonUpFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getFloorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getFloorButtonUp(0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getFloorButtonUp(0));
+    }
+    
+    @Test 
+    void testGetFloorHeightFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getFloorHeight()).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getFloorHeight());
+    }
+    
+    @Test 
+    void testGetServicesFloorsFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getFloorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getServicesFloors(0, 0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getServicesFloors(0, 0));
+    }
+    
+    @Test 
+    void testGetTargetFailsWithNoConnection() throws Exception {    	
+    	Mockito.when(iElevatorMock.getElevatorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getFloorNum()).thenReturn(3);
+    	Mockito.when(iElevatorMock.getTarget(0)).thenThrow(RemoteException.class);
+    	ehm = new ElevatorHardwareManager(iElevatorMock);
+    	assertThrows(HardwareConnectionException.class, () -> ehm.getTarget(0));
     }
 }

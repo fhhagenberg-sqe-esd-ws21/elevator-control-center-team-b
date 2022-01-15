@@ -2,6 +2,7 @@ package at.fhhagenberg.sqe.gui;
 
 import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.backend.HardwareConnectionException;
+import at.fhhagenberg.sqe.backend.IElevatorManager;
 import at.fhhagenberg.sqe.model.*;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
@@ -29,7 +30,8 @@ import static org.testfx.api.FxAssert.verifyThat;
 
 @ExtendWith(ApplicationExtension.class)
 class AppModelMockTest {
-
+	private static final long TIMER_PERIOD = 10L; // milliseconds
+	
     int nrOfFloors = 4;
     int nrOfElevators = 3;
     int floorHeight = 2;
@@ -46,6 +48,11 @@ class AppModelMockTest {
         	}
         }   
     	return null;
+    }
+    
+    void waitForUpdate() {
+        WaitForAsyncUtils.sleep(2*TIMER_PERIOD, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.waitForFxEvents();
     }
     
     /**
@@ -76,11 +83,17 @@ class AppModelMockTest {
                 return null;
             }
             @Override
-            public ElevatorModel createModel(ElevatorHardwareManager manager) {
+            public ElevatorModel createModel(IElevatorManager manager) {
                 return testModel;
             }
+            
             @Override
-            public ElevatorModelUpdater createElevatorModelUpdater(ElevatorHardwareManager manager, ElevatorModel model) {
+            protected long getTimerPeriodMs() {
+            	return TIMER_PERIOD;
+            }
+            
+            @Override
+            public ElevatorModelUpdater createElevatorModelUpdater(IElevatorManager manager, ElevatorModel model) {
                 return new ElevatorModelUpdater(null, model) {
                     @Override
                     public void update() {
@@ -105,11 +118,11 @@ class AppModelMockTest {
     @Test
     void testChangingState(FxRobot robot) {
         elevators.get(0).setTargetFloor(0);
-        WaitForAsyncUtils.waitForFxEvents();
+        waitForUpdate();
         verifyThat("#TargetFloor", LabeledMatchers.hasText("0"));
 
         elevators.get(0).setTargetFloor(1);
-        WaitForAsyncUtils.waitForFxEvents();
+        waitForUpdate();
         verifyThat("#TargetFloor", LabeledMatchers.hasText("1"));
     }
 
@@ -119,28 +132,28 @@ class AppModelMockTest {
         ObservableList<ElevatorProperties> rows = floorTable.getItems();
 
         elevators.get(0).setFloor(0);
-        WaitForAsyncUtils.waitForFxEvents();
+        waitForUpdate();
         assertEquals(Color.GREEN, getFloorInTableView(rows, 0).getPosition().getFill());
         assertEquals(Color.RED, getFloorInTableView(rows, 1).getPosition().getFill());
         assertEquals(Color.RED, getFloorInTableView(rows, 2).getPosition().getFill());
         assertEquals(Color.RED, getFloorInTableView(rows, 3).getPosition().getFill());
 
         elevators.get(0).setFloor(1);
-        WaitForAsyncUtils.waitForFxEvents();
+        waitForUpdate();
         assertEquals(Color.RED, getFloorInTableView(rows, 0).getPosition().getFill());
         assertEquals(Color.GREEN, getFloorInTableView(rows, 1).getPosition().getFill());
         assertEquals(Color.RED, getFloorInTableView(rows, 2).getPosition().getFill());
         assertEquals(Color.RED, getFloorInTableView(rows, 3).getPosition().getFill());
 
         elevators.get(0).setFloor(2);
-        WaitForAsyncUtils.waitForFxEvents();
+        waitForUpdate();
         assertEquals(Color.RED, getFloorInTableView(rows, 0).getPosition().getFill());
         assertEquals(Color.RED, getFloorInTableView(rows, 1).getPosition().getFill());
         assertEquals(Color.GREEN, getFloorInTableView(rows, 2).getPosition().getFill());
         assertEquals(Color.RED, getFloorInTableView(rows, 3).getPosition().getFill());
 
         elevators.get(0).setFloor(3);
-        WaitForAsyncUtils.waitForFxEvents();
+        waitForUpdate();
         assertEquals(Color.RED, getFloorInTableView(rows, 0).getPosition().getFill());
         assertEquals(Color.RED, getFloorInTableView(rows, 1).getPosition().getFill());
         assertEquals(Color.RED, getFloorInTableView(rows, 2).getPosition().getFill());
@@ -153,11 +166,11 @@ class AppModelMockTest {
         ObservableList<ElevatorProperties> rows = floorTable.getItems();
 
         floors.get(0).setButtonUpPressed(false);
-        WaitForAsyncUtils.waitForFxEvents();
+        waitForUpdate();
         assertEquals(Color.GRAY, getFloorInTableView(rows, 0).getUp().getFill());
 
         floors.get(0).setButtonUpPressed(true);
-        WaitForAsyncUtils.waitForFxEvents();
+        waitForUpdate();
 
 		assertEquals(Color.GREEN, getFloorInTableView(rows, 0).getUp().getFill());
     }
@@ -168,45 +181,25 @@ class AppModelMockTest {
         ObservableList<ElevatorProperties> rows = floorTable.getItems();
 
         floors.get(0).setButtonDownPressed(false);
-        WaitForAsyncUtils.waitForFxEvents();
+        waitForUpdate();
         assertEquals(Color.GRAY, getFloorInTableView(rows, 0).getDown().getFill());
 
         floors.get(0).setButtonDownPressed(true);
-        WaitForAsyncUtils.waitForFxEvents();
+        waitForUpdate();
         assertEquals(Color.GREEN, getFloorInTableView(rows, 0).getDown().getFill());
     }
 
     @Test
-    @Disabled
     void testElevatorStopPlanned(FxRobot robot) {
         TableView<ElevatorProperties> floorTable = robot.lookup("#FloorTable").nth(0).query();
         ObservableList<ElevatorProperties> rows = floorTable.getItems();
 
-        elevators.get(0).setTargetFloor(0);
-        WaitForAsyncUtils.waitForFxEvents();
+        elevators.get(0).setFloorStopRequested(0, false);
+        waitForUpdate();
         assertEquals(Color.GRAY, getFloorInTableView(rows, 0).getStopPlanned().getFill());
 
-        elevators.get(0).setTargetFloor(2);
-        WaitForAsyncUtils.waitForFxEvents();
+        elevators.get(0).setFloorStopRequested(2, true);
+        waitForUpdate();
         assertEquals(Color.GREEN, getFloorInTableView(rows, 2).getStopPlanned().getFill());
-    }
-
-    @Test
-    @Disabled
-    void testGUI(FxRobot robot) {
-
-        elevators.get(0).setTargetFloor(1);
-        WaitForAsyncUtils.sleep(1, TimeUnit.SECONDS);
-        elevators.get(0).setFloor(1);
-        WaitForAsyncUtils.sleep(1, TimeUnit.SECONDS);
-        elevators.get(0).setTargetFloor(2);
-        WaitForAsyncUtils.sleep(1, TimeUnit.SECONDS);
-        elevators.get(0).setFloor(2);
-        WaitForAsyncUtils.sleep(1, TimeUnit.SECONDS);
-        elevators.get(0).setTargetFloor(0);
-        elevators.get(0).setFloor(0);
-        WaitForAsyncUtils.sleep(5, TimeUnit.SECONDS);
-
-        assertTrue(true);
     }
 }

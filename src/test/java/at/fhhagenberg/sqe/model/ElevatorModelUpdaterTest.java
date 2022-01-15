@@ -42,7 +42,7 @@ class ElevatorModelUpdaterTest {
 		
 		assertEquals(ElevatorDoorStatus.CLOSING, model.getElevator(0).getDoorStatus());
 	}
-	
+
 	@Test 
 	void testModelUpdaterSetsTargetFloorCorrectly() throws RemoteException, IllegalArgumentException, HardwareConnectionException {
 		when(iElevatorMock.getElevatorNum()).thenReturn(10);

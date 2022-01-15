@@ -114,7 +114,6 @@ class EccLayout {
 		
 		
 		automatic = new ToggleButton("Automatic Mode");
-		automatic.setOnAction(evt -> OnAutomaticMode());
 	    Label goToLevel = new Label("Go to Level");
 	    levelToGo = new TextField();
 	    go = new Button("Go");
@@ -276,13 +275,6 @@ class EccLayout {
 		errorBox.appendText("Go Button pressed\n");		
 	}
 	
-	private void OnAutomaticMode()
-	{
-		// not implemented
-		errorBox.appendText("Automaic Mode Button pressed\n");	
-		
-	}
-	
 	
 	// public functions to update gui
 	public void setFloor(Elevator elevator) {
@@ -318,12 +310,7 @@ class EccLayout {
 
 
 	public void setAcceleration(Elevator elevator) {
-		// if update occurs on selected elevator, update view
-		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
-		{
-			// not shown
-			//acceleratinValue.setText(elevator.getAcceleration().toString());			
-		}
+		// not shown in GUI
 	}
 
 
@@ -356,11 +343,7 @@ class EccLayout {
 
 
 	public void setCapacity(Elevator elevator) {
-		// if update occurs on selected elevator, update view
-		if(elevators.getSelectionModel().getSelectedItem().equals(elevator))
-		{
-			//not displayed
-		}
+		// not shown in GUI
 	}
 
 
