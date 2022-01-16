@@ -13,8 +13,11 @@ import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 import at.fhhagenberg.sqe.model.Elevator.ElevatorDoorStatus;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderStroke;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -35,6 +38,7 @@ import org.testfx.matcher.control.ListViewMatchers;
 import org.testfx.matcher.control.TableViewMatchers;
 import org.testfx.util.WaitForAsyncUtils;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testfx.api.FxAssert.verifyThat;
@@ -311,5 +315,51 @@ class AppEnd2EndTest {
         Circle c = (Circle)tv.getColumns().get(4).getCellData(0);
     	assertEquals(Color.GREEN, c.getFill());
     }
+    
+    @Test
+    void testEnteringNonNumbersForElevatorTargetDoesNotWork(FxRobot robot) {
+    	TextField tf = robot.lookup("#FloorToGo").query();
+    	robot.clickOn("#FloorToGo");
+    	assertEquals("", tf.getText());
+    	robot.write("hello");
+    	assertEquals("", tf.getText());
+    }
+    
+    @Test
+    void testGoButtonIsInitiallyDisabled(FxRobot robot) {
+    	Button goButton = robot.lookup("#GoButton").queryButton();    	
+    	assertTrue(goButton.isDisabled());	
+    }
+    
+    @Test 
+    void testGoButtonEnablesWhenValidFloorIsEntered(FxRobot robot) {
+    	Button goButton = robot.lookup("#GoButton").queryButton();
+    	robot.clickOn("#FloorToGo");
+    	robot.write("1");
+    	waitForUpdate();
+    	assertFalse(goButton.isDisabled());    		
+    }
 
+    @Test 
+    void testGoButtonIsDisabledWhenInvalidFloorIsEntered(FxRobot robot) {
+    	Button goButton = robot.lookup("#GoButton").queryButton();
+    	robot.clickOn("#FloorToGo");
+        robot.write("1000");
+    	waitForUpdate();
+    	assertTrue(goButton.isDisabled());
+    }
+    
+    @Test
+    void testTextFieldIsHighlightedRedWhenInvalidFloorIsEntered(FxRobot robot) {
+    	TextField tf = robot.lookup("#FloorToGo").query();
+    	robot.clickOn("#FloorToGo");
+        robot.write("1");
+    	waitForUpdate();
+    	assertEquals(Color.BLACK, tf.getBorder().getStrokes().get(0).getTopStroke());
+    	
+    	robot.write("000");
+    	waitForUpdate();
+    	assertEquals(Color.RED, tf.getBorder().getStrokes().get(0).getTopStroke());    
+    }
+    
 }
