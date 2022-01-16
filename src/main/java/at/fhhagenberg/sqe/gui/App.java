@@ -1,6 +1,5 @@
 package at.fhhagenberg.sqe.gui;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -14,7 +13,6 @@ import at.fhhagenberg.sqe.model.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -76,8 +74,7 @@ public class App extends Application {
 		EccLayout gui = new EccLayout(updater, model);
 		EccGuiUpdater guiObserver = new EccGuiUpdater(gui);
 		model.addModelObserver(guiObserver);    		
-		var x = gui.getLayout();    
-        return x;
+		return gui.getLayout();
 	}
 	
 	@Override
