@@ -2,14 +2,12 @@ package at.fhhagenberg.sqe.gui;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import at.fhhagenberg.sqe.backend.ElevatorConnectionManager;
-import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.backend.HardwareConnectionException;
 import at.fhhagenberg.sqe.backend.IElevatorManager;
 import at.fhhagenberg.sqe.model.*;
@@ -22,7 +20,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import sqelevator.IElevator;
 
 /**
  * JavaFX App
@@ -37,17 +34,18 @@ public class App extends Application {
 	
 	private static final long TIMER_PERIOD = 100L; // milliseconds
 
-	public IElevatorManager getHardwareConnection() throws MalformedURLException, RemoteException, IllegalArgumentException, NotBoundException, HardwareConnectionException {		
+	public IElevatorManager getHardwareConnection() throws MalformedURLException, RemoteException,
+			IllegalArgumentException, NotBoundException, HardwareConnectionException {
 		return ElevatorConnectionManager.getElevatorConnection();
 	}
-	
-	protected ElevatorModel createModel(IElevatorManager manager) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {		
+
+	protected ElevatorModel createModel(IElevatorManager manager)
+			throws HardwareConnectionException {
 		ElevatorModelFactory factory = new ElevatorModelFactory(manager);
 		return factory.createModel();
 	}
 
-
-	protected ElevatorModelUpdater createElevatorModelUpdater(IElevatorManager manager, ElevatorModel model) throws HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
+	protected ElevatorModelUpdater createElevatorModelUpdater(IElevatorManager manager, ElevatorModel model){
 		return new ElevatorModelUpdater(manager, model);
 	}
 
@@ -74,19 +72,18 @@ public class App extends Application {
 		ElevatorModel model = createModel(manager);
 		updater = createElevatorModelUpdater(manager, model);
 		updater.update();
-		EccLayout gui = new EccLayout(updater, model);
 		
+		EccLayout gui = new EccLayout(updater, model);
 		EccGuiUpdater guiObserver = new EccGuiUpdater(gui);
 		model.addModelObserver(guiObserver);    		
-        
-        return gui.getLayout();
+		var x = gui.getLayout();    
+        return x;
 	}
 	
 	@Override
     public void start(Stage stage) {
-
     	timer = new Timer();  
-    	
+
     	TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
@@ -97,44 +94,34 @@ public class App extends Application {
 					}
 					
 					updater.update();
-										
-					Platform.runLater(() -> {
-						if (!mainUIContainer.getChildren().contains(normalUI)) {
+					if (!mainUIContainer.getChildren().contains(normalUI)) {			
+						Platform.runLater(() -> {
 							mainUIContainer.getChildren().clear();
 							mainUIContainer.getChildren().add(normalUI);
-						}
-//						if (!stage.getScene().getRoot().equals(normalUI)) {
-//							stage.getScene().setRoot(normalUI);
-//						}
-					});					
+						});
+					}
 				}
 				catch (Exception exc) {
 					if (errorUI == null) {
 						errorUI = getBackupUI();
 					}
-										
-					Platform.runLater(() -> {
-						if (!mainUIContainer.getChildren().contains(errorUI)) {
+						
+					if (!mainUIContainer.getChildren().contains(errorUI)) {
+						Platform.runLater(() -> {							
 							mainUIContainer.getChildren().clear();
-							mainUIContainer.getChildren().add(errorUI);
-						}
-//						if (!stage.getScene().getRoot().equals(errorUI)) {	
-//							stage.getScene().setRoot(errorUI);
-//						}
-					});												
+							mainUIContainer.getChildren().add(errorUI);							
+						});	
+					}
 				}
 			}
         };      
     	
         mainUIContainer = new VBox();
-        var scene = new Scene(mainUIContainer, 640, 480);
+        var scene = new Scene(mainUIContainer, 660, 480);
         stage.setTitle("Elevator Control Center");
         stage.setScene(scene);
-        
-        timer.scheduleAtFixedRate(task, getTimerPeriodMs(), getTimerPeriodMs());
-        
         task.run();
-        
+        timer.scheduleAtFixedRate(task, 0, getTimerPeriodMs());
         mainUIContainer.getChildren().add(normalUI != null ? normalUI : errorUI);
         stage.show();   
     }
@@ -151,5 +138,4 @@ public class App extends Application {
     	
     	super.stop();
     }
-
 }

@@ -5,15 +5,15 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import at.fhhagenberg.sqe.backend.ElevatorConnectionManager;
-import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
 import at.fhhagenberg.sqe.backend.HardwareConnectionException;
 import at.fhhagenberg.sqe.backend.IElevatorManager;
+import at.fhhagenberg.sqe.model.Elevator.ElevatorDirection;
 
 public class ElevatorModelUpdater {
 
 	private IElevatorManager manager;
 	private ElevatorModel model;
-	
+
 	public ElevatorModelUpdater(IElevatorManager manager, ElevatorModel model) {
 		this.manager = manager;
 		this.model = model;
@@ -47,17 +47,24 @@ public class ElevatorModelUpdater {
 			
 			floor.setButtonUpPressed(manager.getFloorButtonUp(floorNumber));
 			floor.setButtonDownPressed(manager.getFloorButtonDown(floorNumber));
-			floor.setFloorHeight(manager.getFloorHeight());					
+			floor.setFloorHeight(manager.getFloorHeight());	
 		}
 	}
 
 	public void updateElevatorTargetFloor(int elevatorNumber, int targetFloor) {
 		try {
 			manager.setTarget(elevatorNumber, targetFloor);
-		}
-		catch (Exception exc) {
+		} catch (Exception exc) {
 			model.setErrorMessage(exc.getMessage());
 		}
 	}
-	
+
+	public void updateElevatorDirection(int elevatorNumber, ElevatorDirection dir) {
+		try {
+			manager.setCommittedDirection(elevatorNumber, dir);
+		} catch (Exception exc) {
+			model.setErrorMessage(exc.getMessage());
+		}
+	}
+
 }

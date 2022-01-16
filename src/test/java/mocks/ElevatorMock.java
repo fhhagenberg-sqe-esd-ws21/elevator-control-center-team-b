@@ -16,7 +16,7 @@ public class ElevatorMock implements IElevator {
 	private int numElevators;
 	private int numFloors;
 	private int floorHeight;
-	
+
 	private List<Integer> committedDirections;
 	private List<Integer> elevatorAccelerations;
 	private List<Integer> doorStatus;
@@ -31,11 +31,11 @@ public class ElevatorMock implements IElevator {
 	private List<List<Boolean>> elevatorButtons;
 	private List<List<Boolean>> servicesFloors;
 	private int clockTick;
-	
+
 	public ElevatorMock(int numElevators, int numFloors) {
 		this.numElevators = numElevators;
 		this.numFloors = numFloors;
-		
+
 		committedDirections = new ArrayList<>(numElevators);
 		elevatorAccelerations = new ArrayList<>(numElevators);
 		doorStatus = new ArrayList<>(numElevators);
@@ -46,15 +46,15 @@ public class ElevatorMock implements IElevator {
 		elevatorCapacity = new ArrayList<>(numElevators);
 		floorButtonDown = new ArrayList<>(numFloors);
 		floorButtonUp = new ArrayList<>(numFloors);
-		elevatorTargets = new ArrayList<>(numElevators);	
+		elevatorTargets = new ArrayList<>(numElevators);
 		elevatorButtons = new ArrayList<>(numElevators);
 		servicesFloors = new ArrayList<>(numElevators);
-		
+
 		for (int i = 0; i < numFloors; i++) {
 			floorButtonUp.add(false);
 			floorButtonDown.add(false);
 		}
-		
+
 		for (int i = 0; i < numElevators; i++) {
 			committedDirections.add(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
 			elevatorAccelerations.add(0);
@@ -73,7 +73,6 @@ public class ElevatorMock implements IElevator {
 			}
 		}
 	}
-	
 
 	@Override
 	public int getElevatorAccel(int elevatorNumber) {
