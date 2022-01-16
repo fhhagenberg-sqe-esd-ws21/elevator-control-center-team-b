@@ -5,6 +5,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import at.fhhagenberg.sqe.backend.ElevatorHardwareManager;
@@ -25,11 +27,13 @@ class ElevatorModelUpdaterTest {
 	IElevator iElevatorMock;
 
 	@Test
-	void testUpdateSetsModelProperties() throws IllegalArgumentException, HardwareConnectionException, RemoteException {
+	void testUpdateSetsModelProperties() throws IllegalArgumentException, HardwareConnectionException, RemoteException, MalformedURLException, NotBoundException {
 		when(iElevatorMock.getElevatorNum()).thenReturn(10);
 		when(iElevatorMock.getFloorNum()).thenReturn(5);
-		when(iElevatorMock.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSING);
-
+		
+		for (int i = 0; i < 10; i++)
+			when(iElevatorMock.getElevatorDoorStatus(i)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSING);
+		
 		IElevatorManager man = new ElevatorHardwareManager(iElevatorMock);
 		ElevatorModelFactory fact = new ElevatorModelFactory(man);
 		ElevatorModel model = fact.createModel();
@@ -40,25 +44,8 @@ class ElevatorModelUpdaterTest {
 		assertEquals(ElevatorDoorStatus.CLOSING, model.getElevator(0).getDoorStatus());
 	}
 
-	@Test
-	void testUpdateSetsErrorMessage() throws RemoteException, HardwareConnectionException {
-		when(iElevatorMock.getElevatorNum()).thenReturn(10);
-		when(iElevatorMock.getFloorNum()).thenReturn(5);
-
-		IElevatorManager man = new ElevatorHardwareManager(iElevatorMock);
-		ElevatorModelFactory fact = new ElevatorModelFactory(man);
-		ElevatorModel model = fact.createModel();
-		ElevatorModelUpdater updater = new ElevatorModelUpdater(man, model);
-
-		when(iElevatorMock.getElevatorFloor(0)).thenThrow(new RemoteException());
-		updater.update();
-
-		assertEquals("Hardware connection lost", model.getErrorMessage());
-	}
-
-	@Test
-	void testModelUpdaterSetsTargetFloorCorrectly()
-			throws RemoteException, IllegalArgumentException, HardwareConnectionException {
+	@Test 
+	void testModelUpdaterSetsTargetFloorCorrectly() throws RemoteException, IllegalArgumentException, HardwareConnectionException {
 		when(iElevatorMock.getElevatorNum()).thenReturn(10);
 		when(iElevatorMock.getFloorNum()).thenReturn(5);
 

@@ -75,7 +75,7 @@ class AppEnd2EndTest {
 			ehmMock.setCommittedDirection(i, IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
 			ehmMock.setDoorStatus(i, IElevator.ELEVATOR_DOORS_CLOSED);
 
-			ehmMock.setTarget(i, nrOfFloors - (i + 1));
+			ehmMock.setTarget(i, i);
 			ehmMock.setElevatorPosition(i, i * floorHeight);
 			ehmMock.setElevatorFloor(i, i);
 
@@ -97,230 +97,219 @@ class AppEnd2EndTest {
 					e.printStackTrace();
 					return null;
 				}
-			}
+            }
+            @Override
+            protected long getTimerPeriodMs() {
+                return TIMER_PERIOD;
+            }
+        };
+        app.start(stage);
+    }
 
-			@Override
-			protected long getTimerPeriodMs() {
-				return TIMER_PERIOD;
-			}
-		};
-		app.start(stage);
-	}
+    @Stop
+    void stop() throws Exception {
+        app.stop();
+    }
 
-	@Stop
-	void stop() throws Exception {
-		app.stop();
-	}
-
-	void waitForUpdate() {
-		WaitForAsyncUtils.sleep(2 * TIMER_PERIOD, TimeUnit.MILLISECONDS);
-		WaitForAsyncUtils.waitForFxEvents();
-	}
-
-	@Test
-	void testElevatorListAmount(FxRobot robot) {
-		verifyThat("#elevatorsList", ListViewMatchers.hasItems(nrOfElevators));
-	}
-
-	@Test
-	void testFloorAmount(FxRobot robot) {
-		verifyThat("#FloorTable", TableViewMatchers.hasNumRows(nrOfFloors));
-	}
-
-	@Test
-	void testTexts(FxRobot robot) {
-		verifyThat("#GoButton", LabeledMatchers.hasText("Go"));
-		// TODO..
-	}
-
-	@Test
-	void testInitialState(FxRobot robot) {
-		// verifyThat("#ErrorBox", TextInputControlMatchers.hasText(""));
-
-		for (int i = 0; i < nrOfElevators; i++) {
-			verifyThat("#Position", LabeledMatchers.hasText(i * floorHeight + "m"));
-			int target = ehmMock.getTarget(i);
-			int current = ehmMock.getElevatorFloor(i);
-			
-			if(target> current)
-			{
-				verifyThat("#Direction", LabeledMatchers.hasText("UP"));
-			}
-			else if(target < current)
-			{
-				verifyThat("#Direction", LabeledMatchers.hasText("DOWN"));
-			}
-			else
-			{
-				verifyThat("#Direction", LabeledMatchers.hasText("UNCOMMITED"));
-			}
-			verifyThat("#Payload", LabeledMatchers.hasText("0kg"));
-			verifyThat("#Speed", LabeledMatchers.hasText("0m/s"));
-			verifyThat("#Doors", LabeledMatchers.hasText("CLOSED"));
-			verifyThat("#TargetFloor", LabeledMatchers.hasText(nrOfFloors - (i + 1) + ""));
-
-			Node el = robot.lookup("#elevatorsList .list-cell").nth(i + 1).query();
-			robot.clickOn(el);
-		}
-
-		// ListView list = robot.lookup("#elevatorsList").query();
-		// assert(list.getItems().size() == nrOfElevators);
-	}
-
-	@Test
-	void testChangingState(FxRobot robot) throws HardwareConnectionException {
-		ehmMock.setTarget(0, 1);
-		waitForUpdate();
-
-		verifyThat("#TargetFloor", LabeledMatchers.hasText("1"));
-	}
-
-	@Test
-	void testDoorState(FxRobot robot) throws HardwareConnectionException {
-		verifyThat("#Doors", LabeledMatchers.hasText("CLOSED"));
-
-		ehmMock.setDoorStatus(0, IElevator.ELEVATOR_DOORS_OPENING);
-		waitForUpdate();
-		verifyThat("#Doors", LabeledMatchers.hasText("OPENING"));
-
-		ehmMock.setDoorStatus(0, IElevator.ELEVATOR_DOORS_OPEN);
-		waitForUpdate();
-		verifyThat("#Doors", LabeledMatchers.hasText("OPEN"));
-
-		ehmMock.setDoorStatus(0, IElevator.ELEVATOR_DOORS_CLOSING);
-		waitForUpdate();
-		verifyThat("#Doors", LabeledMatchers.hasText("CLOSING"));
-
-		ehmMock.setDoorStatus(1, IElevator.ELEVATOR_DOORS_CLOSING);
-		waitForUpdate();
-
-		Node el1 = robot.lookup("#elevatorsList .list-cell").nth(1).query();
-		robot.clickOn(el1);
-		verifyThat("#Doors", LabeledMatchers.hasText("CLOSING"));
-	}
-
-	@Test
-	void testElevatorDirection(FxRobot robot) throws HardwareConnectionException {
-		verifyThat("#Direction", LabeledMatchers.hasText("UP"));
-
-		ehmMock.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
-		waitForUpdate();
-		verifyThat("#Direction", LabeledMatchers.hasText("UP"));
-
-		ehmMock.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_DOWN);
-		waitForUpdate();
-		verifyThat("#Direction", LabeledMatchers.hasText("DOWN"));
-
-		ehmMock.setCommittedDirection(1, IElevator.ELEVATOR_DIRECTION_UP);
-		ehmMock.setCommittedDirection(2, IElevator.ELEVATOR_DIRECTION_DOWN);
-		waitForUpdate();
-
-		Node el1 = robot.lookup("#elevatorsList .list-cell").nth(1).query();
-		robot.clickOn(el1);
-		verifyThat("#Direction", LabeledMatchers.hasText("UP"));
-
-		Node el2 = robot.lookup("#elevatorsList .list-cell").nth(2).query();
-		robot.clickOn(el2);
-		verifyThat("#Direction", LabeledMatchers.hasText("DOWN"));
-	}
-
-	@Test
-	void testElevatorPosition(FxRobot robot) throws HardwareConnectionException {
-		verifyThat("#Position", LabeledMatchers.hasText("0m"));
-
-		for (int i = 0; i < nrOfElevators; i++) {
-			Node el = robot.lookup("#elevatorsList .list-cell").nth(i).query();
-			robot.clickOn(el);
-			for (int j = 0; j < nrOfFloors; j++) {
-				ehmMock.setElevatorPosition(i, j * floorHeight);
-				waitForUpdate();
-				verifyThat("#Position", LabeledMatchers.hasText(j * floorHeight + "m"));
-			}
-		}
-	}
-
-	private void goToTarget(FxRobot robot, int elevator, int floor) {
+    private void goToTarget(FxRobot robot, int elevator, int floor) {
 		Node el = robot.lookup("#elevatorsList .list-cell").nth(elevator).query();
 		robot.clickOn(el);
 		robot.clickOn("#FloorToGo");
 		robot.write(Integer.toString(floor));
 		robot.clickOn("#GoButton");
 	}
+    
+    void waitForUpdate() {
+        WaitForAsyncUtils.sleep(2*TIMER_PERIOD, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.waitForFxEvents();
+    }
 
-	@Test
-	void testInvalidFloorTargetDoesNotCrashApp(FxRobot robot) {
-		goToTarget(robot, 0, 100);
-	}
+    @Test
+    void testElevatorListAmount(FxRobot robot) {
+        verifyThat("#elevatorsList", ListViewMatchers.hasItems(nrOfElevators));
+    }
 
-	@Test
-	void testStringForFloorTargetDoesNotCrashApp(FxRobot robot) {
-		robot.clickOn("#FloorToGo");
-		robot.write("hello");
-		robot.clickOn("#GoButton");
-	}
+    @Test
+    void testFloorAmount(FxRobot robot) {
+        verifyThat("#FloorTable", TableViewMatchers.hasNumRows(nrOfFloors));
+    }
 
-	@Test
-	void testSettingInvalidTargetDoesNotUpdateRemote(FxRobot robot) {
-		ehmMock.setTarget(0, 0);
+    @Test
+    void testTexts(FxRobot robot) {
+        verifyThat("#GoButton", LabeledMatchers.hasText("Go"));
+        // TODO..
+    }
 
-		goToTarget(robot, 0, 1000);
+    @Test
+    void testInitialState(FxRobot robot) {    	
+        for (int i = 0; i < nrOfElevators; i++) {
+            verifyThat("#Position", LabeledMatchers.hasText(i * floorHeight + "m"));
+            verifyThat("#Direction", LabeledMatchers.hasText("UNCOMMITTED"));
+            verifyThat("#Payload", LabeledMatchers.hasText("0kg"));
+            verifyThat("#Speed", LabeledMatchers.hasText("0m/s"));
+            verifyThat("#Doors", LabeledMatchers.hasText("CLOSED"));
+            verifyThat("#TargetFloor", LabeledMatchers.hasText(Integer.toString(i)));
 
-		assertEquals(0, ehmMock.getTarget(0));
-	}
+            Node el = robot.lookup("#elevatorsList .list-cell").nth(i+1).query();
+            robot.clickOn(el);
+            waitForUpdate();
+        }
+    }
 
-	@Test
-	void testSettingTargetFloorMovesElevator(FxRobot robot) {
-		goToTarget(robot, 0, 1);
 
-		waitForUpdate();
+    @Test
+    void testChangingState(FxRobot robot) throws HardwareConnectionException {
+    	ehmMock.setTarget(0, 1);
+        waitForUpdate();
 
-		assertEquals(1, ehmMock.getTarget(0));
-	}
+        verifyThat("#TargetFloor", LabeledMatchers.hasText("1"));
+    }
 
-	@Test
-	void testCheckThatAutomaticButtonIsDisabled(FxRobot robot) {
-		Node button = robot.lookup("#AutomaticButton").query();
-		assertTrue(button.isDisabled());
-	}
+    @Test
+    void testDoorState(FxRobot robot) throws HardwareConnectionException {
+        verifyThat("#Doors", LabeledMatchers.hasText("CLOSED"));
+        
+        ehmMock.setDoorStatus(0, IElevator.ELEVATOR_DOORS_OPENING);
+        waitForUpdate();
+        verifyThat("#Doors", LabeledMatchers.hasText("OPENING"));
+        
+        ehmMock.setDoorStatus(0, IElevator.ELEVATOR_DOORS_OPEN);
+        waitForUpdate();
+        verifyThat("#Doors", LabeledMatchers.hasText("OPEN"));
+        
+        ehmMock.setDoorStatus(0, IElevator.ELEVATOR_DOORS_CLOSING);
+        waitForUpdate();
+        verifyThat("#Doors", LabeledMatchers.hasText("CLOSING"));
+        
+        ehmMock.setDoorStatus(1, IElevator.ELEVATOR_DOORS_CLOSING);
+        waitForUpdate();
 
-	@Test
-	void testSpeedIsUpdated(FxRobot robot) {
-		verifyThat("#Speed", LabeledMatchers.hasText("0m/s"));
-		ehmMock.setElevatorSpeed(0, 10);
-		waitForUpdate();
-		verifyThat("#Speed", LabeledMatchers.hasText("10m/s"));
-	}
+        Node el1 = robot.lookup("#elevatorsList .list-cell").nth(1).query();
+        robot.clickOn(el1);
+        verifyThat("#Doors", LabeledMatchers.hasText("CLOSING"));
+    }
 
-	@Test
-	void testElevatorWeightIsUpdated(FxRobot robot) {
-		verifyThat("#Payload", LabeledMatchers.hasText("0kg"));
-		ehmMock.setElevatorWeight(0, 100);
-		waitForUpdate();
-		verifyThat("#Payload", LabeledMatchers.hasText("100kg"));
-	}
+    @Test
+    void testElevatorDirection(FxRobot robot) throws HardwareConnectionException {
+    	ehmMock.setTarget(0, 0);
+    	waitForUpdate();
+        verifyThat("#Direction", LabeledMatchers.hasText("UNCOMMITTED"));
+        
+        ehmMock.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
+        waitForUpdate();
+        verifyThat("#Direction", LabeledMatchers.hasText("UP"));
+        
+        ehmMock.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_DOWN);
+        waitForUpdate();
+        verifyThat("#Direction", LabeledMatchers.hasText("DOWN"));
 
-	@Test
-	void testFloorsToStopAreUpdated(FxRobot robot) {
-		Node el = robot.lookup("#elevatorsList .list-cell").nth(1).query();
-		robot.clickOn(el);
-		TableView<ElevatorProperties> tv = robot.lookup("#FloorTable").queryTableView();
+        ehmMock.setCommittedDirection(1, IElevator.ELEVATOR_DIRECTION_UP);
+        ehmMock.setCommittedDirection(2, IElevator.ELEVATOR_DIRECTION_DOWN);
+        waitForUpdate();
 
-		for (int i = 0; i < nrOfFloors; i++) {
-			Circle c = (Circle) tv.getColumns().get(4).getCellData(i);
-			assertEquals(Color.GRAY, c.getFill());
-		}
+        Node el1 = robot.lookup("#elevatorsList .list-cell").nth(1).query();
+        robot.clickOn(el1);
+        verifyThat("#Direction", LabeledMatchers.hasText("UNCOMMITTED"));
+        
+        ehmMock.setTarget(2, 0);        
+        Node el2 = robot.lookup("#elevatorsList .list-cell").nth(2).query();
+        robot.clickOn(el2);
+        waitForUpdate();
+        verifyThat("#Direction", LabeledMatchers.hasText("DOWN"));
+    }
 
-		ehmMock.setElevatorButtons(1, nrOfFloors - 1, true);
-		waitForUpdate();
+    @Test
+    void testElevatorPosition(FxRobot robot) throws HardwareConnectionException {
+    	waitForUpdate();
+        verifyThat("#Position", LabeledMatchers.hasText("0m"));
 
-		// elevators are sorted top down, so if elevator nrOfFloors-1 is set to
-		// green, we need to access it via index 0
-		for (int i = 1; i < nrOfFloors; i++) {
-			Circle c = (Circle) tv.getColumns().get(4).getCellData(i);
-			assertEquals(Color.GRAY, c.getFill());
-		}
+        for (int i = 0; i < nrOfElevators; i++) {
+            Node el = robot.lookup("#elevatorsList .list-cell").nth(i).query();
+            robot.clickOn(el);
+            
+            for (int j = 0; j < nrOfFloors; j++) {
+            	ehmMock.setElevatorPosition(i, j*floorHeight);
+                waitForUpdate();
+                verifyThat("#Position", LabeledMatchers.hasText(j * floorHeight + "m"));
+            }
+        }
+    }
+    
+    @Test
+    void testInvalidFloorTargetDoesNotCrashApp(FxRobot robot) {    
+        goToTarget(robot, 0, 100);
+    }
+    
+    @Test 
+    void testStringForFloorTargetDoesNotCrashApp(FxRobot robot) {
+        robot.clickOn("#FloorToGo");
+        robot.write("hello");
+        robot.clickOn("#GoButton");
+    }
+    
+    @Test
+    void testSettingInvalidTargetDoesNotUpdateRemote(FxRobot robot) {
+    	ehmMock.setTarget(0, 0);
+    	
+    	goToTarget(robot, 0, 1000);
+    	
+    	assertEquals(0, ehmMock.getTarget(0));
+    }
+    
+    @Test
+    void testSettingTargetFloorMovesElevator(FxRobot robot) {
+        goToTarget(robot, 0, 1);
+        
+        waitForUpdate();
+        
+        assertEquals(1, ehmMock.getTarget(0));
+    }
+    
+    @Test
+    void testCheckThatAutomaticButtonIsDisabled(FxRobot robot) {
+    	Node button = robot.lookup("#AutomaticButton").query();
+    	assertTrue(button.isDisabled());
+    }
+    
+    @Test 
+    void testSpeedIsUpdated(FxRobot robot) {
+    	verifyThat("#Speed", LabeledMatchers.hasText("0m/s"));
+    	ehmMock.setElevatorSpeed(0, 10);
+    	waitForUpdate();
+    	verifyThat("#Speed", LabeledMatchers.hasText("10m/s"));
+    }
+    
+    @Test
+    void testElevatorWeightIsUpdated(FxRobot robot) {
+    	verifyThat("#Payload", LabeledMatchers.hasText("0kg"));
+    	ehmMock.setElevatorWeight(0, 100);
+    	waitForUpdate();
+    	verifyThat("#Payload", LabeledMatchers.hasText("100kg"));
+    }
+    
+    @Test 
+    void testFloorsToStopAreUpdated(FxRobot robot) {
+    	Node el = robot.lookup("#elevatorsList .list-cell").nth(1).query();
+        robot.clickOn(el);
+    	TableView<ElevatorProperties> tv = robot.lookup("#FloorTable").queryTableView();
+    	
+        for (int i = 0; i < nrOfFloors; i++) {
+        	Circle c = (Circle)tv.getColumns().get(4).getCellData(i);
+        	assertEquals(Color.GRAY, c.getFill());
+        }
+        
+        ehmMock.setElevatorButtons(1, nrOfFloors-1, true);
+        waitForUpdate();
+        
+        // elevators are sorted top down, so if elevator nrOfFloors-1 is set to
+        // green, we need to access it via index 0
+        for (int i = 1; i < nrOfFloors; i++) {
+        	Circle c = (Circle)tv.getColumns().get(4).getCellData(i);
+        	assertEquals(Color.GRAY, c.getFill());
+        }
+        
+        Circle c = (Circle)tv.getColumns().get(4).getCellData(0);
+    	assertEquals(Color.GREEN, c.getFill());
+    }
 
-		Circle c = (Circle) tv.getColumns().get(4).getCellData(0);
-		assertEquals(Color.GREEN, c.getFill());
-	}
 }
