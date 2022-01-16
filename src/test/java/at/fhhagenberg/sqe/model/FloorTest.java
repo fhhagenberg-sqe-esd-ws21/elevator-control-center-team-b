@@ -13,37 +13,37 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class FloorTest {
 
 	@Mock
-    IModelObserver observer;
-	
-	@Test 
+	IModelObserver observer;
+
+	@Test
 	void testSetButtonUpPressedNotifiesObserver() {
 		Floor fl = new Floor(0);
 		fl.addModelObserver(observer);
-		
+
 		fl.setButtonUpPressed(true);
-		
+
 		verify(observer, times(1)).floorButtonUpPressedUpdated(fl);
 		assertTrue(fl.isButtonUpPressed());
 	}
-	
-	@Test 
+
+	@Test
 	void testSetButtonDownPressedNotifiesObserver() {
 		Floor fl = new Floor(0);
 		fl.addModelObserver(observer);
-		
+
 		fl.setButtonDownPressed(true);
-		
+
 		verify(observer, times(1)).floorButtonDownPressedUpdated(fl);
 		assertTrue(fl.isButtonDownPressed());
 	}
-	
-	@Test 
+
+	@Test
 	void testSetHeightNotifiesObserver() {
 		Floor fl = new Floor(0);
 		fl.addModelObserver(observer);
-		
+
 		fl.setFloorHeight(240);
-		
+
 		verify(observer, times(1)).floorHeightUpdated(fl);
 		assertEquals(240, fl.getFloorHeight());
 	}

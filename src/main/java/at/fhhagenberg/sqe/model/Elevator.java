@@ -5,31 +5,23 @@ import java.util.List;
 
 public class Elevator {
 	/**
-	 * The status of the elevator doors
-	 * Open - The doors are currently open
-	 * Closed - The doors are currently closed
-	 * Opening - The door are transitioning from Closed to Open
-	 * Closing - The door are transitioning from Open to Closed
+	 * The status of the elevator doors Open - The doors are currently open Closed -
+	 * The doors are currently closed Opening - The door are transitioning from
+	 * Closed to Open Closing - The door are transitioning from Open to Closed
 	 */
 	public enum ElevatorDoorStatus {
-		OPEN,
-		CLOSED,
-		OPENING,
-		CLOSING
+		OPEN, CLOSED, OPENING, CLOSING
 	}
 
 	/**
-	 * Direction of a single elevator
-	 * Up - The elevator is currently moving upwards
-	 * Down - The elevator is currently moving downwards
-	 * Uncommitted - The elevator is currently not moving
+	 * Direction of a single elevator Up - The elevator is currently moving upwards
+	 * Down - The elevator is currently moving downwards Uncommitted - The elevator
+	 * is currently not moving
 	 */
 	public enum ElevatorDirection {
-		UP,
-		DOWN,
-		UNCOMMITTED
+		UP, DOWN, UNCOMMITTED
 	}
-	
+
 	private Integer elevatorNumber;
 	private int floor;
 	private ElevatorDoorStatus doorStatus = ElevatorDoorStatus.CLOSED;
@@ -41,9 +33,9 @@ public class Elevator {
 	private int capacity;
 	private List<Boolean> floorsToService;
 	private int targetFloor;
-	private List<Boolean> floorStopRequested;	
+	private List<Boolean> floorStopRequested;
 	private List<IModelObserver> observers;
-	
+
 	public Elevator(int elevatorNumber, int numFloors) throws IllegalArgumentException {
 		if (elevatorNumber < 0) {
 			throw new IllegalArgumentException("Invalid elevator number");
@@ -51,12 +43,12 @@ public class Elevator {
 		if (numFloors < 1) {
 			throw new IllegalArgumentException("Invalid number of floors");
 		}
-		
+
 		this.elevatorNumber = elevatorNumber;
 		this.floorsToService = new ArrayList<>(numFloors);
 		this.floorStopRequested = new ArrayList<>(numFloors);
 		this.observers = new ArrayList<>();
-		
+
 		for (int i = 0; i < numFloors; i++) {
 			floorsToService.add(false);
 			floorStopRequested.add(false);
@@ -71,8 +63,8 @@ public class Elevator {
 		if (this.floor == floor) {
 			return;
 		}
-		
-		this.floor = floor;		
+
+		this.floor = floor;
 		observers.forEach(obs -> obs.elevatorFloorUpdated(this));
 	}
 
@@ -84,7 +76,7 @@ public class Elevator {
 		if (this.doorStatus == doorStatus) {
 			return;
 		}
-		
+
 		this.doorStatus = doorStatus;
 		observers.forEach(obs -> obs.elevatorDoorStatusUpdated(this));
 	}
@@ -97,7 +89,7 @@ public class Elevator {
 		if (this.direction == direction) {
 			return;
 		}
-		
+
 		this.direction = direction;
 		observers.forEach(obs -> obs.elevatorDirectionUpdated(this));
 	}
@@ -110,7 +102,7 @@ public class Elevator {
 		if (this.acceleration == acceleration) {
 			return;
 		}
-		
+
 		this.acceleration = acceleration;
 		observers.forEach(obs -> obs.elevatorAccelerationUpdated(this));
 	}
@@ -138,7 +130,7 @@ public class Elevator {
 		if (this.speed == speed) {
 			return;
 		}
-		
+
 		this.speed = speed;
 		observers.forEach(obs -> obs.elevatorSpeedUpdated(this));
 	}
@@ -151,7 +143,7 @@ public class Elevator {
 		if (this.weight == weight) {
 			return;
 		}
-		
+
 		this.weight = weight;
 		observers.forEach(obs -> obs.elevatorWeightUpdated(this));
 	}
@@ -164,7 +156,7 @@ public class Elevator {
 		if (this.capacity == capacity) {
 			return;
 		}
-		
+
 		this.capacity = capacity;
 		observers.forEach(obs -> obs.elevatorCapacityUpdated(this));
 	}
@@ -177,7 +169,7 @@ public class Elevator {
 		if (floorsToService.get(floorNumber) == service) {
 			return;
 		}
-		
+
 		floorsToService.set(floorNumber, service);
 		observers.forEach(obs -> obs.elevatorFloorsToServiceUpdated(this));
 	}
@@ -193,7 +185,7 @@ public class Elevator {
 		if (targetFloor < 0 || targetFloor >= getNumFloors()) {
 			throw new IllegalArgumentException("Invalid floor number");
 		}
-		
+
 		this.targetFloor = targetFloor;
 		observers.forEach(obs -> obs.elevatorTargetFloorUpdated(this));
 	}
@@ -201,11 +193,11 @@ public class Elevator {
 	public int getElevatorNumber() {
 		return elevatorNumber;
 	}
-	
+
 	public int getNumFloors() {
 		return floorsToService.size();
 	}
-	
+
 	public boolean getFloorStopRequested(int floor) {
 		return floorStopRequested.get(floor);
 	}
@@ -217,19 +209,17 @@ public class Elevator {
 		if (floorStopRequested.get(floor) == stopRequested) {
 			return;
 		}
-			
-		floorStopRequested.set(floor, stopRequested);		
+
+		floorStopRequested.set(floor, stopRequested);
 		observers.forEach(obs -> obs.elevatorFloorStopRequestedUpdated(this));
 	}
 
-	
 	public void addModelObserver(IModelObserver observer) {
 		observers.add(observer);
-	}	
+	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "Elevator " + elevatorNumber.toString();
 	}
 }
