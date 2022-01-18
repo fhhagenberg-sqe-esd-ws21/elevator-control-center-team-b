@@ -9,6 +9,19 @@ The GUI enables the user to check the status of all elevators and manually contr
 Status updates from the simulated elevator buttons (eg. people pressing the "call" button) will be automatically updated in the GUI.
 You can operate the elevators and see the detailed status of each elevator.
 
+## Screenshots
+
+### Connected to Simulator
+On the left side, all elevators are listed. On the right side, the floors and the status for the selected Elevator.
+"Automatic Mode" Button is disabled (not implemented yet).
+With "Go to level", you can choose the target level for the selected elevator.
+![Screenshot](figures/gui_connected.png)
+
+### Simulator not connected
+When the RMI Connection could not be established, this Screen is shown.
+![Screenshot](figures/gui_disconnected.png)
+
+
 ## Install and run
 
 ### Prerequisites
