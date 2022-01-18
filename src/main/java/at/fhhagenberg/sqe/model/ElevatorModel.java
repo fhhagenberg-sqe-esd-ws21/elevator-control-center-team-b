@@ -44,7 +44,7 @@ public class ElevatorModel {
 		}
 
 		this.errorMessage = message;
-		observers.forEach((obs) -> obs.errorMessageUpdated(this));
+		observers.forEach(obs -> obs.errorMessageUpdated(this));
 	}
 
 	public String getErrorMessage() {
