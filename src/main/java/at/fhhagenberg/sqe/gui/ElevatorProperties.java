@@ -48,7 +48,7 @@ public class ElevatorProperties {
 		return up;
 	}
 
-	public void setUp(Boolean fup) {
+	public void setUp(boolean fup) {
 		up.setFill(fup ? Color.GREEN : Color.GRAY);
 	}
 
@@ -56,7 +56,7 @@ public class ElevatorProperties {
 		return down;
 	}
 
-	public void setDown(Boolean fdown) {
+	public void setDown(boolean fdown) {
 		down.setFill(fdown ? Color.GREEN : Color.GRAY);
 	}
 
@@ -64,7 +64,7 @@ public class ElevatorProperties {
 		return stopPlanned;
 	}
 
-	public void setStopPlanned(Boolean fstopPlanned) {
+	public void setStopPlanned(boolean fstopPlanned) {
 		stopPlanned.setFill(fstopPlanned ? Color.GREEN : Color.GRAY);
 	}
 }

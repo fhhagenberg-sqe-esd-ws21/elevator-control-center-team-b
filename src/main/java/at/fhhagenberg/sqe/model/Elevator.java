@@ -166,7 +166,7 @@ public class Elevator {
 	}
 
 	public void setFloorToService(int floorNumber, boolean service) {
-		if (floorsToService.get(floorNumber) == service) {
+		if (floorsToService.get(floorNumber).equals(service)) {
 			return;
 		}
 
@@ -206,7 +206,7 @@ public class Elevator {
 		if (targetFloor < 0 || targetFloor >= getNumFloors()) {
 			throw new IllegalArgumentException("Invalid floor number");
 		}
-		if (floorStopRequested.get(floor) == stopRequested) {
+		if (floorStopRequested.get(floor).equals(stopRequested)) {
 			return;
 		}
 

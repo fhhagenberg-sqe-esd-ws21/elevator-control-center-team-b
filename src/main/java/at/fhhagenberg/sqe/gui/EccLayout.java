@@ -131,7 +131,7 @@ class EccLayout {
 		VBox rightSide = new VBox(25);
 		rightSide.getChildren().addAll(elevatorPropertiesTable, controlPanel);
 
-		elevators = new ListView<Elevator>();
+		elevators = new ListView<>();
 		elevators.getSelectionModel().selectedItemProperty().addListener((observable,  oldValue,  newValue) -> {
 				if (oldValue == null || !oldValue.equals(newValue)) {
 					onElevatorSelect(newValue);
