@@ -65,7 +65,7 @@ class AppMockTest {
 		app.start(stage);
 	}
 
-	@Disabled // default test to check setup, does not make sense for actual testing
+	@Disabled("default test to check setup, does not make sense for actual testing")
 	@Test
 	void runForeverTest(FxRobot robot) throws Throwable {
 		// run forever..
