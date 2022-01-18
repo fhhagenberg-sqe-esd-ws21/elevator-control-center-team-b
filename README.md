@@ -27,6 +27,7 @@ When the RMI Connection could not be established, this Screen is shown.
 ### Prerequisites
 
 - [x] Java SE/JDK 13 or higher
+- [x] JavaFX runtime
 - [x] Latest Elevator Simulator `rmi-controller-*.jar` from [here](https://github.com/winterer/elevator/releases/latest).
 
 
