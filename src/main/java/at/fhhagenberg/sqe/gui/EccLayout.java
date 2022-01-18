@@ -238,7 +238,7 @@ class EccLayout {
 	}
 
 	private void onGo() {
-		int targetFloor;
+		int target;
 		try {
 			target = Integer.parseInt(levelToGo.getText());
 		} catch (NumberFormatException e) {
