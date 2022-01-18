@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class ElevatorModelFactory {
 
-	public IElevatorManager manager;
+	private IElevatorManager manager;
 
 	public ElevatorModelFactory(IElevatorManager manager) throws IllegalArgumentException {
 		if (manager == null) {
@@ -21,8 +21,8 @@ public class ElevatorModelFactory {
 		int numElevators = manager.getElevatorNum();
 		int numFloors = manager.getFloorNum();
 
-		ArrayList<Elevator> elevators = new ArrayList<Elevator>(numElevators);
-		ArrayList<Floor> floors = new ArrayList<Floor>(numFloors);
+		ArrayList<Elevator> elevators = new ArrayList<>(numElevators);
+		ArrayList<Floor> floors = new ArrayList<>(numFloors);
 
 		for (int i = 0; i < numElevators; i++) {
 			elevators.add(new Elevator(i, numFloors));
