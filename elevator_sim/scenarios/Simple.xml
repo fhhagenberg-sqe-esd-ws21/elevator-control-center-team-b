@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Scenario>
+    <Title>Simple</Title>
+    <Description>Simple scenario with 5 floors and 1 elevator</Description>
+    <Floors>5</Floors>
+    <FloorHeight>10</FloorHeight>
+    <Elevators>1</Elevators>
+    <ElevatorCapacity>10</ElevatorCapacity>
+    <ElevatorSpeed>10</ElevatorSpeed>
+    <ElevatorAccel>2</ElevatorAccel>
+    <Stages>1</Stages>
+    <Repeats>1</Repeats>
+    <StageTime0>10</StageTime0>
+    <GroundArrival0>10</GroundArrival0>
+    <OtherArrival0>100</OtherArrival0>
+    <OtherExit0>50</OtherExit0>
+</Scenario>
+
