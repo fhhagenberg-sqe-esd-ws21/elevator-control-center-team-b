@@ -21,14 +21,11 @@ class ElevatorHardwareManagerTest {
 	@Mock
 	IElevator iElevatorMock;
 
-	IElevator nullElevator = null;
 	ElevatorHardwareManager ehm;
-
-	// TODO add tests per function with connection abort
 
 	@Test
 	void testNoInterface() {
-		assertThrowsExactly(IllegalArgumentException.class, () -> ehm = new ElevatorHardwareManager(nullElevator));
+		assertThrowsExactly(IllegalArgumentException.class, () -> ehm = new ElevatorHardwareManager(null));
 	}
 
 	@Test
