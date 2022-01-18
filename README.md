@@ -14,6 +14,7 @@ You can operate the elevators and see the detailed status of each elevator.
 ### Prerequisites
 
 - [x] Java SE/JDK 13 or higher
+- [x] JavaFX runtime
 - [x] Latest Elevator Simulator `rmi-controller-*.jar` from [here](https://github.com/winterer/elevator/releases/latest).
 
 
