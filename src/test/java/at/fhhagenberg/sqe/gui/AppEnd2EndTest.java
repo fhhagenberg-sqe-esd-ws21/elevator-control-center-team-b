@@ -243,14 +243,14 @@ class AppEnd2EndTest {
     
     @Test
     void testInvalidFloorTargetDoesNotCrashApp(FxRobot robot) {    
-        assertDoesNotThrow​(() ->goToTarget(robot, 0, 100));
+        assertDoesNotThrow(() ->goToTarget(robot, 0, 100));
     }
     
     @Test 
     void testStringForFloorTargetDoesNotCrashApp(FxRobot robot) {
-        assertDoesNotThrow​( () -> robot.clickOn("#FloorToGo"));
-        assertDoesNotThrow​( () -> robot.write("hello"));
-        assertDoesNotThrow​( () -> robot.clickOn("#GoButton"));
+        assertDoesNotThrow( () -> robot.clickOn("#FloorToGo"));
+        assertDoesNotThrow( () -> robot.write("hello"));
+        assertDoesNotThrow( () -> robot.clickOn("#GoButton"));
     }
     
     @Test
