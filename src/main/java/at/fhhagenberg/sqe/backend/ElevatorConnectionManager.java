@@ -8,6 +8,9 @@ import java.rmi.RemoteException;
 import sqelevator.IElevator;
 
 public class ElevatorConnectionManager {
+	private ElevatorConnectionManager() {
+		super();
+	}
 
 	public static ElevatorHardwareManager getElevatorConnection() throws MalformedURLException, RemoteException,
 			NotBoundException, IllegalArgumentException, HardwareConnectionException {
