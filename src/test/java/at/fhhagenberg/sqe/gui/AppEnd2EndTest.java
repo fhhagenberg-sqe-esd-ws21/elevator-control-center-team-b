@@ -2,6 +2,7 @@ package at.fhhagenberg.sqe.gui;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -162,7 +163,7 @@ class AppEnd2EndTest {
 
 
     @Test
-    void testChangingState(FxRobot robot) throws HardwareConnectionException {
+    void testChangingState(FxRobot robot) throws HardwareConnectionException, RemoteException {
     	ehmMock.setTarget(0, 1);
         waitForUpdate();
 
@@ -194,7 +195,7 @@ class AppEnd2EndTest {
     }
 
     @Test
-    void testElevatorDirection(FxRobot robot) throws HardwareConnectionException {
+    void testElevatorDirection(FxRobot robot) throws HardwareConnectionException, RemoteException {
     	ehmMock.setTarget(0, 0);
     	waitForUpdate();
         verifyThat("#Direction", LabeledMatchers.hasText("UNCOMMITTED"));
@@ -252,7 +253,7 @@ class AppEnd2EndTest {
     }
     
     @Test
-    void testSettingInvalidTargetDoesNotUpdateRemote(FxRobot robot) {
+    void testSettingInvalidTargetDoesNotUpdateRemote(FxRobot robot) throws RemoteException {
     	ehmMock.setTarget(0, 0);
     	
     	goToTarget(robot, 0, 1000);
@@ -261,7 +262,7 @@ class AppEnd2EndTest {
     }
     
     @Test
-    void testSettingTargetFloorMovesElevator(FxRobot robot) {
+    void testSettingTargetFloorMovesElevator(FxRobot robot) throws RemoteException {
         goToTarget(robot, 0, 1);
         
         waitForUpdate();

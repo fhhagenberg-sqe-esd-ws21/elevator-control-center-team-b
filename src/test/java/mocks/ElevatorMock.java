@@ -74,88 +74,111 @@ public class ElevatorMock implements IElevator {
 		}
 	}
 
+	private void throwIfNotConnected() throws java.rmi.RemoteException {
+		if (!connected) {
+			throw new java.rmi.RemoteException("Could not establish connection");
+		}
+	}
+	
 	@Override
-	public int getElevatorAccel(int elevatorNumber) {
+	public int getElevatorAccel(int elevatorNumber) throws RemoteException {
+		throwIfNotConnected();
 		return elevatorAccelerations.get(elevatorNumber);
 	}
 
 	@Override
-	public boolean getElevatorButton(int elevatorNumber, int floor) {
+	public boolean getElevatorButton(int elevatorNumber, int floor) throws RemoteException {
+		throwIfNotConnected();
 		return elevatorButtons.get(elevatorNumber).get(floor);
 	}
 
 	@Override
-	public int getElevatorFloor(int elevatorNumber) {
+	public int getElevatorFloor(int elevatorNumber) throws RemoteException {
+		throwIfNotConnected();
 		return elevatorFloor.get(elevatorNumber);
 	}
 
 	@Override
-	public int getElevatorNum() {
+	public int getElevatorNum() throws RemoteException {
+		throwIfNotConnected();
 		return numElevators;
 	}
 
 	@Override
-	public int getElevatorPosition(int elevatorNumber) {
+	public int getElevatorPosition(int elevatorNumber) throws RemoteException {
+		throwIfNotConnected();
 		return elevatorPosition.get(elevatorNumber);
 	}
 
 	@Override
-	public int getElevatorSpeed(int elevatorNumber) {
+	public int getElevatorSpeed(int elevatorNumber) throws RemoteException {
+		throwIfNotConnected();
 		return elevatorSpeed.get(elevatorNumber);
 	}
 
 	@Override
-	public int getElevatorWeight(int elevatorNumber) {
+	public int getElevatorWeight(int elevatorNumber) throws RemoteException {
+		throwIfNotConnected();
 		return elevatorWeight.get(elevatorNumber);
 	}
 
 	@Override
-	public int getElevatorCapacity(int elevatorNumber) {
+	public int getElevatorCapacity(int elevatorNumber) throws RemoteException {
+		throwIfNotConnected();
 		return elevatorCapacity.get(elevatorNumber);
 	}
 
 	@Override
-	public boolean getFloorButtonDown(int floor) {
+	public boolean getFloorButtonDown(int floor) throws RemoteException {
+		throwIfNotConnected();
 		return floorButtonDown.get(floor);
 	}
 
 	@Override
-	public boolean getFloorButtonUp(int floor) {
+	public boolean getFloorButtonUp(int floor) throws RemoteException {
+		throwIfNotConnected();
 		return floorButtonUp.get(floor);
 	}
 
 	@Override
-	public int getFloorHeight() {
+	public int getFloorHeight() throws RemoteException {
+		throwIfNotConnected();
 		return floorHeight;
 	}
 
 	@Override
-	public int getFloorNum() {
+	public int getFloorNum() throws RemoteException {
+		throwIfNotConnected();
 		return numFloors;
 	}
 
 	@Override
-	public boolean getServicesFloors(int elevatorNumber, int floor) {
+	public boolean getServicesFloors(int elevatorNumber, int floor) throws RemoteException {
+		throwIfNotConnected();
 		return servicesFloors.get(elevatorNumber).get(floor);
 	}
 
 	@Override
-	public int getTarget(int elevatorNumber) {
+	public int getTarget(int elevatorNumber) throws RemoteException {
+		throwIfNotConnected();
 		return elevatorTargets.get(elevatorNumber);
 	}
 
 	@Override
-	public void setServicesFloors(int elevatorNumber, int floor, boolean service) {
+	public void setServicesFloors(int elevatorNumber, int floor, boolean service) throws RemoteException {
+		throwIfNotConnected();
 		servicesFloors.get(elevatorNumber).set(floor, service);
 	}
 
 	@Override
-	public void setTarget(int elevatorNumber, int target) {
+	public void setTarget(int elevatorNumber, int target) throws RemoteException {
+		throwIfNotConnected();
 		elevatorTargets.set(elevatorNumber, target);
 	}
 
 	@Override
-	public long getClockTick() {
+	public long getClockTick() throws RemoteException {
+		throwIfNotConnected();
 		return clockTick;
 	}
 
@@ -216,17 +239,20 @@ public class ElevatorMock implements IElevator {
 	}
 
 	@Override
-	public int getCommittedDirection(int elevatorNumber) {
+	public int getCommittedDirection(int elevatorNumber) throws RemoteException {
+		throwIfNotConnected();
 		return committedDirections.get(elevatorNumber);
 	}
 
 	@Override
-	public int getElevatorDoorStatus(int elevatorNumber) {
+	public int getElevatorDoorStatus(int elevatorNumber) throws RemoteException {
+		throwIfNotConnected();
 		return doorStatus.get(elevatorNumber);
 	}
 
 	@Override
-	public void setCommittedDirection(int elevatorNumber, int direction) {
+	public void setCommittedDirection(int elevatorNumber, int direction) throws RemoteException {
+		throwIfNotConnected();
 		committedDirections.set(elevatorNumber, direction);
 	}
 }
