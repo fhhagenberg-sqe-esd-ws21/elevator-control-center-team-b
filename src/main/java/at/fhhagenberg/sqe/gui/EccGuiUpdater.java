@@ -55,6 +55,7 @@ public class EccGuiUpdater implements IModelObserver {
 
 	@Override
 	public void elevatorFloorsToServiceUpdated(Elevator elevator) {
+		// not implemented in gui
 	}
 
 	@Override

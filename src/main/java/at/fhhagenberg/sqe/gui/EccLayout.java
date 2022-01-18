@@ -238,14 +238,14 @@ class EccLayout {
 	}
 
 	private void onGo() {
-		int targetFloor;
+		int target;
 		try {
-			targetFloor = Integer.parseInt(levelToGo.getText());
+			target = Integer.parseInt(levelToGo.getText());
 		} catch (NumberFormatException e) {
 			return;
 		}
 		Elevator elevator = elevators.getSelectionModel().getSelectedItem();
-		elevatorModelUpdater.updateElevatorTargetFloor(elevator.getElevatorNumber(), targetFloor);
+		elevatorModelUpdater.updateElevatorTargetFloor(elevator.getElevatorNumber(), target);
 
 	}
 

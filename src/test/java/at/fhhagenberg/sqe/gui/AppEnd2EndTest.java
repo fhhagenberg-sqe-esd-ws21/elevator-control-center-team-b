@@ -41,6 +41,7 @@ import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testfx.api.FxAssert.verifyThat;
 
@@ -242,14 +243,14 @@ class AppEnd2EndTest {
     
     @Test
     void testInvalidFloorTargetDoesNotCrashApp(FxRobot robot) {    
-        goToTarget(robot, 0, 100);
+        assertDoesNotThrow​(() ->goToTarget(robot, 0, 100));
     }
     
     @Test 
     void testStringForFloorTargetDoesNotCrashApp(FxRobot robot) {
-        robot.clickOn("#FloorToGo");
-        robot.write("hello");
-        robot.clickOn("#GoButton");
+        assertDoesNotThrow​( () -> robot.clickOn("#FloorToGo"));
+        assertDoesNotThrow​( () -> robot.write("hello"));
+        assertDoesNotThrow​( () -> robot.clickOn("#GoButton"));
     }
     
     @Test

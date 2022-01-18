@@ -9,7 +9,6 @@ public class ElevatorModel {
 	private List<Floor> floors;
 	private List<IModelObserver> observers;
 	private String errorMessage;
-	private boolean dataIsStale;
 
 	public ElevatorModel(List<Elevator> elevators, List<Floor> floors) {
 		this.elevators = elevators;
