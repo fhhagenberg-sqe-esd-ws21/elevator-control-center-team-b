@@ -25,7 +25,7 @@ import mocks.ElevatorMock;
 import sqelevator.IElevator;
 
 @ExtendWith(ApplicationExtension.class)
-public class AppConnectionLossTest {
+class AppConnectionLossTest {
 	private static final long TIMER_PERIOD = 10L; // milliseconds
 
 	App app;
