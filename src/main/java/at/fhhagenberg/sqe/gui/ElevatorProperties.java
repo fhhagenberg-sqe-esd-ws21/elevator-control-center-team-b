@@ -33,7 +33,7 @@ public class ElevatorProperties {
 	}
 
 	public void setPosition(Integer fPosition) {
-		position.setFill(floor == fPosition ? Color.GREEN : Color.RED);
+		position.setFill(floor.equals(fPosition) ? Color.GREEN : Color.RED);
 	}
 
 	public Integer getFloor() {
