@@ -111,7 +111,7 @@ class EccLayout {
 		levelToGo.borderProperty().set(boarderRed);
 		// only allow empty field or number
 		levelToGo.setTextFormatter(
-				new TextFormatter<>(change -> (change.getControlNewText().matches("([0-9]*)?")) ? change : null));
+				new TextFormatter<>(change -> (change.getControlNewText().matches("[0-9]*")) ? change : null));
 		levelToGo.setOnAction(event -> onEnterPressedLevelToGo(levelToGo)); // add listener for enter
 		levelToGo.textProperty().addListener((observable,  oldValue,  newValue) -> {
 				if (oldValue == null || !oldValue.equals(newValue)) {
