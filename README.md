@@ -57,6 +57,9 @@ When the RMI Connection could not be established, this Screen is shown.
 2. Package the Application with `mvn clean package`.
 3. The resulting archive (`.jar` file) is in the `target` directory.
 
+## Block Diagram
+![](figures/block_diagram.png)
+
 
 ## Contribution
 
