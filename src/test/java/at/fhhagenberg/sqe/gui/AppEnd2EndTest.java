@@ -99,7 +99,6 @@ class AppEnd2EndTest {
 				try {
 					return new ElevatorHardwareManager(ehmMock);
 				} catch (IllegalArgumentException | HardwareConnectionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return null;
 				}
@@ -141,9 +140,9 @@ class AppEnd2EndTest {
     }
 
     @Test
-    void testTexts(FxRobot robot) {
+    void testButtonTexts(FxRobot robot) {
         verifyThat("#GoButton", LabeledMatchers.hasText("Go"));
-        // TODO..
+        verifyThat("#AutomaticButton", LabeledMatchers.hasText("Automatic Mode"));
     }
 
     @Test
@@ -318,7 +317,7 @@ class AppEnd2EndTest {
     @Test
     void testGoButtonIsInitiallyDisabled(FxRobot robot) {
     	Button goButton = robot.lookup("#GoButton").queryButton();    	
-    	assertTrue(goButton.isDisabled());	
+    	assertTrue(goButton.isDisabled());
     }
     
     @Test 

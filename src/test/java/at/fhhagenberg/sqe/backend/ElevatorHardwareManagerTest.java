@@ -42,7 +42,7 @@ class ElevatorHardwareManagerTest {
 
 		assertTrue(ehm.isConnected());
 
-		Mockito.when(iElevatorMock.getElevatorNum()).thenThrow(new RemoteException()); // TODO updated to getClockTick?
+		Mockito.when(iElevatorMock.getElevatorNum()).thenThrow(new RemoteException());
 		assertFalse(ehm.isConnected());
 	}
 
